@@ -1,18 +1,19 @@
 plugins {
   alias(libs.plugins.androidApplication)
-  alias(libs.plugins.kotlin)
+  //alias(libs.plugins.kotlin) plus nécessaire sur agp 9
+  alias(libs.plugins.compose.compiler)
   alias(libs.plugins.ksp)
   alias(libs.plugins.hilt)
 }
 
 android {
   namespace = "com.openclassrooms.hexagonal.games"
-  compileSdk = 34
+  compileSdk = 36
 
   defaultConfig {
     applicationId = "com.openclassrooms.hexagonal.games"
-    minSdk = 24
-    targetSdk = 34
+    minSdk = 26
+    targetSdk = 36
     versionCode = 1
     versionName = "1.0"
 
@@ -25,19 +26,12 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-  }
-  composeOptions {
-    kotlinCompilerExtensionVersion = "1.5.11"
-  }
-  kotlinOptions {
-    jvmTarget = "1.8"
-  }
   buildFeatures {
     compose = true
   }
+}
+kotlin {
+  jvmToolchain(17)
 }
 
 dependencies {
@@ -56,6 +50,7 @@ dependencies {
   implementation(libs.compose.ui.tooling.preview)
   implementation(libs.material)
   implementation(libs.compose.material3)
+  implementation(libs.compose.material.icons.extended)
   implementation(libs.lifecycle.runtime.compose)
   debugImplementation(libs.compose.ui.tooling)
   debugImplementation(libs.compose.ui.test.manifest)
