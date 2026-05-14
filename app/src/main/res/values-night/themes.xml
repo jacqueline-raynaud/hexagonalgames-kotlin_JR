@@ -5,4 +5,10 @@
     <!-- Customize your dark theme here. -->
     <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
   </style>
+
+  <!-- Thème spécifique pour Firebase UI pour éviter les chevauchements de titre en mode nuit -->
+  <style name="Theme.FirebaseUI" parent="Theme.Material3.DayNight">
+    <item name="windowActionBar">true</item>
+    <item name="windowNoTitle">false</item>
+  </style>
 </resources>

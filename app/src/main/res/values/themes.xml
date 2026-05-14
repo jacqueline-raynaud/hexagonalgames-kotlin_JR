@@ -8,4 +8,10 @@
 
   <style name="Theme.HexagonalGames"
     parent="Base.Theme.HexagonalGames" />
+
+  <!-- Thème spécifique pour Firebase UI pour éviter les chevauchements de titre -->
+  <style name="Theme.FirebaseUI" parent="Theme.AppCompat.DayNight.DarkActionBar">
+    <item name="windowActionBar">true</item>
+    <item name="windowNoTitle">false</item>
+  </style>
 </resources>

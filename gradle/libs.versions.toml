@@ -29,6 +29,7 @@ googleGmsGoogleServices = "4.4.4"
 firebaseBom = "34.13.0"
 firebaseAnalytics = "23.2.0"
 firebaseAuth = "24.1.0"
+firebaseUiAuth = "9.0.0"
 
 
 [libraries]
@@ -56,9 +57,10 @@ navigation-compose = { group = "androidx.navigation", name = "navigation-compose
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 #firebase
-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+firebaseUiAuth = { group = "com.firebaseui", name = "firebase-ui-auth", version.ref = "firebaseUiAuth" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

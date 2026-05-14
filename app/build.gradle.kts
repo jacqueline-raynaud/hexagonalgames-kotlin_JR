@@ -41,7 +41,6 @@ dependencies {
 
   //DI
   implementation(libs.hilt)
-  implementation(libs.firebase.auth)
   ksp(libs.hilt.compiler)
   implementation(libs.hilt.navigation.compose)
 
@@ -69,6 +68,8 @@ dependencies {
   androidTestImplementation(libs.ext.junit)
   androidTestImplementation(libs.espresso.core)
 
-  implementation(libs.firebase.analytics)
   implementation(platform(libs.firebase.bom))
+  implementation(libs.firebase.analytics)
+  implementation(libs.firebase.auth)
+  implementation(libs.firebaseUiAuth)
 }
