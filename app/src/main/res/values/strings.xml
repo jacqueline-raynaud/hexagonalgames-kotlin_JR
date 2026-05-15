@@ -14,4 +14,7 @@
   <string name="contentDescription_more">More</string>
   <string name="contentDescription_notification_icon">Icone de notification</string>
   <string name="error_title">Title not valid</string>
+    <string name="delete_account">Suppression de votre compte sur Hexagone Game</string>
+  <string name="sign_out">Déconnexion de la pateforme Hexagone Game</string>
+  <string name="accountmanagement">Gestion du compte</string>
 </resources>

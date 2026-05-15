@@ -16,6 +16,9 @@ import com.openclassrooms.hexagonal.games.R
  */
 class FirebaseUiActivity : AppCompatActivity() {
 
+    /**
+     * Lanceur d'activité pour le résultat de l'authentification Firebase UI.
+     */
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract(),
     ) { res ->
@@ -40,7 +43,7 @@ class FirebaseUiActivity : AppCompatActivity() {
             .setAvailableProviders(providers)
             .setTheme(R.style.Theme_FirebaseUI)
             .build()
-        
+
         signInLauncher.launch(signInIntent)
     }
 
@@ -65,57 +68,5 @@ class FirebaseUiActivity : AppCompatActivity() {
                 Log.e("FirebaseUI", "Sign-in error: $errorCode")
             }
         }
-
-
-        // [END auth_fui_result]
-
-        /*private fun signOut() {
-    // [START auth_fui_signout]
-    AuthUI.getInstance()
-        .signOut(this)
-        .addOnCompleteListener {
-            // ...
-        }
-    // [END auth_fui_signout]
-}
-
-private fun delete() {
-    // [START auth_fui_delete]
-    AuthUI.getInstance()
-        .delete(this)
-        .addOnCompleteListener {
-            // ...
-        }
-    // [END auth_fui_delete]
-}
-
-private fun themeAndLogo() {
-    val providers = emptyList<AuthUI.IdpConfig>()
-
-    // [START auth_fui_theme_logo]
-    val signInIntent = AuthUI.getInstance()
-        .createSignInIntentBuilder()
-        .setAvailableProviders(providers)
-        .setLogo(R.drawable.my_great_logo) // Set logo drawable
-        .setTheme(R.style.MySuperAppTheme) // Set theme
-        .build()
-    signInLauncher.launch(signInIntent)
-    // [END auth_fui_theme_logo]
-}
-
-private fun privacyAndTerms() {
-    val providers = emptyList<AuthUI.IdpConfig>()
-    // [START auth_fui_pp_tos]
-    val signInIntent = AuthUI.getInstance()
-        .createSignInIntentBuilder()
-        .setAvailableProviders(providers)
-        .setTosAndPrivacyPolicyUrls(
-            "https://example.com/terms.html",
-            "https://example.com/privacy.html",
-        )
-        .build()
-    signInLauncher.launch(signInIntent)
-    // [END auth_fui_pp_tos]
-}*/
     }
 }
