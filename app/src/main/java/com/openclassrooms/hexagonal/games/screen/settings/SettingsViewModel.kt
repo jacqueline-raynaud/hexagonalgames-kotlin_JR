@@ -1,25 +1,31 @@
 package com.openclassrooms.hexagonal.games.screen.settings
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.google.firebase.messaging.FirebaseMessaging
 
 /**
  * ViewModel responsible for managing user settings, specifically notification preferences.
  */
 class SettingsViewModel : ViewModel() {
-  /**
-   * Enables notifications for the application.
-   * TODO: Implement the logic to enable notifications, likely involving interactions with a notification manager.
-   */
+
   fun enableNotifications() {
-    //TODO
+    FirebaseMessaging.getInstance().subscribeToTopic("all")
+      .addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+          Log.d("FCM", "Abonné aux notifications")
+        }
+
+      }
   }
-  
-  /**
-   * Disables notifications for the application.
-   * TODO: Implement the logic to disable notifications, likely involving interactions with a notification manager.
-   */
+
   fun disableNotifications() {
-    //TODO
+    FirebaseMessaging.getInstance().unsubscribeFromTopic("all")
+      .addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+          Log.d("FCM", "Désabonné des notifications")
+        }
+      }
   }
   
 }

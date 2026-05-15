@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
@@ -31,12 +32,27 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.openclassrooms.hexagonal.games.R
 import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
   modifier: Modifier = Modifier,
   viewModel: SettingsViewModel = hiltViewModel(),
   onBackClick: () -> Unit
+) {
+  SettingsScreen(
+    modifier = modifier,
+    onBackClick = onBackClick,
+    onNotificationEnabledClicked = { viewModel.enableNotifications() },
+    onNotificationDisabledClicked = { viewModel.disableNotifications() }
+  )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SettingsScreen(
+  modifier: Modifier = Modifier,
+  onBackClick: () -> Unit,
+  onNotificationEnabledClicked: () -> Unit,
+  onNotificationDisabledClicked: () -> Unit
 ) {
   Scaffold(
     modifier = modifier,
@@ -60,10 +76,8 @@ fun SettingsScreen(
   ) { contentPadding ->
     Settings(
       modifier = Modifier.padding(contentPadding),
-      onNotificationDisabledClicked = { viewModel.disableNotifications() },
-      onNotificationEnabledClicked = {
-        viewModel.enableNotifications()
-      }
+      onNotificationDisabledClicked = onNotificationDisabledClicked,
+      onNotificationEnabledClicked = onNotificationEnabledClicked
     )
   }
 }
@@ -116,13 +130,13 @@ private fun Settings(
 }
 
 @PreviewLightDark
-@PreviewScreenSizes
 @Composable
-private fun SettingsPreview() {
+private fun SettingsScreenPreview() {
   HexagonalGamesTheme {
-    Settings(
-      onNotificationEnabledClicked = { },
-      onNotificationDisabledClicked = { }
+    SettingsScreen(
+      onBackClick = {},
+      onNotificationEnabledClicked = {},
+      onNotificationDisabledClicked = {}
     )
   }
 }
