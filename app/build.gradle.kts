@@ -73,4 +73,5 @@ dependencies {
   implementation(libs.firebase.auth)
   implementation(libs.firebaseUiAuth)
   implementation(libs.firebase.messaging)
+  implementation(libs.firebase.firestore)
 }

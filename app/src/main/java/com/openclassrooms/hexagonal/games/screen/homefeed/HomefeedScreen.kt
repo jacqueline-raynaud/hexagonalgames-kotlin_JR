@@ -80,11 +80,20 @@ fun HomefeedScreen(
             DropdownMenuItem(
               onClick = {
                 onSettingsClick()
-                onAccountManagementClick()
               },
               text = {
                 Text(
                   text = stringResource(id = R.string.action_settings)
+                )
+              }
+            )
+            DropdownMenuItem(
+              onClick = {
+                onAccountManagementClick()
+              },
+              text = {
+                Text(
+                  text = stringResource(id = R.string.account_management)
                 )
               }
             )

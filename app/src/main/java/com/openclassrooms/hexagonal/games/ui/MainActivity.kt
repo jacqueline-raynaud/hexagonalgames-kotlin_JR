@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.openclassrooms.hexagonal.games.screen.Screen
+import com.openclassrooms.hexagonal.games.screen.accountmanagement.AccountManagementScreen
 import com.openclassrooms.hexagonal.games.screen.ad.AddScreen
 import com.openclassrooms.hexagonal.games.screen.homefeed.HomefeedScreen
 import com.openclassrooms.hexagonal.games.screen.settings.SettingsScreen
@@ -24,57 +25,66 @@ import kotlin.jvm.java
  */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-  
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
 
-    // vérification si utilisateur est connecté
-    val currentUser = FirebaseAuth.getInstance().currentUser
-    if (currentUser == null) {
-      // Pas d'utilisateur → Lancer FirebaseUiActivity
-      startActivity(Intent(this, FirebaseUiActivity::class.java))
-      finish()
-      return
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // vérification si utilisateur est connecté
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) {
+            // Pas d'utilisateur → Lancer FirebaseUiActivity
+            startActivity(Intent(this, FirebaseUiActivity::class.java))
+            finish()
+            return
+        }
+        setContent {
+            val navController = rememberNavController()
+
+            HexagonalGamesTheme {
+                HexagonalGamesNavHost(navHostController = navController)
+            }
+        }
     }
-    setContent {
-      val navController = rememberNavController()
-      
-      HexagonalGamesTheme {
-        HexagonalGamesNavHost(navHostController = navController)
-      }
-    }
-  }
-  }
+}
 
 @Composable
 fun HexagonalGamesNavHost(navHostController: NavHostController) {
-  NavHost(
-    navController = navHostController,
-    startDestination = Screen.Homefeed.route
-  ) {
-    composable(route = Screen.Homefeed.route) {
-      HomefeedScreen(
-        onPostClick = {
-          //TODO
-        },
-        onSettingsClick = {
-          navHostController.navigate(Screen.Settings.route)
-        },
-        onFABClick = {
-          navHostController.navigate(Screen.AddPost.route)
+    NavHost(
+        navController = navHostController,
+        startDestination = Screen.Homefeed.route
+    ) {
+        composable(route = Screen.Homefeed.route) {
+            HomefeedScreen(
+                onPostClick = {
+                    //TODO
+                },
+                onSettingsClick = {
+                    navHostController.navigate(Screen.Settings.route)
+                },
+              onAccountManagementClick = {
+                  navHostController.navigate(Screen.AccountManagement.route)
+              },
+                onFABClick = {
+                    navHostController.navigate(Screen.AddPost.route)
+                }
+            )
         }
-      )
+        composable(route = Screen.AddPost.route) {
+            AddScreen(
+                onBackClick = { navHostController.navigateUp() },
+                onSaveClick = { navHostController.navigateUp() }
+            )
+        }
+        composable(route = Screen.Settings.route) {
+            SettingsScreen(
+                onBackClick = { navHostController.navigateUp() }
+            )
+        }
+        composable(route = Screen.AccountManagement.route) {
+            AccountManagementScreen(
+                onBackClick = { navHostController.navigateUp() }
+            )
+        }
+
     }
-    composable(route = Screen.AddPost.route) {
-      AddScreen(
-        onBackClick = { navHostController.navigateUp() },
-        onSaveClick = { navHostController.navigateUp() }
-      )
-    }
-    composable(route = Screen.Settings.route) {
-      SettingsScreen(
-        onBackClick = { navHostController.navigateUp() }
-      )
-    }
-  }
 }

@@ -17,4 +17,5 @@
     <string name="delete_account">Suppression de votre compte sur Hexagone Game</string>
   <string name="sign_out">Déconnexion de la pateforme Hexagone Game</string>
   <string name="accountmanagement">Gestion du compte</string>
+    <string name="account_management">Gestion du compte</string>
 </resources>
