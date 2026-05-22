@@ -73,7 +73,7 @@ private fun AccountManagement(
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
+        //verticalArrangement = Arrangement.SpaceEvenly
     ) {
         Button(onClick = { onSignOutClicked() }) {
             Text(stringResource(id = R.string.sign_out))
