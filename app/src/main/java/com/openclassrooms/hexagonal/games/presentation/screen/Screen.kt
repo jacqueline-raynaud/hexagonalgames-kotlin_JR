@@ -1,4 +1,4 @@
-package com.openclassrooms.hexagonal.games.screen
+package com.openclassrooms.hexagonal.games.presentation.screen
 
 import androidx.navigation.NamedNavArgument
 

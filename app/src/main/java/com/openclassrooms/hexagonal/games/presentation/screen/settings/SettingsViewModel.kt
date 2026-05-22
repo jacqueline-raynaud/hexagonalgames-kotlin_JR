@@ -1,4 +1,4 @@
-package com.openclassrooms.hexagonal.games.screen.settings
+package com.openclassrooms.hexagonal.games.presentation.screen.settings
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

@@ -1,4 +1,4 @@
-package com.openclassrooms.hexagonal.games.ui
+package com.openclassrooms.hexagonal.games.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,11 +10,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.openclassrooms.hexagonal.games.screen.Screen
-import com.openclassrooms.hexagonal.games.screen.accountmanagement.AccountManagementScreen
-import com.openclassrooms.hexagonal.games.screen.ad.AddScreen
-import com.openclassrooms.hexagonal.games.screen.homefeed.HomefeedScreen
-import com.openclassrooms.hexagonal.games.screen.settings.SettingsScreen
+import com.openclassrooms.hexagonal.games.presentation.screen.Screen
+import com.openclassrooms.hexagonal.games.presentation.screen.accountmanagement.AccountManagementScreen
+import com.openclassrooms.hexagonal.games.presentation.screen.ad.AddScreen
+import com.openclassrooms.hexagonal.games.presentation.screen.homefeed.HomefeedScreen
+import com.openclassrooms.hexagonal.games.presentation.screen.settings.SettingsScreen
 import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.jvm.java
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
-            HexagonalGamesTheme {
+            _root_ide_package_.com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTheme {
                 HexagonalGamesNavHost(navHostController = navController)
             }
         }

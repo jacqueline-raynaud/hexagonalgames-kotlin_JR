@@ -1,4 +1,4 @@
-package com.openclassrooms.hexagonal.games.ui
+package com.openclassrooms.hexagonal.games.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle

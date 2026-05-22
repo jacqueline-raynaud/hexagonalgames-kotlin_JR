@@ -1,4 +1,4 @@
-package com.openclassrooms.hexagonal.games.ui.theme
+package com.openclassrooms.hexagonal.games.presentation.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme

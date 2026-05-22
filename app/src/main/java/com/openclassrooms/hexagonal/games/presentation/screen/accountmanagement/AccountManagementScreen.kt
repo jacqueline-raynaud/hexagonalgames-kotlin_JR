@@ -1,6 +1,5 @@
-package com.openclassrooms.hexagonal.games.screen.accountmanagement
+package com.openclassrooms.hexagonal.games.presentation.screen.accountmanagement
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding

@@ -1,4 +1,4 @@
-package com.openclassrooms.hexagonal.games.screen.ad
+package com.openclassrooms.hexagonal.games.presentation.screen.ad
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

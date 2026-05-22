@@ -1,4 +1,4 @@
-package com.openclassrooms.hexagonal.games.screen.accountmanagement
+package com.openclassrooms.hexagonal.games.presentation.screen.accountmanagement
 
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth

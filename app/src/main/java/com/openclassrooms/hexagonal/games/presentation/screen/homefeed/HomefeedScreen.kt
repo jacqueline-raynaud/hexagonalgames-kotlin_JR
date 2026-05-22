@@ -1,4 +1,4 @@
-package com.openclassrooms.hexagonal.games.screen.homefeed
+package com.openclassrooms.hexagonal.games.presentation.screen.homefeed
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

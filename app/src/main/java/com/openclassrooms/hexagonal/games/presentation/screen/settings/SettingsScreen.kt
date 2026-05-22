@@ -1,5 +1,6 @@
-package com.openclassrooms.hexagonal.games.screen.settings
+package com.openclassrooms.hexagonal.games.presentation.screen.settings
 
+import android.Manifest
 import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,9 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -91,7 +90,7 @@ private fun Settings(
 ) {
   val notificationsPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
     rememberPermissionState(
-      android.Manifest.permission.POST_NOTIFICATIONS
+      Manifest.permission.POST_NOTIFICATIONS
     )
   } else {
     null

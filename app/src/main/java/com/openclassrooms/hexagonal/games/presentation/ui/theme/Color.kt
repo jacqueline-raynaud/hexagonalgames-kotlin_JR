@@ -1,4 +1,4 @@
-package com.openclassrooms.hexagonal.games.ui.theme
+package com.openclassrooms.hexagonal.games.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
