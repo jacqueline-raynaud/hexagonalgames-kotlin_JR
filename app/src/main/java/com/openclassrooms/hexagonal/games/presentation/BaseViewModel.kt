@@ -21,7 +21,7 @@ abstract class BaseViewModel(
     networkMonitor: NetworkStateMonitor
 ) : ViewModel() {
 
-    val appStatus: StateFlow<AppState> = combine(
+    val appState: StateFlow<AppState> = combine(
         authStateMonitor.isAuthenticated,
         networkMonitor.isOnline
     ) { isAuthenticated, isOnline ->

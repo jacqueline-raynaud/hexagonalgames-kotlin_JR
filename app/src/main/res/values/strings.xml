@@ -3,7 +3,7 @@
   <string name="action_settings">Settings</string>
   <string name="add_fragment_label">Add a post</string>
   <string name="homefeed_fragment_label">Home</string>
-  <string name="by">By %1$s %2$s</string>
+  <string name="by">By %1$s</string>
   <string name="notification_enable">Enable notifications</string>
   <string name="notification_disable">Disable notifications</string>
   <string name="description_button_add">Add</string>
@@ -14,8 +14,8 @@
   <string name="contentDescription_more">More</string>
   <string name="contentDescription_notification_icon">Icone de notification</string>
   <string name="error_title">Title not valid</string>
-    <string name="delete_account">Suppression de votre compte sur Hexagone Game</string>
-  <string name="sign_out">Déconnexion de la pateforme Hexagone Game</string>
-  <string name="accountmanagement">Gestion du compte</string>
-    <string name="account_management">Gestion du compte</string>
+  <string name="delete_account">Delete accournt on Hexagone Game</string>
+  <string name="sign_out">Deconnexion pateform Hexagone Game</string>
+  <string name="accountmanagement">Account Mangement</string>
+  <string name="account_management">Account Mangement</string>
 </resources>

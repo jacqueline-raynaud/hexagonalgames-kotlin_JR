@@ -29,7 +29,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.openclassrooms.hexagonal.games.R
-import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
+import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTheme
 
 @Composable
 fun SettingsScreen(

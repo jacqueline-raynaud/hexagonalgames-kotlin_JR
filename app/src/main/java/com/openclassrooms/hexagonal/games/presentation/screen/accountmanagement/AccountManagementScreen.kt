@@ -1,5 +1,6 @@
 package com.openclassrooms.hexagonal.games.presentation.screen.accountmanagement
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -20,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.openclassrooms.hexagonal.games.R
-import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
+import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,7 +73,7 @@ private fun AccountManagement(
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        //verticalArrangement = Arrangement.SpaceEvenly
+        verticalArrangement = Arrangement.SpaceEvenly
     ) {
         Button(onClick = { onSignOutClicked() }) {
             Text(stringResource(id = R.string.sign_out))

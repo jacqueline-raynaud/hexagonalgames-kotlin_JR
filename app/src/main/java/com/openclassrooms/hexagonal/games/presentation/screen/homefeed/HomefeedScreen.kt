@@ -45,7 +45,7 @@ import coil.util.DebugLogger
 import com.openclassrooms.hexagonal.games.R
 import com.openclassrooms.hexagonal.games.domain.model.Post
 import com.openclassrooms.hexagonal.games.domain.model.User
-import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
+import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -160,8 +160,7 @@ private fun HomefeedCell(
       Text(
         text = stringResource(
           id = R.string.by,
-          post.author?.firstname ?: "",
-          post.author?.lastname ?: ""
+          post.author?.nameUser ?: ""
         ),
         style = MaterialTheme.typography.titleSmall
       )
@@ -209,8 +208,7 @@ private fun HomefeedCellPreview() {
         timestamp = 1,
         author = User(
           id = "1",
-          firstname = "firstname",
-          lastname = "lastname"
+          nameUser = "firstname lastname"
         )
       ),
       onPostClick = {}
@@ -232,8 +230,7 @@ private fun HomefeedCellImagePreview() {
         timestamp = 1,
         author = User(
           id = "1",
-          firstname = "firstname",
-          lastname = "lastname"
+          nameUser = "firstname lastname"
         )
       ),
       onPostClick = {}

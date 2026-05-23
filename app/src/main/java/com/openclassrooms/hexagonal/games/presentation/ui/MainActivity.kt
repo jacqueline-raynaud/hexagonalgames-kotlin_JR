@@ -15,7 +15,7 @@ import com.openclassrooms.hexagonal.games.presentation.screen.accountmanagement.
 import com.openclassrooms.hexagonal.games.presentation.screen.ad.AddScreen
 import com.openclassrooms.hexagonal.games.presentation.screen.homefeed.HomefeedScreen
 import com.openclassrooms.hexagonal.games.presentation.screen.settings.SettingsScreen
-import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
+import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.jvm.java
 
