@@ -1,5 +1,7 @@
 package com.openclassrooms.hexagonal.games.presentation.screen.homefeed
 
+import android.content.Intent
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -26,6 +28,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -45,7 +48,10 @@ import coil.util.DebugLogger
 import com.openclassrooms.hexagonal.games.R
 import com.openclassrooms.hexagonal.games.domain.model.Post
 import com.openclassrooms.hexagonal.games.domain.model.User
+import com.openclassrooms.hexagonal.games.presentation.ui.FirebaseUiActivity
+import com.openclassrooms.hexagonal.games.presentation.ui.components.AppStateErrorDialog
 import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTheme
+import com.openclassrooms.hexagonal.games.util.AppState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,6 +63,24 @@ fun HomefeedScreen(
   onAccountManagementClick: () -> Unit = {},
   onFABClick: () -> Unit = {},
 ) {
+  val appState by viewModel.appState.collectAsStateWithLifecycle()
+  val context = LocalContext.current // pour ma boite dialogue erreur
+
+  var showError by remember { mutableStateOf(false) }
+  if (showError) {
+    AppStateErrorDialog(
+      appStatus = appState,
+      onDismiss = { showError = false },
+      // navigation vers la page de connexion
+      onNavigateToLogin = {
+        val intent = Intent(context, FirebaseUiActivity::class.java)
+        context.startActivity(intent)
+      }
+
+
+    )
+  }
+
   var showMenu by rememberSaveable { mutableStateOf(false) }
   
   Scaffold(
@@ -105,8 +129,9 @@ fun HomefeedScreen(
     floatingActionButton = {
       FloatingActionButton(
         onClick = {
-          onFABClick()
-        }
+          if(appState == AppState.Ready) onFABClick()
+          else showError = true
+                  }
       ) {
         Icon(
           imageVector = Icons.Filled.Add,

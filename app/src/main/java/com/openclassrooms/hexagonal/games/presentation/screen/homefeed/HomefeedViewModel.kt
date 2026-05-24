@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.hexagonal.games.data.repository.PostRepository
 import com.openclassrooms.hexagonal.games.domain.model.Post
+import com.openclassrooms.hexagonal.games.presentation.BaseViewModel
+import com.openclassrooms.hexagonal.games.util.AuthStateMonitor
+import com.openclassrooms.hexagonal.games.util.NetworkStateMonitor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,8 +19,11 @@ import javax.inject.Inject
  * allowing UI components to observe and react to changes in the posts data.
  */
 @HiltViewModel
-class HomefeedViewModel @Inject constructor(private val postRepository: PostRepository) :
-  ViewModel() {
+class HomefeedViewModel @Inject constructor(
+  authStateMonitor: AuthStateMonitor,
+  networkMonitor: NetworkStateMonitor,
+  private val postRepository: PostRepository
+) : BaseViewModel(authStateMonitor, networkMonitor) {
   
   private val _posts: MutableStateFlow<List<Post>> = MutableStateFlow(emptyList())
   

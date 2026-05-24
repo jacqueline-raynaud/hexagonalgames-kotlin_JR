@@ -30,13 +30,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // vérification si utilisateur est connecté
-        val currentUser = FirebaseAuth.getInstance().currentUser
+/*        val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser == null) {
             // Pas d'utilisateur → Lancer FirebaseUiActivity
             startActivity(Intent(this, FirebaseUiActivity::class.java))
             finish()
             return
-        }
+        }*/
         setContent {
             val navController = rememberNavController()
 

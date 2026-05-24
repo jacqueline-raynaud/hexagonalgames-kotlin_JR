@@ -63,6 +63,7 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version
 firebaseUiAuth = { group = "com.firebaseui", name = "firebase-ui-auth", version.ref = "firebaseUiAuth" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
