@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -62,9 +63,10 @@ fun HomefeedScreen(
   onSettingsClick: () -> Unit = {},
   onAccountManagementClick: () -> Unit = {},
   onFABClick: () -> Unit = {},
+  onNavigateToLogin: () -> Unit = {}
 ) {
   val appState by viewModel.appState.collectAsStateWithLifecycle()
-  val context = LocalContext.current // pour ma boite dialogue erreur
+  //val context = LocalContext.current // pour ma boite dialogue erreur
 
   var showError by remember { mutableStateOf(false) }
   if (showError) {
@@ -73,8 +75,8 @@ fun HomefeedScreen(
       onDismiss = { showError = false },
       // navigation vers la page de connexion
       onNavigateToLogin = {
-        val intent = Intent(context, FirebaseUiActivity::class.java)
-        context.startActivity(intent)
+        showError = false
+        onNavigateToLogin()
       }
 
 
@@ -103,6 +105,7 @@ fun HomefeedScreen(
           ) {
             DropdownMenuItem(
               onClick = {
+                showMenu = false
                 onSettingsClick()
               },
               text = {
@@ -113,6 +116,7 @@ fun HomefeedScreen(
             )
             DropdownMenuItem(
               onClick = {
+                showMenu = false
                 onAccountManagementClick()
               },
               text = {
@@ -157,7 +161,8 @@ private fun HomefeedList(
   onPostClick: (Post) -> Unit,
 ) {
   LazyColumn(
-    modifier = modifier.padding(8.dp),
+    modifier = modifier,
+    contentPadding = PaddingValues(8.dp),
     verticalArrangement = Arrangement.spacedBy(8.dp),
   ) {
     items(posts) { post ->

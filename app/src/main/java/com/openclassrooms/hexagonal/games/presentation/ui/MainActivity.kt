@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -29,14 +30,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // vérification si utilisateur est connecté
-/*        val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser == null) {
-            // Pas d'utilisateur → Lancer FirebaseUiActivity
-            startActivity(Intent(this, FirebaseUiActivity::class.java))
-            finish()
-            return
-        }*/
         setContent {
             val navController = rememberNavController()
 
@@ -49,6 +42,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun HexagonalGamesNavHost(navHostController: NavHostController) {
+    val context = LocalContext.current // pour ma boite dialogue erreur
     NavHost(
         navController = navHostController,
         startDestination = Screen.Homefeed.route
@@ -66,6 +60,10 @@ fun HexagonalGamesNavHost(navHostController: NavHostController) {
               },
                 onFABClick = {
                     navHostController.navigate(Screen.AddPost.route)
+                },
+                onNavigateToLogin = {
+                    val intent = Intent(context, FirebaseUiActivity::class.java)
+                    context.startActivity(intent)
                 }
             )
         }

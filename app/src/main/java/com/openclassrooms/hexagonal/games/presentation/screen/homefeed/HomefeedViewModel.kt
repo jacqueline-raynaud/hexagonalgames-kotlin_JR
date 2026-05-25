@@ -9,38 +9,28 @@ import com.openclassrooms.hexagonal.games.util.AuthStateMonitor
 import com.openclassrooms.hexagonal.games.util.NetworkStateMonitor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
  * ViewModel responsible for managing data and events related to the Homefeed.
- * This ViewModel retrieves posts from the PostRepository and exposes them as a Flow<List<Post>>,
- * allowing UI components to observe and react to changes in the posts data.
+ * This ViewModel retrieves list of posts from the PostRepository and exposes to the
+ * ui them as a reactive StateFlow.
  */
 @HiltViewModel
 class HomefeedViewModel @Inject constructor(
-  authStateMonitor: AuthStateMonitor,
-  networkMonitor: NetworkStateMonitor,
-  private val postRepository: PostRepository
+    authStateMonitor: AuthStateMonitor,
+    networkMonitor: NetworkStateMonitor,
+    postRepository: PostRepository
 ) : BaseViewModel(authStateMonitor, networkMonitor) {
-  
-  private val _posts: MutableStateFlow<List<Post>> = MutableStateFlow(emptyList())
-  
-  /**
-   * Returns a Flow observable containing the list of posts fetched from the repository.
-   *
-   * @return A Flow<List<Post>> object that can be observed for changes.
-   */
-  val posts: StateFlow<List<Post>>
-    get() = _posts
-  
-  init {
-    viewModelScope.launch {
-      postRepository.posts.collect {
-        _posts.value = it
-      }
-    }
-  }
-  
+
+    val posts: StateFlow<List<Post>> = postRepository.posts
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5_000),
+            emptyList()
+        )
 }
