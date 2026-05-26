@@ -1,5 +1,6 @@
 package com.openclassrooms.hexagonal.games.data.service
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject

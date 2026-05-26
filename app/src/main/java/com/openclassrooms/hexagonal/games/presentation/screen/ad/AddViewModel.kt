@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.openclassrooms.hexagonal.games.data.repository.PostRepository
 import com.openclassrooms.hexagonal.games.domain.model.Post
 import com.openclassrooms.hexagonal.games.domain.model.User
+import com.openclassrooms.hexagonal.games.domain.repository.StorageRepository
 import com.openclassrooms.hexagonal.games.presentation.BaseViewModel
 import com.openclassrooms.hexagonal.games.util.AppState
 import com.openclassrooms.hexagonal.games.util.AuthStateMonitor
@@ -15,11 +16,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
+import kotlin.collections.copy
 
 /**
  * This ViewModel manages data and interactions related to adding new posts in the AddScreen.
@@ -30,111 +33,118 @@ class AddViewModel @Inject constructor(
     authStateMonitor: AuthStateMonitor,
     networkMonitor: NetworkStateMonitor,
     private val postRepository: PostRepository,
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val storageRepository: StorageRepository,
 ) : BaseViewModel(authStateMonitor, networkMonitor) {
 
-    /**
-     * Internal mutable state flow representing the current post being edited.
-     */
-    private var _post = MutableStateFlow(
-        Post(
-            id = UUID.randomUUID().toString(),
-            title = "",
-            description = "",
-            photoUrl = null,
-            timestamp = System.currentTimeMillis(),
-            author = null
-        )
-    )
+    private val _uiState = MutableStateFlow(AddUiState())
+    val uiState: StateFlow<AddUiState> = _uiState.asStateFlow()
 
     /**
-     * Public state flow representing the current post being edited.
-     * This is immutable for consumers.
-     */
-    val post: StateFlow<Post>
-        get() = _post
-
-    /**
-     * StateFlow derived from the post that emits a FormError if the title is empty, null otherwise.
-     */
-    val error = post.map {
-        verifyPost()
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = null,
-    )
-
-    /**
-     * Handles form events like title and description changes.
-     *
-     * @param formEvent The form event to be processed.
+     * actions utilisateur provenant de l'écran.
      */
     fun onAction(formEvent: FormEvent) {
         when (formEvent) {
-            is FormEvent.DescriptionChanged -> {
-                _post.value = _post.value.copy(
-                    description = formEvent.description
-                )
+            is FormEvent.TitleChanged -> {
+                updateState { it.copy(title = formEvent.title) }
+                validateForm()
             }
 
-            is FormEvent.TitleChanged -> {
-                _post.value = _post.value.copy(
-                    title = formEvent.title
-                )
+            is FormEvent.DescriptionChanged -> {
+                updateState { it.copy(description = formEvent.description) }
+            }
+
+            is FormEvent.ImageSelected -> {
+                updateState { it.copy(imageUri = formEvent.uri) }
             }
         }
     }
 
     /**
-     * Attempts to add the current post to the repository after setting the author.
-     * If the app state is not ready, no action is taken.
+     * Logique de validation du formulaire
+     */
+    private fun validateForm() {
+        updateState { currentState ->
+            val hasTitle = currentState.title.isNotBlank()
+            val hasDescription = currentState.description.isNotBlank()
+            val hasImage = currentState.imageUri != null
+
+            // LeTitre ET Description OU Titre ET Image
+            val isFormValid = (hasTitle && hasDescription) || (hasTitle && hasImage)
+
+            // verifie si authentifié et connecté
+            val isAppReady = appState.value is AppState.Ready
+
+            // Ls deux verif sont ok pour sauver
+            val canSave = isFormValid && isAppReady
+
+            // Gestion des messages d'erreur visuels
+            val error = if (!hasTitle) FormError.TitleError else null
+
+            currentState.copy(
+                error = error,
+                isSaveEnabled = canSave
+            )
+        }
+    }
+
+    /**
+     * sauvegarde du Post (Storage puis Firestore)
      */
     fun addPost() {
-        Log.d("AddViewModel", "addPost() called")
-        Log.d("AddViewModel", "appStatus = ${appState.value}")
-        /*if (appState.value != AppState.Ready) {
-            Log.d("AddViewModel", "BLOQUE : AppState not ready")
-            return
-        }*/
-        /*val firebaseUser = auth.currentUser ?: return
-        val author = User(
-          id = firebaseUser.uid,
-          displayName = firebaseUser.displayName ?: "Utilisateur"
-        )
-            viewModelScope.launch {
-          postRepository.addPost(_post.value.copy( author = author))
-        }
-        */
-
         val firebaseUser = auth.currentUser ?: return
-        val author = User(
-            id = firebaseUser.uid,
-            nameUser = firebaseUser.displayName ?: "Utilisateur"
-        )
+        val currentState = _uiState.value
+
+        // verifie si le formulaire est valide avant d'envoyer
+        if (currentState.title.isBlank()) {
+            validateForm()
+            return
+        }
 
         viewModelScope.launch {
             try {
-                postRepository.addPost(_post.value.copy(author = author))
+                updateState { it.copy(isSaving = true) }
+
+                // upload vers storage
+                val finalPhotoUrl: String? = currentState.imageUri?.let { uri ->
+                    storageRepository.uploadImage(firebaseUser.uid, uri)
+                }
+
+                // Création de l'objet métier final au MOMENT de la sauvegarde
+                val author = User(
+                    id = firebaseUser.uid,
+                    nameUser = firebaseUser.displayName ?: "Utilisateur"
+                )
+
+                val newPost = Post(
+                    id = UUID.randomUUID().toString(),
+                    title = currentState.title,
+                    description = currentState.description,
+                    photoUrl = finalPhotoUrl,
+                    timestamp = System.currentTimeMillis(),
+                    author = author
+                )
+
+                postRepository.addPost(newPost)
+
+                // pour gérer la durée de l'action quand il y a une image
+                updateState { it.copy(isSaved = true) }
 
             } catch (e: Exception) {
                 Log.e("AddViewModel", "Erreur addPost : ${e.message}", e)
+            } finally {
+                updateState { it.copy(isSaving = false) }
             }
         }
     }
 
     /**
-     * Verifies mandatory fields of the post
-     * and returns a corresponding FormError if so.
-     *
-     * @return A FormError.TitleError if title is empty, null otherwise.
+     * Petite fonction utilitaire pour simplifier la mise à jour du StateFlow
      */
-    private fun verifyPost(): FormError? {
-        return if (_post.value.title.isEmpty()) {
-            FormError.TitleError
-        } else {
-            null
-        }
+    private inline fun updateState(transform: (AddUiState) -> AddUiState) {
+        _uiState.value = transform(_uiState.value)
     }
 }
+
+
 

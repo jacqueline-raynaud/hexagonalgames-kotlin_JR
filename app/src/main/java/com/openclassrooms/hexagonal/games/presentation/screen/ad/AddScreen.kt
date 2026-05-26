@@ -1,5 +1,9 @@
 package com.openclassrooms.hexagonal.games.presentation.screen.ad
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +13,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.AddPhotoAlternate
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -19,9 +24,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -30,6 +37,7 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.openclassrooms.hexagonal.games.R
 import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTheme
 
@@ -41,6 +49,14 @@ fun AddScreen(
   onBackClick: () -> Unit,
   onSaveClick: () -> Unit
 ) {
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+  // gestion de navigation que si post a eu le temps d'être créé
+  LaunchedEffect(uiState.isSaved) {
+    if (uiState.isSaved) {
+      onSaveClick()
+    }
+  }
 
   Scaffold(
     modifier = modifier,
@@ -62,19 +78,22 @@ fun AddScreen(
       )
     }
   ) { contentPadding ->
-    val post by viewModel.post.collectAsStateWithLifecycle()
-    val error by viewModel.error.collectAsStateWithLifecycle()
     
     CreatePost(
       modifier = Modifier.padding(contentPadding),
-      error = error,
-      title = post.title,
+      error = uiState.error,
+      title = uiState.title,
       onTitleChanged = { viewModel.onAction(FormEvent.TitleChanged(it)) },
-      description = post.description ?: "",
+      description = uiState.description ?: "",
       onDescriptionChanged = { viewModel.onAction(FormEvent.DescriptionChanged(it)) },
+      onImageSelected = { uri -> viewModel.onAction(FormEvent.ImageSelected(uri)) },
       onSaveClicked = {
         viewModel.addPost()
-        onSaveClick()
+/*      pbl avec image pas suffisament de temps cancel immédiat
+        si je lance onSave tout de suite
+        l'image va dans storage mais le post n'a pas le temps d'être créé
+        ajouter un issaved true dans viewmodel et une navigtation launchedeffect en haut
+        onSaveClick()*/
       }
     )
   }
@@ -87,11 +106,19 @@ private fun CreatePost(
   onTitleChanged: (String) -> Unit,
   description: String,
   onDescriptionChanged: (String) -> Unit,
+  onImageSelected: (Uri) -> Unit,
   onSaveClicked: () -> Unit,
   error: FormError?
 ) {
   val scrollState = rememberScrollState()
-  
+  val launcher = rememberLauncherForActivityResult(
+    contract = ActivityResultContracts.PickVisualMedia(),
+    onResult = { uri ->
+      if (uri != null) {
+        onImageSelected(uri)
+      }
+      })
+
   Column(
     modifier = modifier
       .padding(16.dp)
@@ -130,6 +157,15 @@ private fun CreatePost(
         label = { Text(stringResource(id = R.string.hint_description)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
       )
+     Button(onClick = {
+      launcher.launch(
+        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+      )
+      }) {
+        Text(text = "Choisir une image")
+
+
+    }
     }
     Button(
       enabled = error == null,
@@ -154,6 +190,8 @@ private fun CreatePostPreview() {
       description = "description",
       onDescriptionChanged = { },
       onSaveClicked = { },
+      onImageSelected = { },
+
       error = null
     )
   }
@@ -170,6 +208,7 @@ private fun CreatePostErrorPreview() {
       description = "description",
       onDescriptionChanged = { },
       onSaveClicked = { },
+      onImageSelected = { },
       error = FormError.TitleError
     )
   }
