@@ -1,4 +1,4 @@
-package com.openclassrooms.hexagonal.games.util
+package com.openclassrooms.hexagonal.games.domain.util
 
 import android.content.Context
 import android.net.ConnectivityManager

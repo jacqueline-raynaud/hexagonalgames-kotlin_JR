@@ -1,6 +1,5 @@
 package com.openclassrooms.hexagonal.games.presentation.screen.homefeed
 
-import android.content.Intent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,7 +35,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
@@ -49,10 +47,9 @@ import coil.util.DebugLogger
 import com.openclassrooms.hexagonal.games.R
 import com.openclassrooms.hexagonal.games.domain.model.Post
 import com.openclassrooms.hexagonal.games.domain.model.User
-import com.openclassrooms.hexagonal.games.presentation.ui.FirebaseUiActivity
 import com.openclassrooms.hexagonal.games.presentation.ui.components.AppStateErrorDialog
 import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTheme
-import com.openclassrooms.hexagonal.games.util.AppState
+import com.openclassrooms.hexagonal.games.domain.util.AppState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

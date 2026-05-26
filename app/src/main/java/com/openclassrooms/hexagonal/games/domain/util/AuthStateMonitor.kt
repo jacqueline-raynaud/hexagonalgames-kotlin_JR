@@ -1,4 +1,4 @@
-package com.openclassrooms.hexagonal.games.util
+package com.openclassrooms.hexagonal.games.domain.util
 
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope

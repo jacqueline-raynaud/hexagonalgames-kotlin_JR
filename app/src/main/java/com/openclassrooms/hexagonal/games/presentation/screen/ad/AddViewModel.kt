@@ -1,7 +1,6 @@
 package com.openclassrooms.hexagonal.games.presentation.screen.ad
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.openclassrooms.hexagonal.games.data.repository.PostRepository
@@ -9,20 +8,16 @@ import com.openclassrooms.hexagonal.games.domain.model.Post
 import com.openclassrooms.hexagonal.games.domain.model.User
 import com.openclassrooms.hexagonal.games.domain.repository.StorageRepository
 import com.openclassrooms.hexagonal.games.presentation.BaseViewModel
-import com.openclassrooms.hexagonal.games.util.AppState
-import com.openclassrooms.hexagonal.games.util.AuthStateMonitor
-import com.openclassrooms.hexagonal.games.util.NetworkStateMonitor
+import com.openclassrooms.hexagonal.games.domain.util.AppState
+import com.openclassrooms.hexagonal.games.domain.util.AuthStateMonitor
+import com.openclassrooms.hexagonal.games.domain.util.NetworkStateMonitor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
-import kotlin.collections.copy
 
 /**
  * This ViewModel manages data and interactions related to adding new posts in the AddScreen.

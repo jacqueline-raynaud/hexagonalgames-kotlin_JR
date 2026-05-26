@@ -8,7 +8,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.openclassrooms.hexagonal.games.R
-import com.openclassrooms.hexagonal.games.util.AppState
+import com.openclassrooms.hexagonal.games.domain.util.AppState
 
 @Composable
 fun AppStateErrorDialog(

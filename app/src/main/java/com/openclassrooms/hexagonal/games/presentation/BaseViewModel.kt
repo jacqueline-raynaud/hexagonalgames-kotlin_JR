@@ -2,9 +2,9 @@ package com.openclassrooms.hexagonal.games.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.openclassrooms.hexagonal.games.util.AppState
-import com.openclassrooms.hexagonal.games.util.AuthStateMonitor
-import com.openclassrooms.hexagonal.games.util.NetworkStateMonitor
+import com.openclassrooms.hexagonal.games.domain.util.AppState
+import com.openclassrooms.hexagonal.games.domain.util.AuthStateMonitor
+import com.openclassrooms.hexagonal.games.domain.util.NetworkStateMonitor
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
