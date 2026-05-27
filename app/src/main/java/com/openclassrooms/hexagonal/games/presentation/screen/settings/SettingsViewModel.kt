@@ -1,31 +1,23 @@
 package com.openclassrooms.hexagonal.games.presentation.screen.settings
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.google.firebase.messaging.FirebaseMessaging
+import com.openclassrooms.hexagonal.games.domain.usecase.HandleNotificationsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 /**
  * ViewModel responsible for managing user settings, specifically notification preferences.
  */
-class SettingsViewModel : ViewModel() {
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
+    private val handleNotificationsUseCase: HandleNotificationsUseCase
+) : ViewModel() {
 
-  fun enableNotifications() {
-    FirebaseMessaging.getInstance().subscribeToTopic("all")
-      .addOnCompleteListener { task ->
-        if (task.isSuccessful) {
-          Log.d("FCM", "Abonné aux notifications")
-        }
+    fun enableNotifications() {
+        handleNotificationsUseCase.enable()
+    }
 
-      }
-  }
-
-  fun disableNotifications() {
-    FirebaseMessaging.getInstance().unsubscribeFromTopic("all")
-      .addOnCompleteListener { task ->
-        if (task.isSuccessful) {
-          Log.d("FCM", "Désabonné des notifications")
-        }
-      }
-  }
-  
+    fun disableNotifications() {
+        handleNotificationsUseCase.disable()
+    }
 }

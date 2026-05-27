@@ -2,11 +2,7 @@ package com.openclassrooms.hexagonal.games.presentation.screen.ad
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
-import com.openclassrooms.hexagonal.games.data.repository.PostRepository
-import com.openclassrooms.hexagonal.games.domain.model.Post
-import com.openclassrooms.hexagonal.games.domain.model.User
-import com.openclassrooms.hexagonal.games.domain.repository.StorageRepository
+import com.openclassrooms.hexagonal.games.domain.usecase.AddPostUseCase
 import com.openclassrooms.hexagonal.games.presentation.BaseViewModel
 import com.openclassrooms.hexagonal.games.domain.util.AppState
 import com.openclassrooms.hexagonal.games.domain.util.AuthStateMonitor
@@ -16,20 +12,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
 /**
  * This ViewModel manages data and interactions related to adding new posts in the AddScreen.
- * It utilizes dependency injection to retrieve a PostRepository instance for interacting with post data.
+ * It utilizes the AddPostUseCase to handle the business logic of creating a post.
  */
 @HiltViewModel
 class AddViewModel @Inject constructor(
     authStateMonitor: AuthStateMonitor,
     networkMonitor: NetworkStateMonitor,
-    private val postRepository: PostRepository,
-    private val auth: FirebaseAuth,
-    private val storageRepository: StorageRepository,
+    private val addPostUseCase: AddPostUseCase,
 ) : BaseViewModel(authStateMonitor, networkMonitor) {
 
     private val _uiState = MutableStateFlow(AddUiState())
@@ -84,10 +77,9 @@ class AddViewModel @Inject constructor(
     }
 
     /**
-     * sauvegarde du Post (Storage puis Firestore)
+     * sauvegarde du Post via le UseCase
      */
     fun addPost() {
-        val firebaseUser = auth.currentUser ?: return
         val currentState = _uiState.value
 
         // verifie si le formulaire est valide avant d'envoyer
@@ -100,27 +92,12 @@ class AddViewModel @Inject constructor(
             try {
                 updateState { it.copy(isSaving = true) }
 
-                // upload vers storage
-                val finalPhotoUrl: String? = currentState.imageUri?.let { uri ->
-                    storageRepository.uploadImage(firebaseUser.uid, uri)
-                }
-
-                // Création de l'objet métier final au MOMENT de la sauvegarde
-                val author = User(
-                    id = firebaseUser.uid,
-                    nameUser = firebaseUser.displayName ?: "Utilisateur"
-                )
-
-                val newPost = Post(
-                    id = UUID.randomUUID().toString(),
+                // Appel au UseCase qui gère tout (upload + création post)
+                addPostUseCase(
                     title = currentState.title,
                     description = currentState.description,
-                    photoUrl = finalPhotoUrl,
-                    timestamp = System.currentTimeMillis(),
-                    author = author
+                    imageUri = currentState.imageUri
                 )
-
-                postRepository.addPost(newPost)
 
                 // pour gérer la durée de l'action quand il y a une image
                 updateState { it.copy(isSaved = true) }
@@ -140,6 +117,3 @@ class AddViewModel @Inject constructor(
         _uiState.value = transform(_uiState.value)
     }
 }
-
-
-
