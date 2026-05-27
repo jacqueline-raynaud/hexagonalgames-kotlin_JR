@@ -17,4 +17,9 @@ interface PostRepository {
      * Adds a new post.
      */
     suspend fun addPost(post: Post)
+
+    /**
+     * Retrieves a Post by its ID.
+     */
+    suspend fun getPostById(postId: String): Post?
 }

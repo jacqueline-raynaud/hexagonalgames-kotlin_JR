@@ -4,10 +4,14 @@ import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.openclassrooms.hexagonal.games.data.repository.CommentRepositoryImpl
 import com.openclassrooms.hexagonal.games.data.repository.PostRepositoryImpl
 import com.openclassrooms.hexagonal.games.data.repository.StorageRepositoryImpl
+import com.openclassrooms.hexagonal.games.data.service.CommentApi
+import com.openclassrooms.hexagonal.games.data.service.CommentFirestoreApi
 import com.openclassrooms.hexagonal.games.data.service.PostApi
 import com.openclassrooms.hexagonal.games.data.service.PostFirestoreApi
+import com.openclassrooms.hexagonal.games.domain.repository.CommentRepository
 import com.openclassrooms.hexagonal.games.domain.repository.PostRepository
 import com.openclassrooms.hexagonal.games.domain.repository.StorageRepository
 import dagger.Module
@@ -53,5 +57,17 @@ object AppModule {
     storage: FirebaseStorage,
     @ApplicationContext context: Context
   ): StorageRepository = StorageRepositoryImpl(storage, context)
+
+  @Provides
+  @Singleton
+  fun provideCommentApi(firestore: FirebaseFirestore): CommentApi {
+    return CommentFirestoreApi(firestore)
+  }
+
+  @Provides
+  @Singleton
+  fun provideCommentRepository(commentApi: CommentApi): CommentRepository {
+    return CommentRepositoryImpl(commentApi)
+  }
 
 }

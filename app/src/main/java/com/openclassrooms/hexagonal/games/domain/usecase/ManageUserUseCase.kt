@@ -1,6 +1,10 @@
 package com.openclassrooms.hexagonal.games.domain.usecase
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 /**
@@ -9,6 +13,17 @@ import javax.inject.Inject
 class ManageUserUseCase @Inject constructor(
     private val auth: FirebaseAuth
 ) {
+    /**
+     * Returns a Flow of the current FirebaseUser.
+     */
+    fun getUser(): Flow<FirebaseUser?> = callbackFlow {
+        val listener = FirebaseAuth.AuthStateListener { auth ->
+            trySend(auth.currentUser)
+        }
+        auth.addAuthStateListener(listener)
+        awaitClose { auth.removeAuthStateListener(listener) }
+    }
+
     /**
      * Signs out the current user.
      */

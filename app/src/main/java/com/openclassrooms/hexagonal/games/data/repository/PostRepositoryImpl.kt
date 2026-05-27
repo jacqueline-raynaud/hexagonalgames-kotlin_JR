@@ -20,4 +20,8 @@ class PostRepositoryImpl @Inject constructor(
     override suspend fun addPost(post: Post) {
         postApi.addPost(post)
     }
+
+    override suspend fun getPostById(postId: String): Post? {
+        return postApi.getPostById(postId)
+    }
 }

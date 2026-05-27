@@ -29,7 +29,7 @@ googleGmsGoogleServices = "4.4.4"
 firebaseBom = "34.13.0"
 firebaseAnalytics = "23.2.0"
 firebaseAuth = "24.1.0"
-firebaseUiAuth = "9.0.0"
+firebaseUi = "9.0.0"
 
 
 [libraries]
@@ -60,7 +60,8 @@ compose-material-icons-extended = { group = "androidx.compose.material", name = 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
-firebaseUiAuth = { group = "com.firebaseui", name = "firebase-ui-auth", version.ref = "firebaseUiAuth" }
+firebaseUiAuth = { group = "com.firebaseui", name = "firebase-ui-auth", version.ref = "firebaseUi" }
+firebaseUiFirestore = { group = "com.firebaseui", name = "firebase-ui-firestore", version.ref = "firebaseUi" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }

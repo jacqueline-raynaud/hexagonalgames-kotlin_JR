@@ -25,6 +25,8 @@ fun AppStateErrorDialog(
                     AppState.NotAuthenticated -> stringResource(R.string.error_not_authenticated)
                     AppState.Offline          -> stringResource(R.string.error_offline)
                     AppState.Ready            -> ""
+                    AppState.Loading          -> ""
+                    AppState.Error            -> stringResource(R.string.error_generic)
                 }
             )
         },

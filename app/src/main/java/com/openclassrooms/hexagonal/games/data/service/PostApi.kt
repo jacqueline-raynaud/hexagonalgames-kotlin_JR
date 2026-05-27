@@ -22,4 +22,9 @@ interface PostApi {
    * @param post The Post object to be added.
    */
   suspend fun addPost(post: Post)
+
+  /**
+   * Retrieves a Post by its ID.
+   */
+  suspend fun getPostById(postId: String): Post?
 }
