@@ -37,70 +37,54 @@ class AddViewModel @Inject constructor(
                 updateState { it.copy(title = formEvent.title) }
                 validateForm()
             }
-
             is FormEvent.DescriptionChanged -> {
                 updateState { it.copy(description = formEvent.description) }
-                //validateForm()
+                validateForm()
             }
-
             is FormEvent.ImageSelected -> {
                 updateState { it.copy(imageUri = formEvent.uri) }
-                //validateForm()
+                validateForm()
             }
-
-            is FormEvent.SaveClicked -> {
-                addPost()
-            }
-
-            is FormEvent.AuthStateChanged -> {
-                val isAppReady = formEvent.appState is AppState.Ready
-                updateState { currentState ->
-                    currentState.copy(isSaveEnabled = currentState.error == null && isAppReady)
-                }
-            }
-
+            is FormEvent.SaveClicked -> { addPost() }
         }
-
     }
 
-    /**
-     * Logique de validation du formulaire
-     */
     private fun validateForm() {
         updateState { currentState ->
-            val hasTitle = currentState.title.isNotBlank()
-            val hasDescription = currentState.description.isNotBlank()
-            val hasImage = currentState.imageUri != null
-
-            // LeTitre ET Description OU Titre ET Image
-            val isFormValid = (hasTitle && hasDescription) || (hasTitle && hasImage)
-
-            // verifie si authentifié et connecté
-            val isAppReady = appState.value is AppState.Ready
-            Log.d ("AddViewModel", "isAppReady : $isAppReady")
-
-            // Ls deux verif sont ok pour sauver
-            val canSave = isFormValid && isAppReady
-
-            // Gestion des messages d'erreur visuels
-            val error = if (!hasTitle) FormError.TitleError else null
-
-            currentState.copy(
-                error = error,
-                isSaveEnabled = canSave
-            )
+            val error = when {
+                currentState.title.isBlank() -> FormError.TitleMissing
+                currentState.description.isBlank() && currentState.imageUri == null -> FormError.InvalidForm
+                else -> null
+            }
+            currentState.copy(error = error)
         }
     }
 
-    /**
-     * sauvegarde du Post via le UseCase
-     */
+    private fun getFormError(state: AddUiState): FormError? {
+        val hasTitle = state.title.isNotBlank()
+        val hasDescription = state.description.isNotBlank()
+        val hasImage = state.imageUri != null
+
+        return when {
+            !hasTitle -> FormError.TitleMissing
+            !hasDescription && !hasImage -> FormError.InvalidForm
+            else -> null
+        }
+    }
+
     fun addPost() {
         val currentState = _uiState.value
 
-        // verifie si le formulaire est valide avant d'envoyer
-        if (currentState.title.isBlank()) {
-            validateForm()
+        // Vérifier l'authentification/connexion en premier
+        if (appState.value !is AppState.Ready) {
+            updateState { it.copy(showAuthError = true) }
+            return
+        }
+
+        // Valider le formulaire
+        val formError = getFormError(currentState)
+        if (formError != null) {
+            updateState { it.copy(error = formError) }
             return
         }
 
@@ -108,14 +92,12 @@ class AddViewModel @Inject constructor(
             try {
                 updateState { it.copy(isSaving = true) }
 
-                // Appel au UseCase qui gère tout (upload + création post)
                 addPostUseCase(
                     title = currentState.title,
                     description = currentState.description,
                     imageUri = currentState.imageUri
                 )
 
-                // pour gérer la durée de l'action quand il y a une image
                 updateState { it.copy(isSaved = true) }
 
             } catch (e: Exception) {
@@ -126,9 +108,10 @@ class AddViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Petite fonction utilitaire pour simplifier la mise à jour du StateFlow
-     */
+    fun dismissAuthError() {
+        updateState { it.copy(showAuthError = false) }
+    }
+
     private inline fun updateState(transform: (AddUiState) -> AddUiState) {
         _uiState.value = transform(_uiState.value)
     }
