@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.openclassrooms.hexagonal.games.domain.model.Comment
 import com.openclassrooms.hexagonal.games.domain.model.Post
 import com.openclassrooms.hexagonal.games.domain.usecase.AddCommentUseCase
+import com.openclassrooms.hexagonal.games.domain.usecase.DeletePostUseCase
 import com.openclassrooms.hexagonal.games.domain.usecase.GetCommentsUseCase
 import com.openclassrooms.hexagonal.games.domain.usecase.GetPostByIdUseCase
 import com.openclassrooms.hexagonal.games.domain.usecase.ManageUserUseCase
@@ -26,6 +27,7 @@ class PostDetailViewModel @Inject constructor(
     private val getPostByIdUseCase: GetPostByIdUseCase,
     private val getCommentsUseCase: GetCommentsUseCase,
     private val addCommentUseCase: AddCommentUseCase,
+    private val deletePostUseCase: DeletePostUseCase,
     private val manageUserUseCase: ManageUserUseCase
 ) : ViewModel() {
 
@@ -34,6 +36,18 @@ class PostDetailViewModel @Inject constructor(
 
     private val _appState = MutableStateFlow<AppState>(AppState.Loading)
     val appState: StateFlow<AppState> = _appState.asStateFlow()
+
+    private val _currentUserId = MutableStateFlow<String?>(null)
+    val currentUserId: StateFlow<String?> = _currentUserId.asStateFlow()
+
+    private val _isDeleting = MutableStateFlow(false)
+    val isDeleting: StateFlow<Boolean> = _isDeleting.asStateFlow()
+
+    private val _deleteError = MutableStateFlow<String?>(null)
+    val deleteError: StateFlow<String?> = _deleteError.asStateFlow()
+
+    private val _deleteSuccess = MutableStateFlow(false)
+    val deleteSuccess: StateFlow<Boolean> = _deleteSuccess.asStateFlow()
 
     private val _postId = MutableStateFlow<String?>(null)
     
@@ -53,6 +67,7 @@ class PostDetailViewModel @Inject constructor(
             _post.value = getPostByIdUseCase(postId)
             manageUserUseCase.getUser().collect { user ->
                 _appState.value = if (user != null) AppState.Ready else AppState.NotAuthenticated
+                _currentUserId.value = user?.id
             }
         }
     }
@@ -65,5 +80,25 @@ class PostDetailViewModel @Inject constructor(
                 // Handle error
             }
         }
+    }
+
+    fun deletePost(postId: String) {
+        viewModelScope.launch {
+            try {
+                _isDeleting.value = true
+                _deleteError.value = null
+                deletePostUseCase(postId)
+                _deleteSuccess.value = true
+            } catch (e: Exception) {
+                _deleteError.value = e.message ?: "Erreur lors de la suppression"
+            } finally {
+                _isDeleting.value = false
+            }
+        }
+    }
+
+    fun resetDeleteState() {
+        _deleteSuccess.value = false
+        _deleteError.value = null
     }
 }
