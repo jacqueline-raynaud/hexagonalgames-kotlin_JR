@@ -35,6 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.openclassrooms.hexagonal.games.R
+import com.openclassrooms.hexagonal.games.domain.util.AppState
+import com.openclassrooms.hexagonal.games.presentation.ui.components.AppStateErrorDialog
 import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,15 +45,24 @@ fun AddScreen(
   modifier: Modifier = Modifier,
   viewModel: AddViewModel = hiltViewModel(),
   onBackClick: () -> Unit,
-  onSaveClick: () -> Unit
+  onSaveClick: () -> Unit,
+  onNavigateToLogin: () -> Unit = {}
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val appState by viewModel.appState.collectAsStateWithLifecycle()
 
-  // gestion de navigation que si post a eu le temps d'être créé
   LaunchedEffect(uiState.isSaved) {
     if (uiState.isSaved) {
       onSaveClick()
     }
+  }
+
+  if (uiState.showAuthError && appState !is AppState.Ready) {
+    AppStateErrorDialog(
+      appStatus = appState,
+      onDismiss = { viewModel.dismissAuthError() },
+      onNavigateToLogin = onNavigateToLogin
+    )
   }
 
   Scaffold(
@@ -74,7 +85,7 @@ fun AddScreen(
       )
     }
   ) { contentPadding ->
-    
+
     CreatePost(
       modifier = Modifier.padding(contentPadding),
       uiState = uiState,
@@ -115,16 +126,17 @@ private fun CreatePost(
           .padding(top = 16.dp)
           .fillMaxWidth(),
         value = uiState.title,
-        isError = uiState.error is FormError.TitleError,
+        isError = uiState.error is FormError.TitleMissing,
         onValueChange = { onAction(FormEvent.TitleChanged(it)) },
         label = { Text(stringResource(id = R.string.hint_title)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         singleLine = true
       )
-      if (uiState.error is FormError.TitleError) {
+      if (uiState.error != null) {
         Text(
           text = stringResource(id = uiState.error.messageRes),
-          color = MaterialTheme.colorScheme.error
+          color = MaterialTheme.colorScheme.error,
+          modifier = Modifier.padding(top = 4.dp)
         )
       }
       OutlinedTextField(
@@ -147,7 +159,7 @@ private fun CreatePost(
       }
     }
     Button(
-      //enabled = uiState.isSaveEnabled && !uiState.isSaving,
+      enabled = !uiState.isSaving,
       onClick = { onAction(FormEvent.SaveClicked) }
     ) {
       Text(
@@ -166,8 +178,7 @@ private fun CreatePostPreview() {
     CreatePost(
       uiState = AddUiState(
         title = "Test de titre",
-        description = "Une petite description sympa",
-        isSaveEnabled = true
+        description = "Une petite description sympa"
       ),
       onAction = { }
     )
@@ -182,8 +193,7 @@ private fun CreatePostErrorPreview() {
     CreatePost(
       uiState = AddUiState(
         title = "",
-        error = FormError.TitleError,
-        isSaveEnabled = false
+        error = FormError.TitleMissing
       ),
       onAction = { }
     )

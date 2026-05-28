@@ -17,6 +17,8 @@ sealed class FormEvent {
 }
 
 sealed class FormError(@StringRes val messageRes: Int) {
-    data object TitleError : FormError(R.string.error_title)
-
+    data object TitleMissing : FormError(R.string.form_error_title)
+    data object DescriptionMissing : FormError(R.string.form_error_description)
+    data object ImageMissing : FormError(R.string.form_error_image)
+    data object InvalidForm : FormError(R.string.form_error_invalid)
 }

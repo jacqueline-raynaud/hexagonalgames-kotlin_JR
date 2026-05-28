@@ -29,4 +29,8 @@
     <string name="comments_header">Comments</string>
     <string name="no_comments">No comments yet.</string>
     <string name="error_generic">unknown error</string>
+    <string name="form_error_title">Title is required</string>
+    <string name="form_error_description">Description is required</string>
+    <string name="form_error_image">Image is required</string>
+    <string name="form_error_invalid">Title and (Description or Image) are required</string>
 </resources>
