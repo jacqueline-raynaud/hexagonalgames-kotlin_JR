@@ -67,7 +67,7 @@ class PostDetailViewModel @Inject constructor(
             _post.value = getPostByIdUseCase(postId)
             manageUserUseCase.getUser().collect { user ->
                 _appState.value = if (user != null) AppState.Ready else AppState.NotAuthenticated
-                _currentUserId.value = user?.id
+                _currentUserId.value = user?.uid
             }
         }
     }
