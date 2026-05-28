@@ -13,7 +13,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AddPhotoAlternate
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,8 +27,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -37,7 +34,6 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImage
 import com.openclassrooms.hexagonal.games.R
 import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTheme
 
@@ -81,20 +77,8 @@ fun AddScreen(
     
     CreatePost(
       modifier = Modifier.padding(contentPadding),
-      error = uiState.error,
-      title = uiState.title,
-      onTitleChanged = { viewModel.onAction(FormEvent.TitleChanged(it)) },
-      description = uiState.description ?: "",
-      onDescriptionChanged = { viewModel.onAction(FormEvent.DescriptionChanged(it)) },
-      onImageSelected = { uri -> viewModel.onAction(FormEvent.ImageSelected(uri)) },
-      onSaveClicked = {
-        viewModel.addPost()
-/*      pbl avec image pas suffisament de temps cancel immédiat
-        si je lance onSave tout de suite
-        l'image va dans storage mais le post n'a pas le temps d'être créé
-        ajouter un issaved true dans viewmodel et une navigtation launchedeffect en haut
-        onSaveClick()*/
-      }
+      uiState = uiState,
+      onAction = { viewModel.onAction(it) }
     )
   }
 }
@@ -102,22 +86,17 @@ fun AddScreen(
 @Composable
 private fun CreatePost(
   modifier: Modifier = Modifier,
-  title: String,
-  onTitleChanged: (String) -> Unit,
-  description: String,
-  onDescriptionChanged: (String) -> Unit,
-  onImageSelected: (Uri) -> Unit,
-  onSaveClicked: () -> Unit,
-  error: FormError?
+  uiState: AddUiState,
+  onAction: (FormEvent) -> Unit
 ) {
   val scrollState = rememberScrollState()
   val launcher = rememberLauncherForActivityResult(
     contract = ActivityResultContracts.PickVisualMedia(),
     onResult = { uri ->
       if (uri != null) {
-        onImageSelected(uri)
+        onAction(FormEvent.ImageSelected(uri))
       }
-      })
+    })
 
   Column(
     modifier = modifier
@@ -126,7 +105,7 @@ private fun CreatePost(
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
     Column(
-      modifier = modifier
+      modifier = Modifier
         .fillMaxSize()
         .weight(1f)
         .verticalScroll(scrollState)
@@ -135,41 +114,41 @@ private fun CreatePost(
         modifier = Modifier
           .padding(top = 16.dp)
           .fillMaxWidth(),
-        value = title,
-        isError = error is FormError.TitleError,
-        onValueChange = { onTitleChanged(it) },
+        value = uiState.title,
+        isError = uiState.error is FormError.TitleError,
+        onValueChange = { onAction(FormEvent.TitleChanged(it)) },
         label = { Text(stringResource(id = R.string.hint_title)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         singleLine = true
       )
-      if (error is FormError.TitleError) {
+      if (uiState.error is FormError.TitleError) {
         Text(
-          text = stringResource(id = error.messageRes),
-          color = MaterialTheme.colorScheme.error,
+          text = stringResource(id = uiState.error.messageRes),
+          color = MaterialTheme.colorScheme.error
         )
       }
       OutlinedTextField(
         modifier = Modifier
           .padding(top = 16.dp)
           .fillMaxWidth(),
-        value = description,
-        onValueChange = { onDescriptionChanged(it) },
+        value = uiState.description,
+        onValueChange = { onAction(FormEvent.DescriptionChanged(it)) },
         label = { Text(stringResource(id = R.string.hint_description)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
       )
-     Button(onClick = {
-      launcher.launch(
-        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-      )
-      }) {
+      Button(
+        modifier = Modifier.padding(top = 8.dp),
+        onClick = {
+          launcher.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+          )
+        }) {
         Text(text = "Choisir une image")
-
-
-    }
+      }
     }
     Button(
-      enabled = error == null,
-      onClick = { onSaveClicked() }
+      //enabled = uiState.isSaveEnabled && !uiState.isSaving,
+      onClick = { onAction(FormEvent.SaveClicked) }
     ) {
       Text(
         modifier = Modifier.padding(8.dp),
@@ -185,14 +164,12 @@ private fun CreatePost(
 private fun CreatePostPreview() {
   HexagonalGamesTheme {
     CreatePost(
-      title = "test",
-      onTitleChanged = { },
-      description = "description",
-      onDescriptionChanged = { },
-      onSaveClicked = { },
-      onImageSelected = { },
-
-      error = null
+      uiState = AddUiState(
+        title = "Test de titre",
+        description = "Une petite description sympa",
+        isSaveEnabled = true
+      ),
+      onAction = { }
     )
   }
 }
@@ -203,13 +180,12 @@ private fun CreatePostPreview() {
 private fun CreatePostErrorPreview() {
   HexagonalGamesTheme {
     CreatePost(
-      title = "test",
-      onTitleChanged = { },
-      description = "description",
-      onDescriptionChanged = { },
-      onSaveClicked = { },
-      onImageSelected = { },
-      error = FormError.TitleError
+      uiState = AddUiState(
+        title = "",
+        error = FormError.TitleError,
+        isSaveEnabled = false
+      ),
+      onAction = { }
     )
   }
 }

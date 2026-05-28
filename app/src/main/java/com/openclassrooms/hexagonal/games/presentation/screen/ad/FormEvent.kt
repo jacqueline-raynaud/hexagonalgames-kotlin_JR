@@ -13,6 +13,7 @@ sealed class FormEvent {
     data class TitleChanged(val title: String) : FormEvent()
     data class DescriptionChanged(val description: String) : FormEvent()
     data class ImageSelected(val uri: Uri) : FormEvent()
+    data object SaveClicked : FormEvent()
 }
 
 sealed class FormError(@StringRes val messageRes: Int) {

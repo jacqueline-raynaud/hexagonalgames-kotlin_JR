@@ -9,7 +9,7 @@ data class AddUiState(
     val description: String = "",
     val imageUri: Uri? = null,
     val isSaving: Boolean = false,
-    val isSaveEnabled: Boolean = false, // Permet d'activer/désactiver le bouton de sauvegarde
+    val isSaveEnabled: Boolean = false,
     val error: FormError? = null,
     val isSaved: Boolean = false
 )

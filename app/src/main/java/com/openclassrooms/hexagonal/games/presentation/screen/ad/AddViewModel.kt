@@ -37,14 +37,15 @@ class AddViewModel @Inject constructor(
                 updateState { it.copy(title = formEvent.title) }
                 validateForm()
             }
-
             is FormEvent.DescriptionChanged -> {
                 updateState { it.copy(description = formEvent.description) }
+                validateForm()
             }
-
             is FormEvent.ImageSelected -> {
                 updateState { it.copy(imageUri = formEvent.uri) }
+                validateForm()
             }
+            is FormEvent.SaveClicked -> { addPost() }
         }
     }
 
@@ -62,6 +63,7 @@ class AddViewModel @Inject constructor(
 
             // verifie si authentifié et connecté
             val isAppReady = appState.value is AppState.Ready
+            Log.d ("AddViewModel", "isAppReady : $isAppReady")
 
             // Ls deux verif sont ok pour sauver
             val canSave = isFormValid && isAppReady
