@@ -4,4 +4,5 @@ import android.net.Uri
 
 interface StorageRepository {
     suspend fun uploadImage(userId: String, uri: Uri): String
+    suspend fun deleteImage(downloadUrl: String)
 }

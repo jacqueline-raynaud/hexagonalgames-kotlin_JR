@@ -6,6 +6,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.openclassrooms.hexagonal.games.domain.repository.StorageRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
+import java.net.URLDecoder
 import java.util.UUID
 import javax.inject.Inject
 
@@ -30,5 +31,22 @@ class StorageRepositoryImpl @Inject constructor(
 
         // Récupération de l'URL de téléchargement publique
         return ref.downloadUrl.await().toString()
+    }
+
+    override suspend fun deleteImage(downloadUrl: String) {
+        // Extraire le chemin de l'URL Firebase
+        // Format: https://firebasestorage.googleapis.com/v0/b/{bucket}/o/{path}?alt=media&token=...
+        val startIndex = downloadUrl.indexOf("/o/") + 3
+        val endIndex = downloadUrl.indexOf("?", startIndex)
+
+        if (startIndex < 3 || endIndex < 0) {
+            throw IllegalArgumentException("URL invalide : $downloadUrl")
+        }
+
+        val encodedPath = downloadUrl.substring(startIndex, endIndex)
+        val path = URLDecoder.decode(encodedPath, "UTF-8")
+
+        // Supprimer le fichier
+        storage.reference.child(path).delete().await()
     }
 }

@@ -16,8 +16,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -63,12 +68,24 @@ fun PostDetailScreen(
     val post by viewModel.post.collectAsStateWithLifecycle()
     val comments by viewModel.comments.collectAsStateWithLifecycle()
     val appState by viewModel.appState.collectAsStateWithLifecycle()
-    
+    val currentUserId by viewModel.currentUserId.collectAsStateWithLifecycle()
+    val isDeleting by viewModel.isDeleting.collectAsStateWithLifecycle()
+    val deleteError by viewModel.deleteError.collectAsStateWithLifecycle()
+    val deleteSuccess by viewModel.deleteSuccess.collectAsStateWithLifecycle()
+
     LaunchedEffect(postId) {
         viewModel.fetchPost(postId)
     }
 
+    LaunchedEffect(deleteSuccess) {
+        if (deleteSuccess) {
+            onBackClick()
+        }
+    }
+
     var showErrorDialog by remember { mutableStateOf(false) }
+    var showDeleteConfirmation by remember { mutableStateOf(false) }
+
     if (showErrorDialog) {
         AppStateErrorDialog(
             appStatus = appState,
@@ -76,6 +93,43 @@ fun PostDetailScreen(
             onNavigateToLogin = {
                 showErrorDialog = false
                 onNavigateToLogin()
+            }
+        )
+    }
+
+    if (deleteError != null) {
+        AlertDialog(
+            onDismissRequest = { viewModel.resetDeleteState() },
+            title = { Text("Erreur") },
+            text = { Text(deleteError!!) },
+            confirmButton = {
+                Button(onClick = { viewModel.resetDeleteState() }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
+    if (showDeleteConfirmation && post != null) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirmation = false },
+            title = { Text("Supprimer le post") },
+            text = { Text("Êtes-vous sûr de vouloir supprimer ce post et tous ses commentaires ? Cette action est irréversible.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showDeleteConfirmation = false
+                        viewModel.deletePost(postId)
+                    },
+                    enabled = !isDeleting
+                ) {
+                    Text("Supprimer")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteConfirmation = false }) {
+                    Text("Annuler")
+                }
             }
         )
     }
@@ -93,6 +147,20 @@ fun PostDetailScreen(
                     }
                 }
             )
+        },
+        floatingActionButton = {
+            if (post != null && post?.author?.id == currentUserId) {
+                FloatingActionButton(
+                    onClick = { showDeleteConfirmation = true },
+                    containerColor = MaterialTheme.colorScheme.errorContainer
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = "Supprimer le post",
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
         }
     ) { contentPadding ->
         if (post == null) {

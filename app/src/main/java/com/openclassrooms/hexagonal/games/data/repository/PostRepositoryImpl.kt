@@ -24,4 +24,8 @@ class PostRepositoryImpl @Inject constructor(
     override suspend fun getPostById(postId: String): Post? {
         return postApi.getPostById(postId)
     }
+
+    override suspend fun deletePost(postId: String) {
+        postApi.deletePost(postId)
+    }
 }

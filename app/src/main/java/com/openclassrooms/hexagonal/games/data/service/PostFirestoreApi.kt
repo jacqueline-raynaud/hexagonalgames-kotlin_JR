@@ -60,4 +60,8 @@ class PostFirestoreApi @Inject constructor(
             null
         }
     }
+
+    override suspend fun deletePost(postId: String) {
+        collection.document(postId).delete().await()
+    }
 }

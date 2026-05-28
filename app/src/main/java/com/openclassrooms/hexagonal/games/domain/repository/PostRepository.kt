@@ -22,4 +22,9 @@ interface PostRepository {
      * Retrieves a Post by its ID.
      */
     suspend fun getPostById(postId: String): Post?
+
+    /**
+     * Deletes a Post by its ID.
+     */
+    suspend fun deletePost(postId: String)
 }

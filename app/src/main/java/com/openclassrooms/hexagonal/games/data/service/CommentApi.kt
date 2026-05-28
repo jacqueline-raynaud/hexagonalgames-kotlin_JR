@@ -22,4 +22,9 @@ interface CommentApi {
      * Adds a new Comment.
      */
     suspend fun addComment(comment: Comment)
+
+    /**
+     * Deletes all comments for a specific post.
+     */
+    suspend fun deleteCommentsByPostId(postId: String)
 }
