@@ -46,12 +46,11 @@ fun AddScreen(
   onSaveClick: () -> Unit
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val appState by viewModel.appState.collectAsStateWithLifecycle()
 
   // gestion de navigation que si post a eu le temps d'être créé
-  LaunchedEffect(uiState.isSaved) {
-    if (uiState.isSaved) {
-      onSaveClick()
-    }
+  LaunchedEffect(appState) {
+    viewModel.onAction(FormEvent.AuthStateChanged(appState))  // ← Nouveau
   }
 
   Scaffold(
@@ -147,7 +146,7 @@ private fun CreatePost(
       }
     }
     Button(
-      //enabled = uiState.isSaveEnabled && !uiState.isSaving,
+      enabled = uiState.isSaveEnabled && !uiState.isSaving,
       onClick = { onAction(FormEvent.SaveClicked) }
     ) {
       Text(

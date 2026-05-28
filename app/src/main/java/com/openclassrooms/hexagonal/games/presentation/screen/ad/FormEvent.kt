@@ -3,6 +3,7 @@ package com.openclassrooms.hexagonal.games.presentation.screen.ad
 import android.net.Uri
 import androidx.annotation.StringRes
 import com.openclassrooms.hexagonal.games.R
+import com.openclassrooms.hexagonal.games.domain.util.AppState
 
 /**
  * A sealed class representing different events that can occur on a form
@@ -14,6 +15,7 @@ sealed class FormEvent {
     data class DescriptionChanged(val description: String) : FormEvent()
     data class ImageSelected(val uri: Uri) : FormEvent()
     data object SaveClicked : FormEvent()
+    data class AuthStateChanged(val appState: AppState) : FormEvent()
 }
 
 sealed class FormError(@StringRes val messageRes: Int) {

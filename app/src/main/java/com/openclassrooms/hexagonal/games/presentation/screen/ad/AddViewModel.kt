@@ -37,16 +37,30 @@ class AddViewModel @Inject constructor(
                 updateState { it.copy(title = formEvent.title) }
                 validateForm()
             }
+
             is FormEvent.DescriptionChanged -> {
                 updateState { it.copy(description = formEvent.description) }
-                validateForm()
+                //validateForm()
             }
+
             is FormEvent.ImageSelected -> {
                 updateState { it.copy(imageUri = formEvent.uri) }
-                validateForm()
+                //validateForm()
             }
-            is FormEvent.SaveClicked -> { addPost() }
+
+            is FormEvent.SaveClicked -> {
+                addPost()
+            }
+
+            is FormEvent.AuthStateChanged -> {
+                val isAppReady = formEvent.appState is AppState.Ready
+                updateState { currentState ->
+                    currentState.copy(isSaveEnabled = currentState.error == null && isAppReady)
+                }
+            }
+
         }
+
     }
 
     /**
