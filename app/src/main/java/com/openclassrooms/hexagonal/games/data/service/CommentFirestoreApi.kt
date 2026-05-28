@@ -51,4 +51,17 @@ class CommentFirestoreApi @Inject constructor(
         )
         collection.add(data).await()
     }
+
+    override suspend fun deleteCommentsByPostId(postId: String) {
+        val snapshot = collection
+            .whereEqualTo("postId", postId)
+            .get()
+            .await()
+
+        val batch = firestore.batch()
+        snapshot.documents.forEach { doc ->
+            batch.delete(doc.reference)
+        }
+        batch.commit().await()
+    }
 }

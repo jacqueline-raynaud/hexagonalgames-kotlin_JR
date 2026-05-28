@@ -24,4 +24,8 @@ class CommentRepositoryImpl @Inject constructor(
     override suspend fun addComment(comment: Comment) {
         commentApi.addComment(comment)
     }
+
+    override suspend fun deleteCommentsByPostId(postId: String) {
+        commentApi.deleteCommentsByPostId(postId)
+    }
 }
