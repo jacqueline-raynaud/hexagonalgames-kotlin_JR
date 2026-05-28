@@ -145,22 +145,19 @@ fun PostDetailScreen(
                             contentDescription = stringResource(R.string.contentDescription_go_back)
                         )
                     }
+                },
+                actions = {
+                    if (post != null && post?.author?.id == currentUserId) {
+                        IconButton(onClick = { showDeleteConfirmation = true }) {
+                            Icon(
+                                imageVector = Icons.Filled.Delete,
+                                contentDescription = "Supprimer le post",
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
                 }
             )
-        },
-        floatingActionButton = {
-            if (post != null && post?.author?.id == currentUserId) {
-                FloatingActionButton(
-                    onClick = { showDeleteConfirmation = true },
-                    containerColor = MaterialTheme.colorScheme.errorContainer
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Delete,
-                        contentDescription = "Supprimer le post",
-                        tint = MaterialTheme.colorScheme.error
-                    )
-                }
-            }
         }
     ) { contentPadding ->
         if (post == null) {
