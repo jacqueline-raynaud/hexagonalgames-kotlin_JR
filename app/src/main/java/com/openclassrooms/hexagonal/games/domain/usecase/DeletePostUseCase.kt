@@ -5,6 +5,8 @@ import com.openclassrooms.hexagonal.games.domain.repository.CommentRepository
 import com.openclassrooms.hexagonal.games.domain.repository.PostRepository
 import com.openclassrooms.hexagonal.games.domain.repository.StorageRepository
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -13,7 +15,7 @@ class DeletePostUseCase @Inject constructor(
     private val commentRepository: CommentRepository,
     private val storageRepository: StorageRepository
 ) {
-    suspend operator fun invoke(postId: String) {
+    suspend operator fun invoke(postId: String) : Unit = withContext(Dispatchers.IO) {
         try {
             // 1. Récupère le post pour obtenir l'URL de l'image
             val post = postRepository.getPostById(postId)

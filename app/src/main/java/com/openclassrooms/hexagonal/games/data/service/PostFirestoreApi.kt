@@ -5,10 +5,12 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 import com.openclassrooms.hexagonal.games.data.model.PostDto
 import com.openclassrooms.hexagonal.games.domain.model.Post
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -37,7 +39,7 @@ class PostFirestoreApi @Inject constructor(
             awaitClose { listener.remove() }
         }
 
-    override suspend fun addPost(post: Post) {
+    override suspend fun addPost(post: Post) : Unit = withContext(Dispatchers.IO) {
         val data = mapOf(
             "title"       to post.title,
             "description" to post.description,
@@ -51,9 +53,9 @@ class PostFirestoreApi @Inject constructor(
         collection.add(data).await()
     }
 
-    override suspend fun getPostById(postId: String): Post? {
-        if (postId.isEmpty()) return null
-        return try {
+    override suspend fun getPostById(postId: String): Post? = withContext(Dispatchers.IO) {
+        if (postId.isEmpty()) return@withContext null
+        return@withContext try {
             val doc = collection.document(postId).get().await()
             doc.toObject<PostDto>()?.toDomain()?.copy(id = doc.id)
         } catch (e: Exception) {
@@ -61,7 +63,7 @@ class PostFirestoreApi @Inject constructor(
         }
     }
 
-    override suspend fun deletePost(postId: String) {
+    override suspend fun deletePost(postId: String):Unit = withContext(Dispatchers.IO) {
         collection.document(postId).delete().await()
     }
 }

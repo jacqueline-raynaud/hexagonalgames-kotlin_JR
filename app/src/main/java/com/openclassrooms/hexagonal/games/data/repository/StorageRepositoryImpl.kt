@@ -5,7 +5,9 @@ import android.net.Uri
 import com.google.firebase.storage.FirebaseStorage
 import com.openclassrooms.hexagonal.games.domain.repository.StorageRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.net.URLDecoder
 import java.util.UUID
 import javax.inject.Inject
@@ -15,7 +17,7 @@ class StorageRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : StorageRepository {
 
-    override suspend fun uploadImage(userId: String, uri: Uri): String {
+    override suspend fun uploadImage(userId: String, uri: Uri): String = withContext(Dispatchers.IO) {
         // Chemin conforme aux règles Storage : posts/{userId}/{fileName}
         val fileName = "${UUID.randomUUID()}.jpg"
         val ref = storage.reference.child("posts/$userId/$fileName")
@@ -30,10 +32,10 @@ class StorageRepositoryImpl @Inject constructor(
         ref.putBytes(bytes).await()
 
         // Récupération de l'URL de téléchargement publique
-        return ref.downloadUrl.await().toString()
+        return@withContext ref.downloadUrl.await().toString()
     }
 
-    override suspend fun deleteImage(downloadUrl: String) {
+    override suspend fun deleteImage(downloadUrl: String) : Unit = withContext(Dispatchers.IO) {
         // Extraire le chemin de l'URL Firebase
         // Format: https://firebasestorage.googleapis.com/v0/b/{bucket}/o/{path}?alt=media&token=...
         val startIndex = downloadUrl.indexOf("/o/") + 3
