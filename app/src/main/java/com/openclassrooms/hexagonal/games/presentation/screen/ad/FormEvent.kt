@@ -9,7 +9,6 @@ import com.openclassrooms.hexagonal.games.R
  * in AddScreen
  */
 sealed class FormEvent {
-
     data class TitleChanged(val title: String) : FormEvent()
     data class DescriptionChanged(val description: String) : FormEvent()
     data class ImageSelected(val uri: Uri) : FormEvent()
