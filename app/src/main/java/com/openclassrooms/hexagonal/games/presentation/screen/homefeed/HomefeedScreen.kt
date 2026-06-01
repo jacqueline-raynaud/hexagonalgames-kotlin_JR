@@ -56,14 +56,13 @@ import com.openclassrooms.hexagonal.games.domain.util.AppState
 fun HomefeedScreen(
   modifier: Modifier = Modifier,
   viewModel: HomefeedViewModel = hiltViewModel(),
-  onPostClick: (Post) -> Unit = {},
+  onPostClick: (PostUi) -> Unit = {},
   onSettingsClick: () -> Unit = {},
   onAccountManagementClick: () -> Unit = {},
   onFABClick: () -> Unit = {},
   onNavigateToLogin: () -> Unit = {}
 ) {
   val appState by viewModel.appState.collectAsStateWithLifecycle()
-  //val context = LocalContext.current // pour ma boite dialogue erreur
 
   var showError by remember { mutableStateOf(false) }
   if (showError) {
@@ -154,8 +153,8 @@ fun HomefeedScreen(
 @Composable
 private fun HomefeedList(
   modifier: Modifier = Modifier,
-  posts: List<Post>,
-  onPostClick: (Post) -> Unit,
+  posts: List<PostUi>,
+  onPostClick: (PostUi) -> Unit,
 ) {
   LazyColumn(
     modifier = modifier,
@@ -173,8 +172,8 @@ private fun HomefeedList(
 
 @Composable
 private fun HomefeedCell(
-  post: Post,
-  onPostClick: (Post) -> Unit,
+  post: PostUi,
+  onPostClick: (PostUi) -> Unit,
 ) {
   ElevatedCard(
     modifier = Modifier.fillMaxWidth(),
@@ -185,10 +184,7 @@ private fun HomefeedCell(
       modifier = Modifier.padding(8.dp),
     ) {
       Text(
-        text = stringResource(
-          id = R.string.by,
-          post.author?.nameUser ?: ""
-        ),
+        text = stringResource(id = R.string.by, post.authorName),
         style = MaterialTheme.typography.titleSmall
       )
       Text(
@@ -227,16 +223,12 @@ private fun HomefeedCell(
 private fun HomefeedCellPreview() {
   HexagonalGamesTheme {
     HomefeedCell(
-      post = Post(
+      post = PostUi(
         id = "1",
+        authorName = "firstname lastname",
         title = "title",
         description = "description",
         photoUrl = null,
-        timestamp = 1,
-        author = User(
-          id = "1",
-          nameUser = "firstname lastname"
-        )
       ),
       onPostClick = {}
     )
@@ -249,16 +241,12 @@ private fun HomefeedCellPreview() {
 private fun HomefeedCellImagePreview() {
   HexagonalGamesTheme {
     HomefeedCell(
-      post = Post(
+      post = PostUi(
         id = "1",
+        authorName = "firstname lastname",
         title = "title",
         description = null,
         photoUrl = "https://picsum.photos/id/85/1080/",
-        timestamp = 1,
-        author = User(
-          id = "1",
-          nameUser = "firstname lastname"
-        )
       ),
       onPostClick = {}
     )
