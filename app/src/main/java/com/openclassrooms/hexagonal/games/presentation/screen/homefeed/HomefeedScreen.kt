@@ -229,6 +229,7 @@ private fun HomefeedCellPreview() {
         title = "title",
         description = "description",
         photoUrl = null,
+        authorId = "01"
       ),
       onPostClick = {}
     )
@@ -247,6 +248,7 @@ private fun HomefeedCellImagePreview() {
         title = "title",
         description = null,
         photoUrl = "https://picsum.photos/id/85/1080/",
+        authorId = "01"
       ),
       onPostClick = {}
     )

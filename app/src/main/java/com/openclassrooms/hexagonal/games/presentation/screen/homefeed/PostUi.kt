@@ -6,7 +6,8 @@ import com.openclassrooms.hexagonal.games.domain.model.Post
 @Immutable
 data class PostUi(
     val id: String,
-    val authorName: String,     // post.author?.nameUser ?: ""
+    val authorId: String,
+    val authorName: String,
     val title: String,
     val description: String?,
     val photoUrl: String?,
@@ -14,6 +15,7 @@ data class PostUi(
 
 fun Post.toPostUi() = PostUi(
     id = id,
+    authorId = author?.id ?: "",
     authorName = author?.nameUser ?: "",
     title = title,
     description = description,

@@ -55,6 +55,7 @@ import com.openclassrooms.hexagonal.games.R
 import com.openclassrooms.hexagonal.games.domain.model.Comment
 import com.openclassrooms.hexagonal.games.domain.model.Post
 import com.openclassrooms.hexagonal.games.domain.util.AppState
+import com.openclassrooms.hexagonal.games.presentation.screen.homefeed.PostUi
 import com.openclassrooms.hexagonal.games.presentation.ui.components.AppStateErrorDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,10 +69,6 @@ fun PostDetailScreen(
     val post by viewModel.post.collectAsStateWithLifecycle()
     val comments by viewModel.comments.collectAsStateWithLifecycle()
     val appState by viewModel.appState.collectAsStateWithLifecycle()
-    /*val currentUserId by viewModel.currentUserId.collectAsStateWithLifecycle()
-    val isDeleting by viewModel.isDeleting.collectAsStateWithLifecycle()
-    val deleteError by viewModel.deleteError.collectAsStateWithLifecycle()
-    val deleteSuccess by viewModel.deleteSuccess.collectAsStateWithLifecycle()*/
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(postId) {
@@ -148,7 +145,7 @@ fun PostDetailScreen(
                     }
                 },
                 actions = {
-                    if (post != null && post?.author?.id == uiState.currentUserId) {
+                    if (post != null && post?.authorId == uiState.currentUserId) {
                         IconButton(onClick = { showDeleteConfirmation = true }) {
                             Icon(
                                 imageVector = Icons.Filled.Delete,
@@ -190,8 +187,8 @@ fun PostDetailScreen(
 @Composable
 fun PostDetailContent(
     modifier: Modifier = Modifier,
-    post: Post,
-    comments: List<Comment>,
+    post: PostUi,
+    comments: List<CommentUi>,
     onAddComment: (String) -> Unit
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -236,7 +233,7 @@ fun PostDetailContent(
 }
 
 @Composable
-fun PostInfo(post: Post) {
+fun PostInfo(post: PostUi) {
     Column {
         Text(
             text = post.title,
@@ -244,7 +241,7 @@ fun PostInfo(post: Post) {
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = stringResource(R.string.by, post.author?.nameUser ?: ""),
+            text = stringResource(R.string.by, post.authorName),
             style = MaterialTheme.typography.bodySmall,
             color = Color.Gray
         )
@@ -311,14 +308,14 @@ fun CommentInput(
 }
 
 @Composable
-fun CommentCell(comment: Comment) {
+fun CommentCell(comment: CommentUi) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
     ) {
         Text(
-            text = comment.author?.nameUser ?: "Utilisateur",
+            text = comment.authorName,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold
         )
