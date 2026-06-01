@@ -68,10 +68,11 @@ fun PostDetailScreen(
     val post by viewModel.post.collectAsStateWithLifecycle()
     val comments by viewModel.comments.collectAsStateWithLifecycle()
     val appState by viewModel.appState.collectAsStateWithLifecycle()
-    val currentUserId by viewModel.currentUserId.collectAsStateWithLifecycle()
+    /*val currentUserId by viewModel.currentUserId.collectAsStateWithLifecycle()
     val isDeleting by viewModel.isDeleting.collectAsStateWithLifecycle()
     val deleteError by viewModel.deleteError.collectAsStateWithLifecycle()
-    val deleteSuccess by viewModel.deleteSuccess.collectAsStateWithLifecycle()
+    val deleteSuccess by viewModel.deleteSuccess.collectAsStateWithLifecycle()*/
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(postId) {
         viewModel.fetchPost(postId)

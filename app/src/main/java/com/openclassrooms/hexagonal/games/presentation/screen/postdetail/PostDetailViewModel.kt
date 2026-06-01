@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,7 +38,7 @@ class PostDetailViewModel @Inject constructor(
     private val _appState = MutableStateFlow<AppState>(AppState.Loading)
     val appState: StateFlow<AppState> = _appState.asStateFlow()
 
-    private val _currentUserId = MutableStateFlow<String?>(null)
+/*    private val _currentUserId = MutableStateFlow<String?>(null)
     val currentUserId: StateFlow<String?> = _currentUserId.asStateFlow()
 
     private val _isDeleting = MutableStateFlow(false)
@@ -47,7 +48,10 @@ class PostDetailViewModel @Inject constructor(
     val deleteError: StateFlow<String?> = _deleteError.asStateFlow()
 
     private val _deleteSuccess = MutableStateFlow(false)
-    val deleteSuccess: StateFlow<Boolean> = _deleteSuccess.asStateFlow()
+    val deleteSuccess: StateFlow<Boolean> = _deleteSuccess.asStateFlow()*/
+
+    private val _uiState = MutableStateFlow(PostDetailUiState())
+    val uiState: StateFlow<PostDetailUiState> = _uiState.asStateFlow()
 
     private val _postId = MutableStateFlow<String?>(null)
     
@@ -67,7 +71,8 @@ class PostDetailViewModel @Inject constructor(
             _post.value = getPostByIdUseCase(postId)
             manageUserUseCase.getUser().collect { user ->
                 _appState.value = if (user != null) AppState.Ready else AppState.NotAuthenticated
-                _currentUserId.value = user?.uid
+                //_currentUserId.value = user?.uid
+                _uiState.update { it.copy(currentUserId = user?.uid) }
             }
         }
     }
@@ -85,20 +90,24 @@ class PostDetailViewModel @Inject constructor(
     fun deletePost(postId: String) {
         viewModelScope.launch {
             try {
-                _isDeleting.value = true
-                _deleteError.value = null
+/*                _isDeleting.value = true
+                _deleteError.value = null*/
+                _uiState.update { it.copy(isDeleting = true, deleteError = null) }
                 deletePostUseCase(postId)
-                _deleteSuccess.value = true
+                _uiState.update { it.copy(isDeleting = false, deleteSuccess = true) }
+/*                _deleteSuccess.value = true*/
             } catch (e: Exception) {
-                _deleteError.value = e.message ?: "Erreur lors de la suppression"
-            } finally {
-                _isDeleting.value = false
+                /*_deleteError.value = e.message ?: "Erreur lors de la suppression"*/
+                _uiState.update { it.copy(isDeleting = false, deleteError = e.message ?: "Erreur lors de la suppression") }
+            /*} finally {
+                _isDeleting.value = false*/
             }
         }
     }
 
     fun resetDeleteState() {
-        _deleteSuccess.value = false
-        _deleteError.value = null
+/*        _deleteSuccess.value = false
+        _deleteError.value = null*/
+        _uiState.update { it.copy(deleteSuccess = false, deleteError = null) }
     }
 }
