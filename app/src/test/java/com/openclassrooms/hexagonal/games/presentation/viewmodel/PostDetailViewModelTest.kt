@@ -71,7 +71,7 @@ class PostDetailViewModelTest {
             // Then
             Assert.assertEquals(post, viewModel.post.value)
             Assert.assertEquals(AppState.Ready, viewModel.appState.value)
-            Assert.assertEquals(userId, viewModel.currentUserId.value)
+            Assert.assertEquals(userId, viewModel.uiState.value.currentUserId)
         }
 
     @Test
@@ -98,8 +98,8 @@ class PostDetailViewModelTest {
 
         // Then
         coVerify { deletePostUseCase(postId) }
-        Assert.assertTrue(viewModel.deleteSuccess.value)
-        Assert.assertNull(viewModel.deleteError.value)
+        Assert.assertTrue(viewModel.uiState.value.deleteSuccess)
+        Assert.assertNull(viewModel.uiState.value.deleteError)
     }
 
     @Test
@@ -113,7 +113,7 @@ class PostDetailViewModelTest {
         viewModel.deletePost(postId)
 
         // Then
-        Assert.assertEquals(errorMessage, viewModel.deleteError.value)
-        Assert.assertTrue(!viewModel.deleteSuccess.value)
+        Assert.assertEquals(errorMessage, viewModel.uiState.value.deleteError)
+        Assert.assertTrue(!viewModel.uiState.value.deleteSuccess)
     }
 }

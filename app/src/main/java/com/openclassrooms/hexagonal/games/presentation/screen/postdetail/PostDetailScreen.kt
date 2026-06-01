@@ -78,8 +78,8 @@ fun PostDetailScreen(
         viewModel.fetchPost(postId)
     }
 
-    LaunchedEffect(deleteSuccess) {
-        if (deleteSuccess) {
+    LaunchedEffect(uiState.deleteSuccess) {
+        if (uiState.deleteSuccess) {
             onBackClick()
         }
     }
@@ -98,11 +98,11 @@ fun PostDetailScreen(
         )
     }
 
-    if (deleteError != null) {
+    if (uiState.deleteError != null) {
         AlertDialog(
             onDismissRequest = { viewModel.resetDeleteState() },
             title = { Text("Erreur") },
-            text = { Text(deleteError!!) },
+            text = { Text(uiState.deleteError!!) },
             confirmButton = {
                 Button(onClick = { viewModel.resetDeleteState() }) {
                     Text("OK")
@@ -122,7 +122,7 @@ fun PostDetailScreen(
                         showDeleteConfirmation = false
                         viewModel.deletePost(postId)
                     },
-                    enabled = !isDeleting
+                    enabled = !uiState.isDeleting
                 ) {
                     Text("Supprimer")
                 }
@@ -148,7 +148,7 @@ fun PostDetailScreen(
                     }
                 },
                 actions = {
-                    if (post != null && post?.author?.id == currentUserId) {
+                    if (post != null && post?.author?.id == uiState.currentUserId) {
                         IconButton(onClick = { showDeleteConfirmation = true }) {
                             Icon(
                                 imageVector = Icons.Filled.Delete,
