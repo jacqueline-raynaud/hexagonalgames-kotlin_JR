@@ -572,7 +572,7 @@ jQuery.cookie = function(name, value, options) {
     <body>
         <div id="container">
             <div id="header">
-                <div class="time" xmlns="">4.82 s</div>
+                <div class="time" xmlns="">4.56 s</div>
                 <h1>
                     Tests in 'com.openclassrooms.hexagonal.games': <strong><span class="total" xmlns="http://www.w3.org/1999/xhtml">40 total, </span><span class="passed">40 passed</span></strong>
                 </h1>
@@ -593,44 +593,83 @@ jQuery.cookie = function(name, value, options) {
                 <ul id="tree">
                     <li xmlns="" class="level top open">
                         <span><em class="time">
-                                <div class="time">1.99 s</div>
+                                <div class="time">1.60 s</div>
+                            </em>HomefeedViewModelTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">1.60 s</div>
+                                    </em><em class="status">passed</em>posts should expose mapped PostUi from getPostsUseCase</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time">
+                                <div class="time">583 ms</div>
+                            </em>PostDetailViewModelTest</span>
+                        <ul>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">174 ms</div>
+                                    </em><em class="status">passed</em>deletePost should update error state when usecase fails</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">16 ms</div>
+                                    </em><em class="status">passed</em>deletePost should update success state when successful</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">12 ms</div>
+                                    </em><em class="status">passed</em>addComment should call usecase</span>
+                            </li>
+                            <li class="level test">
+                                <span><em class="time">
+                                        <div class="time">381 ms</div>
+                                    </em><em class="status">passed</em>fetchPost should update post, appState and currentUserId when user is logged in</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="level top open">
+                        <span><em class="time">
+                                <div class="time">241 ms</div>
                             </em>CommentRepositoryImplTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">1.62 s</div>
+                                        <div class="time">89 ms</div>
                                     </em><em class="status">passed</em>getComments should return flow from commentApi</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">309 ms</div>
+                                        <div class="time">129 ms</div>
                                     </em><em class="status">passed</em>getCommentsQuery should call commentApi getCommentsQuery</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">37 ms</div>
+                                        <div class="time">6 ms</div>
                                     </em><em class="status">passed</em>deleteCommentsByPostId should call commentApi deleteCommentsByPostId</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">25 ms</div>
+                                        <div class="time">17 ms</div>
                                     </em><em class="status">passed</em>addComment should call commentApi addComment</span>
                             </li>
                         </ul>
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">108 ms</div>
+                                <div class="time">74 ms</div>
                             </em>PostRepositoryImplTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">51 ms</div>
+                                        <div class="time">35 ms</div>
                                     </em><em class="status">passed</em>deletePost should call postApi deletePost</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">43 ms</div>
+                                        <div class="time">20 ms</div>
                                     </em><em class="status">passed</em>addPost should call postApi addPost</span>
                             </li>
                             <li class="level test">
@@ -640,104 +679,104 @@ jQuery.cookie = function(name, value, options) {
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">7 ms</div>
+                                        <div class="time">12 ms</div>
                                     </em><em class="status">passed</em>getPostById should call postApi getPostById</span>
                             </li>
                         </ul>
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">1.32 s</div>
+                                <div class="time">1.27 s</div>
                             </em>StorageRepositoryImplTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">767 ms</div>
+                                        <div class="time">732 ms</div>
                                     </em><em class="status">passed</em>deleteImage should delete file from storage</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">492 ms</div>
+                                        <div class="time">483 ms</div>
                                     </em><em class="status">passed</em>uploadImage should upload bytes and return download url</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">62 ms</div>
+                                        <div class="time">60 ms</div>
                                     </em><em class="status">passed</em>deleteImage should throw exception for invalid URL</span>
                             </li>
                         </ul>
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">248 ms</div>
+                                <div class="time">186 ms</div>
                             </em>AddCommentUseCaseTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">203 ms</div>
+                                        <div class="time">158 ms</div>
                                     </em><em class="status">passed</em>invoke should throw exception when user is not logged in</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">45 ms</div>
+                                        <div class="time">28 ms</div>
                                     </em><em class="status">passed</em>invoke should save comment when user is logged in</span>
                             </li>
                         </ul>
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">98 ms</div>
+                                <div class="time">100 ms</div>
                             </em>AddPostUseCaseTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">57 ms</div>
+                                        <div class="time">63 ms</div>
                                     </em><em class="status">passed</em>invoke should throw exception when user is not logged in</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">41 ms</div>
+                                        <div class="time">37 ms</div>
                                     </em><em class="status">passed</em>invoke should upload image and save post when user is logged in</span>
                             </li>
                         </ul>
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">137 ms</div>
+                                <div class="time">73 ms</div>
                             </em>DeletePostUseCaseTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">108 ms</div>
+                                        <div class="time">55 ms</div>
                                     </em><em class="status">passed</em>invoke should not delete image if post has no photoUrl</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">29 ms</div>
+                                        <div class="time">18 ms</div>
                                     </em><em class="status">passed</em>invoke should delete comments, post and image</span>
                             </li>
                         </ul>
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">4 ms</div>
+                                <div class="time">5 ms</div>
                             </em>GetCommentsQueryUseCaseTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">4 ms</div>
+                                        <div class="time">5 ms</div>
                                     </em><em class="status">passed</em>invoke should return query from repository</span>
                             </li>
                         </ul>
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">9 ms</div>
+                                <div class="time">8 ms</div>
                             </em>GetCommentsUseCaseTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">9 ms</div>
+                                        <div class="time">8 ms</div>
                                     </em><em class="status">passed</em>invoke should return flow of comments from repository</span>
                             </li>
                         </ul>
@@ -756,68 +795,68 @@ jQuery.cookie = function(name, value, options) {
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">10 ms</div>
+                                <div class="time">15 ms</div>
                             </em>GetPostsUseCaseTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">10 ms</div>
+                                        <div class="time">15 ms</div>
                                     </em><em class="status">passed</em>invoke should return flow of posts from repository</span>
                             </li>
                         </ul>
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">126 ms</div>
+                                <div class="time">115 ms</div>
                             </em>HandleNotificationsUseCaseTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">120 ms</div>
+                                        <div class="time">108 ms</div>
                                     </em><em class="status">passed</em>disable should unsubscribe from topic all</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">6 ms</div>
+                                        <div class="time">7 ms</div>
                                     </em><em class="status">passed</em>enable should subscribe to topic all</span>
                             </li>
                         </ul>
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">116 ms</div>
+                                <div class="time">102 ms</div>
                             </em>ManageUserUseCaseTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">6 ms</div>
+                                        <div class="time">4 ms</div>
                                     </em><em class="status">passed</em>signOut should call auth signOut</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">50 ms</div>
+                                        <div class="time">36 ms</div>
                                     </em><em class="status">passed</em>getUser should return current user via flow</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">60 ms</div>
+                                        <div class="time">62 ms</div>
                                     </em><em class="status">passed</em>deleteAccount should call user delete and invoke callback</span>
                             </li>
                         </ul>
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">67 ms</div>
+                                <div class="time">36 ms</div>
                             </em>AccountManagementViewModelTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">55 ms</div>
+                                        <div class="time">23 ms</div>
                                     </em><em class="status">passed</em>deleteAccount should call usecase deleteAccount and invoke success callback</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">4 ms</div>
+                                        <div class="time">5 ms</div>
                                     </em><em class="status">passed</em>signOut should call usecase signOut and invoke callback</span>
                             </li>
                             <li class="level test">
@@ -829,22 +868,22 @@ jQuery.cookie = function(name, value, options) {
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">251 ms</div>
+                                <div class="time">93 ms</div>
                             </em>AddViewModelTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">192 ms</div>
+                                        <div class="time">45 ms</div>
                                     </em><em class="status">passed</em>addPost should show auth error when not authenticated</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">6 ms</div>
+                                        <div class="time">10 ms</div>
                                     </em><em class="status">passed</em>onAction TitleChanged should update state</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">48 ms</div>
+                                        <div class="time">33 ms</div>
                                     </em><em class="status">passed</em>addPost should call useCase when state is Ready and form is valid</span>
                             </li>
                             <li class="level test">
@@ -856,46 +895,7 @@ jQuery.cookie = function(name, value, options) {
                     </li>
                     <li class="level top open">
                         <span><em class="time">
-                                <div class="time">42 ms</div>
-                            </em>HomefeedViewModelTest</span>
-                        <ul>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">42 ms</div>
-                                    </em><em class="status">passed</em>posts should expose data from getPostsUseCase</span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="level top open">
-                        <span><em class="time">
-                                <div class="time">250 ms</div>
-                            </em>PostDetailViewModelTest</span>
-                        <ul>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">179 ms</div>
-                                    </em><em class="status">passed</em>deletePost should update error state when usecase fails</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">27 ms</div>
-                                    </em><em class="status">passed</em>deletePost should update success state when successful</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">17 ms</div>
-                                    </em><em class="status">passed</em>addComment should call usecase</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">27 ms</div>
-                                    </em><em class="status">passed</em>fetchPost should update post, appState and currentUserId when user is logged in</span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="level top open">
-                        <span><em class="time">
-                                <div class="time">41 ms</div>
+                                <div class="time">38 ms</div>
                             </em>SettingsViewModelTest</span>
                         <ul>
                             <li class="level test">
@@ -905,7 +905,7 @@ jQuery.cookie = function(name, value, options) {
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">7 ms</div>
+                                        <div class="time">4 ms</div>
                                     </em><em class="status">passed</em>enableNotifications should call usecase enable</span>
                             </li>
                         </ul>
@@ -914,7 +914,7 @@ jQuery.cookie = function(name, value, options) {
             </div>
         </div>
         <div id="footer">
-            <p>Generated by Android Studio on 30/05/2026 18:18</p>
+            <p>Generated by Android Studio on 01/06/2026 12:54</p>
         </div>
     </body>
 </html>

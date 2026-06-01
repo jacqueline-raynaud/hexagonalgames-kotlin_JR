@@ -3,12 +3,14 @@ package com.openclassrooms.hexagonal.games.presentation.viewmodel
 import com.google.firebase.auth.FirebaseUser
 import com.openclassrooms.hexagonal.games.MainDispatcherRule
 import com.openclassrooms.hexagonal.games.domain.model.Post
+import com.openclassrooms.hexagonal.games.domain.model.User
 import com.openclassrooms.hexagonal.games.domain.usecase.AddCommentUseCase
 import com.openclassrooms.hexagonal.games.domain.usecase.DeletePostUseCase
 import com.openclassrooms.hexagonal.games.domain.usecase.GetCommentsUseCase
 import com.openclassrooms.hexagonal.games.domain.usecase.GetPostByIdUseCase
 import com.openclassrooms.hexagonal.games.domain.usecase.ManageUserUseCase
 import com.openclassrooms.hexagonal.games.domain.util.AppState
+import com.openclassrooms.hexagonal.games.presentation.screen.homefeed.PostUi
 import com.openclassrooms.hexagonal.games.presentation.screen.postdetail.PostDetailViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -57,19 +59,35 @@ class PostDetailViewModelTest {
         runTest {
             // Given
             val postId = "post123"
-            val post = mockk<Post>()
+            val author = User(id = "u1", nameUser = "Alice Dupont")
+            val domainPost = Post(
+                id = postId,
+                title = "Mon post",
+                description = "Une description",
+                photoUrl = null,
+                timestamp = 0,
+                author = author
+            )
             val firebaseUser = mockk<FirebaseUser>()
             val userId = "user123"
 
-            coEvery { getPostByIdUseCase(postId) } returns post
+            coEvery { getPostByIdUseCase(postId) } returns domainPost
             every { manageUserUseCase.getUser() } returns flowOf(firebaseUser)
             every { firebaseUser.uid } returns userId
 
             // When
             viewModel.fetchPost(postId)
 
-            // Then
-            Assert.assertEquals(post, viewModel.post.value)
+            // Then — on vérifie le PostUi mappé, pas le Post domain
+            val expectedPostUi = PostUi(
+                id = postId,
+                authorId = "u1",
+                authorName = "Alice Dupont",
+                title = "Mon post",
+                description = "Une description",
+                photoUrl = null
+            )
+            Assert.assertEquals(expectedPostUi, viewModel.post.value)
             Assert.assertEquals(AppState.Ready, viewModel.appState.value)
             Assert.assertEquals(userId, viewModel.uiState.value.currentUserId)
         }

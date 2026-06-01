@@ -2,10 +2,12 @@ package com.openclassrooms.hexagonal.games.presentation.viewmodel
 
 import com.openclassrooms.hexagonal.games.MainDispatcherRule
 import com.openclassrooms.hexagonal.games.domain.model.Post
+import com.openclassrooms.hexagonal.games.domain.model.User
 import com.openclassrooms.hexagonal.games.domain.usecase.GetPostsUseCase
 import com.openclassrooms.hexagonal.games.domain.util.AuthStateMonitor
 import com.openclassrooms.hexagonal.games.domain.util.NetworkStateMonitor
 import com.openclassrooms.hexagonal.games.presentation.screen.homefeed.HomefeedViewModel
+import com.openclassrooms.hexagonal.games.presentation.screen.homefeed.PostUi
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,18 +40,52 @@ class HomefeedViewModelTest {
     }
 
     @Test
-    fun `posts should expose data from getPostsUseCase`() = runTest {
+    fun `posts should expose mapped PostUi from getPostsUseCase`() = runTest {
         // Given
-        val mockPosts = listOf(mockk<Post>(), mockk<Post>())
-        every { getPostsUseCase() } returns flowOf(mockPosts)
-
+        val author = User(id = "u1", nameUser = "Alice Dupont")
+        val domainPosts = listOf(
+            Post(
+                id = "1",
+                title = "Post 1",
+                description = "Desc 1",
+                photoUrl = null,
+                timestamp = 0,
+                author = author
+            ),
+            Post(
+                id = "2",
+                title = "Post 2",
+                description = null,
+                photoUrl = "https://example.com/img.jpg",
+                timestamp = 0,
+                author = null
+            )
+        )
+        every { getPostsUseCase() } returns flowOf(domainPosts)
 
         // When
         viewModel = HomefeedViewModel(authStateMonitor, networkMonitor, getPostsUseCase)
-
-        val emitted = viewModel.posts.first { it.isNotEmpty() } // force stateIn
+        val emitted = viewModel.posts.first { it.isNotEmpty() }
 
         // Then
-        Assert.assertEquals(mockPosts, viewModel.posts.value)
+        val expected = listOf(
+            PostUi(
+                id = "1",
+                authorId = "u1",
+                authorName = "Alice Dupont",
+                title = "Post 1",
+                description = "Desc 1",
+                photoUrl = null
+            ),
+            PostUi(
+                id = "2",
+                authorId = "",
+                authorName = "",
+                title = "Post 2",
+                description = null,
+                photoUrl = "https://example.com/img.jpg"
+            )
+        )
+        Assert.assertEquals(expected, emitted)
     }
 }
