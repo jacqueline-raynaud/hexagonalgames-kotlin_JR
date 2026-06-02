@@ -6,7 +6,6 @@ import com.openclassrooms.hexagonal.games.domain.model.Post
 import com.openclassrooms.hexagonal.games.domain.model.User
 import com.openclassrooms.hexagonal.games.domain.usecase.AddCommentUseCase
 import com.openclassrooms.hexagonal.games.domain.usecase.DeletePostUseCase
-import com.openclassrooms.hexagonal.games.domain.usecase.GetCommentsUseCase
 import com.openclassrooms.hexagonal.games.domain.usecase.GetPostByIdUseCase
 import com.openclassrooms.hexagonal.games.domain.usecase.ManageUserUseCase
 import com.openclassrooms.hexagonal.games.domain.util.AppState
@@ -29,7 +28,6 @@ class PostDetailViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var getPostByIdUseCase: GetPostByIdUseCase
-    private lateinit var getCommentsUseCase: GetCommentsUseCase
     private lateinit var addCommentUseCase: AddCommentUseCase
     private lateinit var deletePostUseCase: DeletePostUseCase
     private lateinit var manageUserUseCase: ManageUserUseCase
@@ -38,16 +36,12 @@ class PostDetailViewModelTest {
     @Before
     fun setUp() {
         getPostByIdUseCase = mockk()
-        getCommentsUseCase = mockk()
         addCommentUseCase = mockk(relaxed = true)
         deletePostUseCase = mockk(relaxed = true)
         manageUserUseCase = mockk()
 
-        every { getCommentsUseCase(any()) } returns flowOf(emptyList())
-
         viewModel = PostDetailViewModel(
             getPostByIdUseCase,
-            getCommentsUseCase,
             addCommentUseCase,
             deletePostUseCase,
             manageUserUseCase

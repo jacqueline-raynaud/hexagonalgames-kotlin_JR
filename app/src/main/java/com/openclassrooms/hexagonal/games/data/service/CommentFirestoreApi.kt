@@ -19,27 +19,6 @@ class CommentFirestoreApi @Inject constructor(
 
     private val collection = firestore.collection("comments")
 
-    override fun getCommentsQuery(postId: String): Query {
-        return collection
-            .whereEqualTo("postId", postId)
-            .orderBy("timestamp", Query.Direction.ASCENDING)
-    }
-
-    override fun getComments(postId: String): Flow<List<Comment>> = callbackFlow {
-        val listener = getCommentsQuery(postId)
-            .addSnapshotListener { snapshot, error ->
-                if (error != null) {
-                    close(error)
-                    return@addSnapshotListener
-                }
-                val comments = snapshot?.documents
-                    ?.mapNotNull { it.toObject<CommentDto>() }
-                    ?.map { it.toDomain() }
-                    ?: emptyList()
-                trySend(comments)
-            }
-        awaitClose { listener.remove() }
-    }
 
     override suspend fun addComment(comment: Comment) : Unit = withContext(Dispatchers.IO) {
         val data = mapOf(

@@ -2,26 +2,17 @@ package com.openclassrooms.hexagonal.games.presentation.screen.postdetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.openclassrooms.hexagonal.games.domain.model.Comment
-import com.openclassrooms.hexagonal.games.domain.model.Post
 import com.openclassrooms.hexagonal.games.domain.usecase.AddCommentUseCase
 import com.openclassrooms.hexagonal.games.domain.usecase.DeletePostUseCase
-import com.openclassrooms.hexagonal.games.domain.usecase.GetCommentsUseCase
 import com.openclassrooms.hexagonal.games.domain.usecase.GetPostByIdUseCase
 import com.openclassrooms.hexagonal.games.domain.usecase.ManageUserUseCase
 import com.openclassrooms.hexagonal.games.domain.util.AppState
 import com.openclassrooms.hexagonal.games.presentation.screen.homefeed.PostUi
 import com.openclassrooms.hexagonal.games.presentation.screen.homefeed.toPostUi
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,7 +20,6 @@ import javax.inject.Inject
 @HiltViewModel
 class PostDetailViewModel @Inject constructor(
     private val getPostByIdUseCase: GetPostByIdUseCase,
-    private val getCommentsUseCase: GetCommentsUseCase,
     private val addCommentUseCase: AddCommentUseCase,
     private val deletePostUseCase: DeletePostUseCase,
     private val manageUserUseCase: ManageUserUseCase
@@ -45,19 +35,9 @@ class PostDetailViewModel @Inject constructor(
     val uiState: StateFlow<PostDetailUiState> = _uiState.asStateFlow()
 
     private val _postId = MutableStateFlow<String?>(null)
-    
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val comments: StateFlow<List<CommentUi>> = _postId.flatMapLatest { id ->
-        if (id == null) flowOf(emptyList())
-        else getCommentsUseCase(id).map { list -> list.map { it.toCommentUi() } }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList()
-    )
+
 
     fun fetchPost(postId: String) {
-        _postId.value = postId
         viewModelScope.launch {
             _post.value = getPostByIdUseCase(postId)?.toPostUi()
             manageUserUseCase.getUser().collect { user ->

@@ -26,35 +26,6 @@ class CommentRepositoryImplTest {
     }
 
     @Test
-    fun `getCommentsQuery should call commentApi getCommentsQuery`() {
-        // Given
-        val postId = "post123"
-        val query = mockk<Query>()
-        every { commentApi.getCommentsQuery(postId) } returns query
-
-        // When
-        val result = commentRepository.getCommentsQuery(postId)
-
-        // Then
-        assertEquals(query, result)
-    }
-
-    @Test
-    fun `getComments should return flow from commentApi`() = runTest {
-        // Given
-        val postId = "post123"
-        val comments = listOf(mockk<Comment>())
-        every { commentApi.getComments(postId) } returns flowOf(comments)
-
-        // When
-        val result = commentRepository.getComments(postId).toList()
-
-        // Then
-        assertEquals(1, result.size)
-        assertEquals(comments, result[0])
-    }
-
-    @Test
     fun `addComment should call commentApi addComment`() = runTest {
         // Given
         val comment = mockk<Comment>()
