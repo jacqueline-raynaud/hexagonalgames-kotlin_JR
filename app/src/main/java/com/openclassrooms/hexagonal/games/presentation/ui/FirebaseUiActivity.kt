@@ -27,17 +27,17 @@ class FirebaseUiActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Lancer l'écran de connexion
+        // screen connexion
         createSignInIntent()
     }
 
     private fun createSignInIntent() {
-        // choix du ou des providers
+        // available providers
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
         )
 
-        // Créer l'intent avec le thème possédant une ActionBar pour éviter les chevauchements de titre
+        // create intent with theme wiht actionbar fot avoid title overlap
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
@@ -47,23 +47,19 @@ class FirebaseUiActivity : AppCompatActivity() {
         signInLauncher.launch(signInIntent)
     }
 
-    // reception du résultat de l'intent de connexion
+    // receiving  result of  connection intent
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse
         if (result.resultCode == RESULT_OK) {
-            // Authentification réussie
             val user = FirebaseAuth.getInstance().currentUser
             Log.d("FirebaseUI", "Utilisateur authentifié : ${user?.email}")
 
-            // Redirection vers MainActivity
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         } else {
             if (response == null) {
-                // L'utilisateur a annulé le processus (touche retour)
                 finish()
             } else {
-                // Erreur d'authentification
                 val errorCode = response.error?.errorCode
                 Log.e("FirebaseUI", "Sign-in error: $errorCode")
             }

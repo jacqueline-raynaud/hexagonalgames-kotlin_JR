@@ -1,5 +1,6 @@
 package com.openclassrooms.hexagonal.games.presentation.screen.postdetail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.hexagonal.games.domain.usecase.AddCommentUseCase
@@ -52,7 +53,7 @@ class PostDetailViewModel @Inject constructor(
             try {
                 addCommentUseCase(postId, content)
             } catch (e: Exception) {
-                // Handle error
+                Log.e("PostDetailViewModel", "Erreur addComment : ${e.message}", e)
             }
         }
     }

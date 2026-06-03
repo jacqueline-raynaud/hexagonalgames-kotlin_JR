@@ -4,11 +4,14 @@ import android.Manifest
 import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -18,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -25,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -37,9 +42,12 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
+    val areNotificationsEnabled by viewModel.areNotificationsEnabled.collectAsStateWithLifecycle()
+
     SettingsScreen(
         modifier = modifier,
         onBackClick = onBackClick,
+        areNotificationsEnabled = areNotificationsEnabled,
         onNotificationEnabledClicked = { viewModel.enableNotifications() },
         onNotificationDisabledClicked = { viewModel.disableNotifications() }
     )
@@ -50,6 +58,7 @@ fun SettingsScreen(
 private fun SettingsScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
+    areNotificationsEnabled: Boolean,
     onNotificationEnabledClicked: () -> Unit,
     onNotificationDisabledClicked: () -> Unit
 ) {
@@ -75,6 +84,7 @@ private fun SettingsScreen(
     ) { contentPadding ->
         Settings(
             modifier = Modifier.padding(contentPadding),
+            areNotificationsEnabled = areNotificationsEnabled,
             onNotificationDisabledClicked = onNotificationDisabledClicked,
             onNotificationEnabledClicked = onNotificationEnabledClicked
         )
@@ -85,6 +95,7 @@ private fun SettingsScreen(
 @Composable
 private fun Settings(
     modifier: Modifier = Modifier,
+    areNotificationsEnabled: Boolean,
     onNotificationEnabledClicked: () -> Unit,
     onNotificationDisabledClicked: () -> Unit
 ) {
@@ -114,15 +125,31 @@ private fun Settings(
                         notificationsPermissionState.launchPermissionRequest()
                     }
                 }
-
                 onNotificationEnabledClicked()
             }
         ) {
+            if (areNotificationsEnabled) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+            }
             Text(text = stringResource(id = R.string.notification_enable))
         }
+
         Button(
             onClick = { onNotificationDisabledClicked() }
         ) {
+            if (!areNotificationsEnabled) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+            }
             Text(text = stringResource(id = R.string.notification_disable))
         }
     }
@@ -134,6 +161,7 @@ private fun SettingsScreenPreview() {
     HexagonalGamesTheme {
         SettingsScreen(
             onBackClick = {},
+            areNotificationsEnabled = true,
             onNotificationEnabledClicked = {},
             onNotificationDisabledClicked = {}
         )

@@ -80,13 +80,13 @@ class AddViewModel @Inject constructor(
     fun addPost() {
         val currentState = _uiState.value
 
-        // Vérifier l'authentification/connexion en premier
+        // first control uathentication
         if (appState.value !is AppState.Ready) {
             updateState { it.copy(showAuthError = true) }
             return
         }
 
-        // Valider le formulaire
+        // valid form
         val formError = getFormError(currentState)
         if (formError != null) {
             updateState { it.copy(error = formError) }

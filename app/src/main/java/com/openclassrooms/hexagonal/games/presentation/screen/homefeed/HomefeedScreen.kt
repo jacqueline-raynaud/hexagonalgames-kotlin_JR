@@ -119,6 +119,17 @@ fun HomefeedScreen(
                                 )
                             }
                         )
+                        DropdownMenuItem(
+                            onClick = {
+                                showMenu = false
+                                onNavigateToLogin()
+                            },
+                            text = {
+                                Text(
+                                    text = stringResource(id = R.string.login_action)
+                                )
+                            }
+                        )
                     }
                 }
             )

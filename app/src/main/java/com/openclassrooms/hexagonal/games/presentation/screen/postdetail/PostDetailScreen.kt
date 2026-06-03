@@ -218,7 +218,7 @@ fun PostDetailContent(
     onAddComment: (String) -> Unit
 ) {
     Column(modifier = modifier.fillMaxSize()) {
-        // En-tête : le post + le titre "Commentaires"
+        // post and title comment
         Column(
             modifier = Modifier
                 //.weight(1f)
@@ -238,7 +238,7 @@ fun PostDetailContent(
 
         HorizontalDivider()
 
-        // Liste de commentaires via FirebaseUI Firestore
+        // comment list via FirebaseUI Firestore
         if (LocalInspectionMode.current) {
             Box(
                 modifier = Modifier
@@ -255,7 +255,7 @@ fun PostDetailContent(
             )
         }
 
-        // Barre de saisie
+        // edit barre for comment
         CommentInput(onSendClick = onAddComment)
     }
 }

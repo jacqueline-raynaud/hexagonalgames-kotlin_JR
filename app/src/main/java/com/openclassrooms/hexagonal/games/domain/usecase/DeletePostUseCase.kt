@@ -17,16 +17,16 @@ class DeletePostUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(postId: String): Unit = withContext(Dispatchers.IO) {
         try {
-            // 1. Récupère le post pour obtenir l'URL de l'image
+            // 1. Retrieve the post to get the image URL
             val post = postRepository.getPostById(postId)
 
-            // 2. Supprime les commentaires associés
+            // 2. Delete associated comments
             commentRepository.deleteCommentsByPostId(postId)
 
-            // 3. Supprime le post
+            // 3. Delete Post
             postRepository.deletePost(postId)
 
-            // 4. Supprime l'image de Storage si elle existe
+            // 4. Delete the image from Storage if it exists
             post?.photoUrl?.let { url ->
                 try {
                     storageRepository.deleteImage(url)

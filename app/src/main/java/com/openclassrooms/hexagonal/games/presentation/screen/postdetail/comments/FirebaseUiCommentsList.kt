@@ -30,7 +30,7 @@ fun FirebaseUiCommentsList(
 
             val options = FirestoreRecyclerOptions.Builder<CommentDto>()
                 .setQuery(query, CommentDto::class.java)
-                .setLifecycleOwner(lifecycleOwner)   // démarre/arrête l'écoute tout seul
+                .setLifecycleOwner(lifecycleOwner)   // démarre/arrête écoute tout seul
                 .build()
 
             RecyclerView(context).apply {

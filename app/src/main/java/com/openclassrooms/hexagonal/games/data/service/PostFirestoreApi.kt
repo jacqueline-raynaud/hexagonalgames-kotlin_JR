@@ -32,7 +32,6 @@ class PostFirestoreApi @Inject constructor(
                     }
                     val posts = snapshot?.documents
                         ?.mapNotNull { doc ->
-                            // ON RÉCUPÈRE L'ID ICI
                             doc.toObject<PostDto>()?.toDomain()?.copy(id = doc.id)
                         } ?: emptyList()
                     trySend(posts)
