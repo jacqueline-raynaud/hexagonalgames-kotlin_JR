@@ -35,9 +35,6 @@ class PostDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(PostDetailUiState())
     val uiState: StateFlow<PostDetailUiState> = _uiState.asStateFlow()
 
-    private val _postId = MutableStateFlow<String?>(null)
-
-
     fun fetchPost(postId: String) {
         viewModelScope.launch {
             _post.value = getPostByIdUseCase(postId)?.toPostUi()
@@ -48,10 +45,18 @@ class PostDetailViewModel @Inject constructor(
         }
     }
 
-    fun addComment(postId: String, content: String) {
+    fun onCommentTextChanged(text: String) {
+        _uiState.update { it.copy(commentText = text) }
+    }
+
+    fun addComment(postId: String) {
+        val content = _uiState.value.commentText
+        if (content.isBlank()) return
+        
         viewModelScope.launch {
             try {
                 addCommentUseCase(postId, content)
+                _uiState.update { it.copy(commentText = "") }
             } catch (e: Exception) {
                 Log.e("PostDetailViewModel", "Erreur addComment : ${e.message}", e)
             }
@@ -77,5 +82,13 @@ class PostDetailViewModel @Inject constructor(
 
     fun resetDeleteState() {
         _uiState.update { it.copy(deleteSuccess = false, deleteError = null) }
+    }
+
+    fun setShowErrorDialog(show: Boolean) {
+        _uiState.update { it.copy(showErrorDialog = show) }
+    }
+
+    fun setShowDeleteConfirmation(show: Boolean) {
+        _uiState.update { it.copy(showDeleteConfirmation = show) }
     }
 }

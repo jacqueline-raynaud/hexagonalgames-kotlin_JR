@@ -33,9 +33,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,7 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.imageLoader
@@ -64,9 +61,9 @@ import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTh
 fun PostDetailScreen(
     postId: String,
     onBackClick: () -> Unit,
-    onNavigateToLogin: () -> Unit,
-    viewModel: PostDetailViewModel = hiltViewModel()
+    onNavigateToLogin: () -> Unit
 ) {
+    val viewModel: PostDetailViewModel = hiltViewModel()
     val post by viewModel.post.collectAsStateWithLifecycle()
     val appState by viewModel.appState.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -90,7 +87,10 @@ fun PostDetailScreen(
         onNavigateToLogin = onNavigateToLogin,
         onDeletePost = { viewModel.deletePost(postId) },
         onResetDeleteState = { viewModel.resetDeleteState() },
-        onAddComment = { content -> viewModel.addComment(postId, content) }
+        onAddComment = { viewModel.addComment(postId) },
+        onCommentTextChanged = { viewModel.onCommentTextChanged(it) },
+        onShowErrorDialog = { viewModel.setShowErrorDialog(it) },
+        onShowDeleteConfirmation = { viewModel.setShowDeleteConfirmation(it) }
     )
 }
 
@@ -105,17 +105,17 @@ private fun PostDetailScreen(
     onNavigateToLogin: () -> Unit,
     onDeletePost: () -> Unit,
     onResetDeleteState: () -> Unit,
-    onAddComment: (String) -> Unit,
+    onAddComment: () -> Unit,
+    onCommentTextChanged: (String) -> Unit,
+    onShowErrorDialog: (Boolean) -> Unit,
+    onShowDeleteConfirmation: (Boolean) -> Unit,
 ) {
-    var showErrorDialog by remember { mutableStateOf(false) }
-    var showDeleteConfirmation by remember { mutableStateOf(false) }
-
-    if (showErrorDialog) {
+    if (uiState.showErrorDialog) {
         AppStateErrorDialog(
             appStatus = appState,
-            onDismiss = { showErrorDialog = false },
+            onDismiss = { onShowErrorDialog(false) },
             onNavigateToLogin = {
-                showErrorDialog = false
+                onShowErrorDialog(false)
                 onNavigateToLogin()
             }
         )
@@ -134,15 +134,15 @@ private fun PostDetailScreen(
         )
     }
 
-    if (showDeleteConfirmation && post != null) {
+    if (uiState.showDeleteConfirmation && post != null) {
         AlertDialog(
-            onDismissRequest = { showDeleteConfirmation = false },
+            onDismissRequest = { onShowDeleteConfirmation(false) },
             title = { Text("Supprimer le post") },
             text = { Text("Êtes-vous sûr de vouloir supprimer ce post et tous ses commentaires ? Cette action est irréversible.") },
             confirmButton = {
                 Button(
                     onClick = {
-                        showDeleteConfirmation = false
+                        onShowDeleteConfirmation(false)
                         onDeletePost()
                     },
                     enabled = !uiState.isDeleting
@@ -151,7 +151,7 @@ private fun PostDetailScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteConfirmation = false }) {
+                TextButton(onClick = { onShowDeleteConfirmation(false) }) {
                     Text("Annuler")
                 }
             }
@@ -172,7 +172,7 @@ private fun PostDetailScreen(
                 },
                 actions = {
                     if (post != null && post.authorId == uiState.currentUserId) {
-                        IconButton(onClick = { showDeleteConfirmation = true }) {
+                        IconButton(onClick = { onShowDeleteConfirmation(true) }) {
                             Icon(
                                 imageVector = Icons.Filled.Delete,
                                 contentDescription = "Supprimer le post",
@@ -198,11 +198,13 @@ private fun PostDetailScreen(
                 modifier = Modifier.padding(contentPadding),
                 postId = postId,
                 post = post,
-                onAddComment = { content ->
+                commentText = uiState.commentText,
+                onCommentTextChanged = onCommentTextChanged,
+                onAddComment = {
                     if (appState == AppState.Ready) {
-                        onAddComment(content)
+                        onAddComment()
                     } else {
-                        showErrorDialog = true
+                        onShowErrorDialog(true)
                     }
                 }
             )
@@ -215,7 +217,9 @@ fun PostDetailContent(
     modifier: Modifier = Modifier,
     postId: String,
     post: PostUi,
-    onAddComment: (String) -> Unit
+    commentText: String,
+    onCommentTextChanged: (String) -> Unit,
+    onAddComment: () -> Unit
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         // post and title comment
@@ -256,7 +260,11 @@ fun PostDetailContent(
         }
 
         // edit barre for comment
-        CommentInput(onSendClick = onAddComment)
+        CommentInput(
+            text = commentText,
+            onValueChange = onCommentTextChanged,
+            onSendClick = onAddComment
+        )
     }
 }
 
@@ -302,10 +310,10 @@ fun PostInfo(post: PostUi) {
 
 @Composable
 fun CommentInput(
-    onSendClick: (String) -> Unit
+    text: String,
+    onValueChange: (String) -> Unit,
+    onSendClick: () -> Unit
 ) {
-    var text by remember { mutableStateOf("") }
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -314,18 +322,13 @@ fun CommentInput(
     ) {
         OutlinedTextField(
             value = text,
-            onValueChange = { text = it },
+            onValueChange = onValueChange,
             modifier = Modifier.weight(1f),
             placeholder = { Text(stringResource(R.string.hint_comment)) }
         )
         Spacer(modifier = Modifier.width(8.dp))
         IconButton(
-            onClick = {
-                if (text.isNotBlank()) {
-                    onSendClick(text)
-                    text = ""
-                }
-            },
+            onClick = onSendClick,
             enabled = text.isNotBlank()
         ) {
             Icon(
@@ -357,7 +360,10 @@ private fun PostDetailScreenPreview() {
             onNavigateToLogin = {},
             onDeletePost = {},
             onResetDeleteState = {},
-            onAddComment = {}
+            onAddComment = {},
+            onCommentTextChanged = {},
+            onShowErrorDialog = {},
+            onShowDeleteConfirmation = {}
         )
     }
 }
@@ -375,7 +381,10 @@ private fun PostDetailScreenLoadingPreview() {
             onNavigateToLogin = {},
             onDeletePost = {},
             onResetDeleteState = {},
-            onAddComment = {}
+            onAddComment = {},
+            onCommentTextChanged = {},
+            onShowErrorDialog = {},
+            onShowDeleteConfirmation = {}
         )
     }
 }

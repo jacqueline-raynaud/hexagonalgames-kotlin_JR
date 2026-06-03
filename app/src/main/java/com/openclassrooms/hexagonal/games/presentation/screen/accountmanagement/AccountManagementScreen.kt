@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.openclassrooms.hexagonal.games.R
 import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTheme
@@ -27,9 +27,10 @@ import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTh
 @Composable
 fun AccountManagementScreen(
     modifier: Modifier = Modifier,
-    viewModel: AccountManagementViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
+    val viewModel : AccountManagementViewModel = hiltViewModel()
+
     Scaffold(
         modifier = modifier,
         topBar = {

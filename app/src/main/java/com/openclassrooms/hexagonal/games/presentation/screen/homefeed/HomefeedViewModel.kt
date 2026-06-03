@@ -3,14 +3,18 @@ package com.openclassrooms.hexagonal.games.presentation.screen.homefeed
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.openclassrooms.hexagonal.games.domain.usecase.GetPostsUseCase
+import com.openclassrooms.hexagonal.games.domain.util.AppState
 import com.openclassrooms.hexagonal.games.domain.util.AuthStateMonitor
 import com.openclassrooms.hexagonal.games.domain.util.NetworkStateMonitor
 import com.openclassrooms.hexagonal.games.presentation.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 /**
@@ -26,18 +30,38 @@ class HomefeedViewModel @Inject constructor(
     private val auth: FirebaseAuth
 ) : BaseViewModel(authStateMonitor, networkMonitor) {
 
-    val posts: StateFlow<List<PostUi>> = getPostsUseCase()
-        .map { list -> list.map { it.toPostUi() } }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5_000),
-            emptyList()
+    private val _showMenu = MutableStateFlow(false)
+    private val _showError = MutableStateFlow(false)
+
+    val uiState: StateFlow<HomefeedUiState> = combine(
+        getPostsUseCase().map { list -> list.map { it.toPostUi() } },
+        authStateMonitor.isAuthenticated.map { auth.currentUser?.displayName },
+        _showMenu,
+        _showError,
+        appState
+    ) { posts, currentUserName, showMenu, showError, appState ->
+        HomefeedUiState(
+            posts = posts,
+            currentUserName = currentUserName,
+            showMenu = showMenu,
+            showError = showError,
+            appState = appState
         )
-    val currentUserName: StateFlow<String?> = authStateMonitor.isAuthenticated
-        .map { auth.currentUser?.displayName }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5_000),
-            auth.currentUser?.displayName
-        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = HomefeedUiState()
+    )
+
+    fun toggleMenu() {
+        _showMenu.update { !it }
+    }
+
+    fun setMenuVisible(visible: Boolean) {
+        _showMenu.value = visible
+    }
+
+    fun setShowError(show: Boolean) {
+        _showError.value = show
+    }
 }

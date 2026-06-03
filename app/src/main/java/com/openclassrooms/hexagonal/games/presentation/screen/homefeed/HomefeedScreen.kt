@@ -26,10 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
@@ -39,7 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.imageLoader
@@ -53,32 +49,25 @@ import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTh
 @Composable
 fun HomefeedScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomefeedViewModel = hiltViewModel(),
     onPostClick: (PostUi) -> Unit = {},
     onSettingsClick: () -> Unit = {},
     onAccountManagementClick: () -> Unit = {},
     onFABClick: () -> Unit = {},
     onNavigateToLogin: () -> Unit = {}
 ) {
-    val appState by viewModel.appState.collectAsStateWithLifecycle()
+    val viewModel : HomefeedViewModel = hiltViewModel()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    var showError by remember { mutableStateOf(false) }
-    if (showError) {
+    if (uiState.showError) {
         AppStateErrorDialog(
-            appStatus = appState,
-            onDismiss = { showError = false },
-            // navigation vers la page de connexion
+            appStatus = uiState.appState,
+            onDismiss = { viewModel.setShowError(false) },
             onNavigateToLogin = {
-                showError = false
+                viewModel.setShowError(false)
                 onNavigateToLogin()
             }
-
-
         )
     }
-
-    val currentUserName by viewModel.currentUserName.collectAsStateWithLifecycle()
-    var showMenu by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
@@ -88,26 +77,26 @@ fun HomefeedScreen(
                     Column {
                         Text(stringResource(id = R.string.homefeed_fragment_label))
                         Text(
-                            text = currentUserName ?: stringResource(R.string.not_connected),
+                            text = uiState.currentUserName ?: stringResource(R.string.not_connected),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 },
                 actions = {
-                    IconButton(onClick = { showMenu = !showMenu }) {
+                    IconButton(onClick = { viewModel.toggleMenu() }) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
                             contentDescription = stringResource(id = R.string.contentDescription_more)
                         )
                     }
                     DropdownMenu(
-                        expanded = showMenu,
-                        onDismissRequest = { showMenu = false }
+                        expanded = uiState.showMenu,
+                        onDismissRequest = { viewModel.setMenuVisible(false) }
                     ) {
                         DropdownMenuItem(
                             onClick = {
-                                showMenu = false
+                                viewModel.setMenuVisible(false)
                                 onSettingsClick()
                             },
                             text = {
@@ -118,7 +107,7 @@ fun HomefeedScreen(
                         )
                         DropdownMenuItem(
                             onClick = {
-                                showMenu = false
+                                viewModel.setMenuVisible(false)
                                 onAccountManagementClick()
                             },
                             text = {
@@ -129,7 +118,7 @@ fun HomefeedScreen(
                         )
                         DropdownMenuItem(
                             onClick = {
-                                showMenu = false
+                                viewModel.setMenuVisible(false)
                                 onNavigateToLogin()
                             },
                             text = {
@@ -146,8 +135,8 @@ fun HomefeedScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    if (appState == AppState.Ready) onFABClick()
-                    else showError = true
+                    if (uiState.appState == AppState.Ready) onFABClick()
+                    else viewModel.setShowError(true)
                 }
             ) {
                 Icon(
@@ -157,11 +146,9 @@ fun HomefeedScreen(
             }
         }
     ) { contentPadding ->
-        val posts by viewModel.posts.collectAsStateWithLifecycle()
-
         HomefeedList(
             modifier = modifier.padding(contentPadding),
-            posts = posts,
+            posts = uiState.posts,
             onPostClick = onPostClick
         )
     }

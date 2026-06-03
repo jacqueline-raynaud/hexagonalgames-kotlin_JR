@@ -31,7 +31,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.openclassrooms.hexagonal.games.R
 import com.openclassrooms.hexagonal.games.domain.util.AppState
@@ -42,11 +42,11 @@ import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTh
 @Composable
 fun AddScreen(
     modifier: Modifier = Modifier,
-    viewModel: AddViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     onNavigateToLogin: () -> Unit = {}
 ) {
+    val viewModel: AddViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val appState by viewModel.appState.collectAsStateWithLifecycle()
 
