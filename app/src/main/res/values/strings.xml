@@ -19,7 +19,6 @@
     <string name="error_title">Error</string>
     <string name="delete_account">Delete accournt on Hexagone Game</string>
     <string name="sign_out">Deconnexion pateform Hexagone Game</string>
-    <string name="accountmanagement">Account Mangement</string>
     <string name="account_management">Account Mangement</string>
     <string name="error_not_authenticated">You must be logged in to create a post.</string>
     <string name="error_offline">You are offline. Check your network connection </string>

@@ -2,6 +2,7 @@
     <string name="app_name">Hexagonal Games</string>
     <string name="action_settings">Paramètres</string>
     <string name="homefeed_fragment_label">Home</string>
+    <string name="post_detail_label">Détails du post</string>
     <string name="add_fragment_label">Ajout d\'une publication</string>
     <string name="by">Par %1$s</string>
     <string name="notification_enable">Activer les notifications</string>
@@ -9,17 +10,28 @@
     <string name="description_button_add">Ajout</string>
     <string name="hint_title">Titre</string>
     <string name="hint_description">Description</string>
+    <string name="hint_comment">Ajouter un commentaire</string>
     <string name="action_save">Sauvegarder</string>
+    <string name="action_send">Envoyer</string>
     <string name="contentDescription_go_back">Retour</string>
     <string name="contentDescription_more">Plus</string>
     <string name="contentDescription_notification_icon">Notification icon</string>
     <string name="error_title">Erreur</string>
     <string name="delete_account">Suppression de votre compte sur Hexagone Game</string>
     <string name="sign_out">Déconnexion de la pateforme Hexagone Game</string>
-    <string name="accountmanagement">Gestion du compte</string>
     <string name="account_management">Gestion du compte</string>
     <string name="error_not_authenticated">Vous devez être connecté pour créer un post</string>
     <string name="error_offline">Vous êtes hors ligne. Vérifier votre connexion au réseau</string>
     <string name="ok">ok</string>
     <string name="error_generic">unknown error</string>
+    <string name="cancel">annuler</string>
+    <string name="login_action">Connectez-vous</string>
+    <string name="comments_header">Commentaires</string>
+    <string name="no_comments">Aucun commentaire</string>
+    <string name="form_error_title">le titre est obligatoire</string>
+    <string name="form_error_description">Description ou image obligatoire</string>
+    <string name="form_error_image">Description ou image obligatoire</string>
+    <string name="form_error_invalid">Titre requis et texte ou image requis</string>
+
+
 </resources>

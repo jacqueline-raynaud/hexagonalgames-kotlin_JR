@@ -34,7 +34,7 @@ fun AccountManagementScreen(
         modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(id = R.string.accountmanagement)) },
+                title = { Text(stringResource(id = R.string.account_management)) },
                 navigationIcon = {
                     IconButton(onClick = { onBackClick() })
                     {
