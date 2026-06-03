@@ -77,6 +77,7 @@ fun HomefeedScreen(
         )
     }
 
+    val currentUserName by viewModel.currentUserName.collectAsStateWithLifecycle()
     var showMenu by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
@@ -84,7 +85,14 @@ fun HomefeedScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(stringResource(id = R.string.homefeed_fragment_label))
+                    Column {
+                        Text(stringResource(id = R.string.homefeed_fragment_label))
+                        Text(
+                            text = currentUserName ?: stringResource(R.string.not_connected),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 },
                 actions = {
                     IconButton(onClick = { showMenu = !showMenu }) {
@@ -203,10 +211,10 @@ private fun HomefeedCell(
             if (post.photoUrl.isNullOrEmpty() == false) {
                 AsyncImage(
                     modifier = Modifier
-                      .padding(top = 8.dp)
-                      .fillMaxWidth()
-                      .heightIn(max = 200.dp)
-                      .aspectRatio(ratio = 16 / 9f),
+                        .padding(top = 8.dp)
+                        .fillMaxWidth()
+                        .heightIn(max = 200.dp)
+                        .aspectRatio(ratio = 16 / 9f),
                     model = post.photoUrl,
                     imageLoader = LocalContext.current.imageLoader.newBuilder()
                         .logger(DebugLogger())

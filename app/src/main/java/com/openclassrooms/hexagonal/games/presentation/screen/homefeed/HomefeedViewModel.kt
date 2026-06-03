@@ -1,6 +1,7 @@
 package com.openclassrooms.hexagonal.games.presentation.screen.homefeed
 
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.openclassrooms.hexagonal.games.domain.usecase.GetPostsUseCase
 import com.openclassrooms.hexagonal.games.domain.util.AuthStateMonitor
 import com.openclassrooms.hexagonal.games.domain.util.NetworkStateMonitor
@@ -19,9 +20,10 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class HomefeedViewModel @Inject constructor(
-    authStateMonitor: AuthStateMonitor,
+    private val authStateMonitor: AuthStateMonitor,
     networkMonitor: NetworkStateMonitor,
-    getPostsUseCase: GetPostsUseCase
+    getPostsUseCase: GetPostsUseCase,
+    private val auth: FirebaseAuth
 ) : BaseViewModel(authStateMonitor, networkMonitor) {
 
     val posts: StateFlow<List<PostUi>> = getPostsUseCase()
@@ -30,5 +32,12 @@ class HomefeedViewModel @Inject constructor(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000),
             emptyList()
+        )
+    val currentUserName: StateFlow<String?> = authStateMonitor.isAuthenticated
+        .map { auth.currentUser?.displayName }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5_000),
+            auth.currentUser?.displayName
         )
 }

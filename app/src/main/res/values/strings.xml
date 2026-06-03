@@ -32,4 +32,5 @@
     <string name="form_error_description">Description is required</string>
     <string name="form_error_image">Image is required</string>
     <string name="form_error_invalid">Title and (Description or Image) are required</string>
+    <string name="not_connected">Non connecté</string>
 </resources>

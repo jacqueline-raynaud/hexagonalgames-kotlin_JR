@@ -32,6 +32,6 @@
     <string name="form_error_description">Description ou image obligatoire</string>
     <string name="form_error_image">Description ou image obligatoire</string>
     <string name="form_error_invalid">Titre requis et texte ou image requis</string>
-
+    <string name="not_connected">Not connected</string>
 
 </resources>
