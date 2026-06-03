@@ -50,15 +50,16 @@ fun AccountManagementScreen(
         AccountManagement(
             modifier = Modifier.padding(contentPadding),
             onSignOutClicked = {
-                viewModel.signOut(onSuccess=onBackClick)
-                               },
+                viewModel.signOut(onSuccess = onBackClick)
+            },
             onDeleteAccountClicked = {
                 viewModel.deleteAccount(
-                onSuccess = {viewModel.signOut(onBackClick)},
-                onFailure = { exception ->
-                    // TODO toast ou snackbar d'erreur voir si etat
-                }
-            ) }
+                    onSuccess = { viewModel.signOut(onBackClick) },
+                    onFailure = { exception ->
+                        // TODO toast ou snackbar d'erreur voir si etat
+                    }
+                )
+            }
         )
     }
 }

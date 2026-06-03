@@ -16,22 +16,24 @@ class AddCommentUseCase @Inject constructor(
     private val commentRepository: CommentRepository,
     private val auth: FirebaseAuth
 ) {
-    suspend operator fun invoke(postId: String, content: String) : Unit = withContext(Dispatchers.IO) {
-        val firebaseUser = auth.currentUser ?: throw IllegalStateException("User must be logged in")
+    suspend operator fun invoke(postId: String, content: String): Unit =
+        withContext(Dispatchers.IO) {
+            val firebaseUser =
+                auth.currentUser ?: throw IllegalStateException("User must be logged in")
 
-        val author = User(
-            id = firebaseUser.uid,
-            nameUser = firebaseUser.displayName ?: "Utilisateur"
-        )
+            val author = User(
+                id = firebaseUser.uid,
+                nameUser = firebaseUser.displayName ?: "Utilisateur"
+            )
 
-        val newComment = Comment(
-            id = UUID.randomUUID().toString(),
-            postId = postId,
-            content = content,
-            timestamp = System.currentTimeMillis(),
-            author = author
-        )
+            val newComment = Comment(
+                id = UUID.randomUUID().toString(),
+                postId = postId,
+                content = content,
+                timestamp = System.currentTimeMillis(),
+                author = author
+            )
 
-        commentRepository.addComment(newComment)
-    }
+            commentRepository.addComment(newComment)
+        }
 }

@@ -1,7 +1,6 @@
 package com.openclassrooms.hexagonal.games.presentation.ui.components
 
 
-
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -23,10 +22,10 @@ fun AppStateErrorDialog(
             Text(
                 when (appStatus) {
                     AppState.NotAuthenticated -> stringResource(R.string.error_not_authenticated)
-                    AppState.Offline          -> stringResource(R.string.error_offline)
-                    AppState.Ready            -> ""
-                    AppState.Loading          -> ""
-                    AppState.Error            -> stringResource(R.string.error_generic)
+                    AppState.Offline -> stringResource(R.string.error_offline)
+                    AppState.Ready -> ""
+                    AppState.Loading -> ""
+                    AppState.Error -> stringResource(R.string.error_generic)
                 }
             )
         },

@@ -8,6 +8,6 @@ import java.io.Serializable
  * serialization needs.
  */
 data class User(
-  val id: String,
-  val nameUser: String
+    val id: String,
+    val nameUser: String
 ) : Serializable

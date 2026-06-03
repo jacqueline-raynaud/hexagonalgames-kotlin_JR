@@ -26,9 +26,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
         Log.d("FIREBASE_MESSAGING_SERVICE", "Message received: ${remoteMessage.data}")
     }
+
     private fun showNotification(title: String?, message: String?) {
         val channelId = "notification_channel"
-        val notificationManager = ContextCompat.getSystemService(this, NotificationManager::class.java)
+        val notificationManager =
+            ContextCompat.getSystemService(this, NotificationManager::class.java)
 
         //creation du canal pour android >=8
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -28,8 +28,13 @@ class NetworkStateMonitor @Inject constructor(
     val isOnline: StateFlow<Boolean> = callbackFlow {
         val manager = context.getSystemService(ConnectivityManager::class.java)
         val callback = object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) { trySend(true) }
-            override fun onLost(network: Network) { trySend(false) }
+            override fun onAvailable(network: Network) {
+                trySend(true)
+            }
+
+            override fun onLost(network: Network) {
+                trySend(false)
+            }
         }
         manager.registerDefaultNetworkCallback(callback)
         // valeur initiale

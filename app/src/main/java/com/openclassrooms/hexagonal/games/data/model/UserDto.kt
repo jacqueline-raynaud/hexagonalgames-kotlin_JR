@@ -1,7 +1,6 @@
 package com.openclassrooms.hexagonal.games.data.model
 
 import com.openclassrooms.hexagonal.games.domain.model.User
-import org.checkerframework.checker.index.qual.SubstringIndexUnknown
 
 data class UserDto(
     val id: String = "",

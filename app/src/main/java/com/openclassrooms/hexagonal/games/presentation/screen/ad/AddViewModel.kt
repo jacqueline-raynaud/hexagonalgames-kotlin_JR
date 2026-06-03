@@ -3,10 +3,10 @@ package com.openclassrooms.hexagonal.games.presentation.screen.ad
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.hexagonal.games.domain.usecase.AddPostUseCase
-import com.openclassrooms.hexagonal.games.presentation.BaseViewModel
 import com.openclassrooms.hexagonal.games.domain.util.AppState
 import com.openclassrooms.hexagonal.games.domain.util.AuthStateMonitor
 import com.openclassrooms.hexagonal.games.domain.util.NetworkStateMonitor
+import com.openclassrooms.hexagonal.games.presentation.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,15 +37,20 @@ class AddViewModel @Inject constructor(
                 updateState { it.copy(title = formEvent.title) }
                 validateForm()
             }
+
             is FormEvent.DescriptionChanged -> {
                 updateState { it.copy(description = formEvent.description) }
                 validateForm()
             }
+
             is FormEvent.ImageSelected -> {
                 updateState { it.copy(imageUri = formEvent.uri) }
                 validateForm()
             }
-            is FormEvent.SaveClicked -> { addPost() }
+
+            is FormEvent.SaveClicked -> {
+                addPost()
+            }
         }
     }
 

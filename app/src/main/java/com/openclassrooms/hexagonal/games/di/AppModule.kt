@@ -47,5 +47,5 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCommentRepository(impl : CommentFirestoreApi): CommentRepository = impl
+    fun provideCommentRepository(impl: CommentFirestoreApi): CommentRepository = impl
 }

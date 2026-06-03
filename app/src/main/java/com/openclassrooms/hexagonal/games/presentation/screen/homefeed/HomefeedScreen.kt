@@ -1,6 +1,5 @@
 package com.openclassrooms.hexagonal.games.presentation.screen.homefeed
 
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -35,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
@@ -45,212 +45,210 @@ import coil.compose.AsyncImage
 import coil.imageLoader
 import coil.util.DebugLogger
 import com.openclassrooms.hexagonal.games.R
-import com.openclassrooms.hexagonal.games.domain.model.Post
-import com.openclassrooms.hexagonal.games.domain.model.User
+import com.openclassrooms.hexagonal.games.domain.util.AppState
 import com.openclassrooms.hexagonal.games.presentation.ui.components.AppStateErrorDialog
 import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTheme
-import com.openclassrooms.hexagonal.games.domain.util.AppState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomefeedScreen(
-  modifier: Modifier = Modifier,
-  viewModel: HomefeedViewModel = hiltViewModel(),
-  onPostClick: (PostUi) -> Unit = {},
-  onSettingsClick: () -> Unit = {},
-  onAccountManagementClick: () -> Unit = {},
-  onFABClick: () -> Unit = {},
-  onNavigateToLogin: () -> Unit = {}
+    modifier: Modifier = Modifier,
+    viewModel: HomefeedViewModel = hiltViewModel(),
+    onPostClick: (PostUi) -> Unit = {},
+    onSettingsClick: () -> Unit = {},
+    onAccountManagementClick: () -> Unit = {},
+    onFABClick: () -> Unit = {},
+    onNavigateToLogin: () -> Unit = {}
 ) {
-  val appState by viewModel.appState.collectAsStateWithLifecycle()
+    val appState by viewModel.appState.collectAsStateWithLifecycle()
 
-  var showError by remember { mutableStateOf(false) }
-  if (showError) {
-    AppStateErrorDialog(
-      appStatus = appState,
-      onDismiss = { showError = false },
-      // navigation vers la page de connexion
-      onNavigateToLogin = {
-        showError = false
-        onNavigateToLogin()
-      }
+    var showError by remember { mutableStateOf(false) }
+    if (showError) {
+        AppStateErrorDialog(
+            appStatus = appState,
+            onDismiss = { showError = false },
+            // navigation vers la page de connexion
+            onNavigateToLogin = {
+                showError = false
+                onNavigateToLogin()
+            }
 
 
-    )
-  }
-
-  var showMenu by rememberSaveable { mutableStateOf(false) }
-  
-  Scaffold(
-    modifier = modifier,
-    topBar = {
-      TopAppBar(
-        title = {
-          Text(stringResource(id = R.string.homefeed_fragment_label))
-        },
-        actions = {
-          IconButton(onClick = { showMenu = !showMenu }) {
-            Icon(
-              imageVector = Icons.Default.MoreVert,
-              contentDescription = stringResource(id = R.string.contentDescription_more)
-            )
-          }
-          DropdownMenu(
-            expanded = showMenu,
-            onDismissRequest = { showMenu = false }
-          ) {
-            DropdownMenuItem(
-              onClick = {
-                showMenu = false
-                onSettingsClick()
-              },
-              text = {
-                Text(
-                  text = stringResource(id = R.string.action_settings)
-                )
-              }
-            )
-            DropdownMenuItem(
-              onClick = {
-                showMenu = false
-                onAccountManagementClick()
-              },
-              text = {
-                Text(
-                  text = stringResource(id = R.string.account_management)
-                )
-              }
-            )
-          }
-        }
-      )
-    },
-    floatingActionButtonPosition = FabPosition.End,
-    floatingActionButton = {
-      FloatingActionButton(
-        onClick = {
-          if(appState == AppState.Ready) onFABClick()
-          else showError = true
-                  }
-      ) {
-        Icon(
-          imageVector = Icons.Filled.Add,
-          contentDescription = stringResource(id = R.string.description_button_add)
         )
-      }
     }
-  ) { contentPadding ->
-    val posts by viewModel.posts.collectAsStateWithLifecycle()
-    
-    HomefeedList(
-      modifier = modifier.padding(contentPadding),
-      posts = posts,
-      onPostClick = onPostClick
-    )
-  }
+
+    var showMenu by rememberSaveable { mutableStateOf(false) }
+
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(stringResource(id = R.string.homefeed_fragment_label))
+                },
+                actions = {
+                    IconButton(onClick = { showMenu = !showMenu }) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = stringResource(id = R.string.contentDescription_more)
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            onClick = {
+                                showMenu = false
+                                onSettingsClick()
+                            },
+                            text = {
+                                Text(
+                                    text = stringResource(id = R.string.action_settings)
+                                )
+                            }
+                        )
+                        DropdownMenuItem(
+                            onClick = {
+                                showMenu = false
+                                onAccountManagementClick()
+                            },
+                            text = {
+                                Text(
+                                    text = stringResource(id = R.string.account_management)
+                                )
+                            }
+                        )
+                    }
+                }
+            )
+        },
+        floatingActionButtonPosition = FabPosition.End,
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    if (appState == AppState.Ready) onFABClick()
+                    else showError = true
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = stringResource(id = R.string.description_button_add)
+                )
+            }
+        }
+    ) { contentPadding ->
+        val posts by viewModel.posts.collectAsStateWithLifecycle()
+
+        HomefeedList(
+            modifier = modifier.padding(contentPadding),
+            posts = posts,
+            onPostClick = onPostClick
+        )
+    }
 }
 
 @Composable
 private fun HomefeedList(
-  modifier: Modifier = Modifier,
-  posts: List<PostUi>,
-  onPostClick: (PostUi) -> Unit,
+    modifier: Modifier = Modifier,
+    posts: List<PostUi>,
+    onPostClick: (PostUi) -> Unit,
 ) {
-  LazyColumn(
-    modifier = modifier,
-    contentPadding = PaddingValues(8.dp),
-    verticalArrangement = Arrangement.spacedBy(8.dp),
-  ) {
-    items(posts) { post ->
-      HomefeedCell(
-        post = post,
-        onPostClick = onPostClick
-      )
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        items(posts) { post ->
+            HomefeedCell(
+                post = post,
+                onPostClick = onPostClick
+            )
+        }
     }
-  }
 }
 
 @Composable
 private fun HomefeedCell(
-  post: PostUi,
-  onPostClick: (PostUi) -> Unit,
+    post: PostUi,
+    onPostClick: (PostUi) -> Unit,
 ) {
-  ElevatedCard(
-    modifier = Modifier.fillMaxWidth(),
-    onClick = {
-      onPostClick(post)
-    }) {
-    Column(
-      modifier = Modifier.padding(8.dp),
-    ) {
-      Text(
-        text = stringResource(id = R.string.by, post.authorName),
-        style = MaterialTheme.typography.titleSmall
-      )
-      Text(
-        text = post.title,
-        style = MaterialTheme.typography.titleLarge
-      )
-      if (post.photoUrl.isNullOrEmpty() == false) {
-        AsyncImage(
-          modifier = Modifier
-            .padding(top = 8.dp)
-            .fillMaxWidth()
-            .heightIn(max = 200.dp)
-            .aspectRatio(ratio = 16 / 9f),
-          model = post.photoUrl,
-          imageLoader = LocalContext.current.imageLoader.newBuilder()
-            .logger(DebugLogger())
-            .build(),
-          placeholder = ColorPainter(Color.DarkGray),
-          contentDescription = "image",
-          contentScale = ContentScale.Crop,
-        )
-      }
-      if (post.description.isNullOrEmpty() == false) {
-        Text(
-          text = post.description,
-          style = MaterialTheme.typography.bodyMedium
-        )
-      }
+    ElevatedCard(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = {
+            onPostClick(post)
+        }) {
+        Column(
+            modifier = Modifier.padding(8.dp),
+        ) {
+            Text(
+                text = stringResource(id = R.string.by, post.authorName),
+                style = MaterialTheme.typography.titleSmall
+            )
+            Text(
+                text = post.title,
+                style = MaterialTheme.typography.titleLarge
+            )
+            if (post.photoUrl.isNullOrEmpty() == false) {
+                AsyncImage(
+                    modifier = Modifier
+                      .padding(top = 8.dp)
+                      .fillMaxWidth()
+                      .heightIn(max = 200.dp)
+                      .aspectRatio(ratio = 16 / 9f),
+                    model = post.photoUrl,
+                    imageLoader = LocalContext.current.imageLoader.newBuilder()
+                        .logger(DebugLogger())
+                        .build(),
+                    placeholder = ColorPainter(Color.DarkGray),
+                    contentDescription = "image",
+                    contentScale = ContentScale.Crop,
+                )
+            }
+            if (post.description.isNullOrEmpty() == false) {
+                Text(
+                    text = post.description,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
     }
-  }
 }
 
 @PreviewLightDark
 @PreviewScreenSizes
 @Composable
 private fun HomefeedCellPreview() {
-  HexagonalGamesTheme {
-    HomefeedCell(
-      post = PostUi(
-        id = "1",
-        authorName = "firstname lastname",
-        title = "title",
-        description = "description",
-        photoUrl = null,
-        authorId = "01"
-      ),
-      onPostClick = {}
-    )
-  }
+    HexagonalGamesTheme {
+        HomefeedCell(
+            post = PostUi(
+                id = "1",
+                authorName = "firstname lastname",
+                title = "title",
+                description = "description",
+                photoUrl = null,
+                authorId = "01"
+            ),
+            onPostClick = {}
+        )
+    }
 }
 
 @PreviewLightDark
 @PreviewScreenSizes
 @Composable
 private fun HomefeedCellImagePreview() {
-  HexagonalGamesTheme {
-    HomefeedCell(
-      post = PostUi(
-        id = "1",
-        authorName = "firstname lastname",
-        title = "title",
-        description = null,
-        photoUrl = "https://picsum.photos/id/85/1080/",
-        authorId = "01"
-      ),
-      onPostClick = {}
-    )
-  }
+    HexagonalGamesTheme {
+        HomefeedCell(
+            post = PostUi(
+                id = "1",
+                authorName = "firstname lastname",
+                title = "title",
+                description = null,
+                photoUrl = "https://picsum.photos/id/85/1080/",
+                authorId = "01"
+            ),
+            onPostClick = {}
+        )
+    }
 }

@@ -1,11 +1,10 @@
 package com.openclassrooms.hexagonal.games.presentation.screen.homefeed
 
 import androidx.lifecycle.viewModelScope
-import com.openclassrooms.hexagonal.games.domain.model.Post
 import com.openclassrooms.hexagonal.games.domain.usecase.GetPostsUseCase
-import com.openclassrooms.hexagonal.games.presentation.BaseViewModel
 import com.openclassrooms.hexagonal.games.domain.util.AuthStateMonitor
 import com.openclassrooms.hexagonal.games.domain.util.NetworkStateMonitor
+import com.openclassrooms.hexagonal.games.presentation.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +25,7 @@ class HomefeedViewModel @Inject constructor(
 ) : BaseViewModel(authStateMonitor, networkMonitor) {
 
     val posts: StateFlow<List<PostUi>> = getPostsUseCase()
-        .map { list -> list.map {it.toPostUi()} }
+        .map { list -> list.map { it.toPostUi() } }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000),

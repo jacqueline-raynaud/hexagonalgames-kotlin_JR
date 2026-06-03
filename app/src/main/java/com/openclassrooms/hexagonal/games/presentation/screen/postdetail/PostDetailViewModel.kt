@@ -64,7 +64,12 @@ class PostDetailViewModel @Inject constructor(
                 deletePostUseCase(postId)
                 _uiState.update { it.copy(isDeleting = false, deleteSuccess = true) }
             } catch (e: Exception) {
-                _uiState.update { it.copy(isDeleting = false, deleteError = e.message ?: "Erreur lors de la suppression") }
+                _uiState.update {
+                    it.copy(
+                        isDeleting = false,
+                        deleteError = e.message ?: "Erreur lors de la suppression"
+                    )
+                }
             }
         }
     }

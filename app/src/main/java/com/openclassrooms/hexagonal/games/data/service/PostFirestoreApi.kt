@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
-class PostFirestoreApi @Inject constructor (
+class PostFirestoreApi @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : PostRepository {
 
@@ -40,14 +40,14 @@ class PostFirestoreApi @Inject constructor (
             awaitClose { listener.remove() }
         }
 
-    override suspend fun addPost(post: Post) : Unit = withContext(Dispatchers.IO) {
+    override suspend fun addPost(post: Post): Unit = withContext(Dispatchers.IO) {
         val data = mapOf(
-            "title"       to post.title,
+            "title" to post.title,
             "description" to post.description,
-            "photoUrl"    to post.photoUrl,
-            "timestamp"   to post.timestamp,
-            "author"      to mapOf(
-                "id"        to post.author?.id,
+            "photoUrl" to post.photoUrl,
+            "timestamp" to post.timestamp,
+            "author" to mapOf(
+                "id" to post.author?.id,
                 "nameUser" to post.author?.nameUser
             )
         )
@@ -64,7 +64,7 @@ class PostFirestoreApi @Inject constructor (
         }
     }
 
-    override suspend fun deletePost(postId: String):Unit = withContext(Dispatchers.IO) {
+    override suspend fun deletePost(postId: String): Unit = withContext(Dispatchers.IO) {
         collection.document(postId).delete().await()
     }
 }

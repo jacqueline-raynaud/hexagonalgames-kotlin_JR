@@ -5,25 +5,25 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
 sealed class Screen(
-  val route: String,
-  val navArguments: List<NamedNavArgument> = emptyList()
+    val route: String,
+    val navArguments: List<NamedNavArgument> = emptyList()
 ) {
-  data object Homefeed : Screen("homefeed")
-  
-  data object AddPost : Screen("addPost")
-  
-  data object Settings : Screen("settings")
+    data object Homefeed : Screen("homefeed")
 
-  data object AccountManagement : Screen("accountManagement")
+    data object AddPost : Screen("addPost")
 
-  data object PostDetail : Screen(
-    route = "postDetail/{postId}",
-    navArguments = listOf(
-      navArgument("postId") {
-        type = NavType.StringType
-      }
-    )
-  ) {
-    fun createRoute(postId: String) = "postDetail/$postId"
-  }
+    data object Settings : Screen("settings")
+
+    data object AccountManagement : Screen("accountManagement")
+
+    data object PostDetail : Screen(
+        route = "postDetail/{postId}",
+        navArguments = listOf(
+            navArgument("postId") {
+                type = NavType.StringType
+            }
+        )
+    ) {
+        fun createRoute(postId: String) = "postDetail/$postId"
+    }
 }

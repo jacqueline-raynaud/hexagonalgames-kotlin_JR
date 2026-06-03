@@ -241,7 +241,9 @@ fun PostDetailContent(
         // Liste de commentaires via FirebaseUI Firestore
         if (LocalInspectionMode.current) {
             Box(
-                modifier = Modifier.weight(1f).fillMaxSize(),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Text("Comments Placeholder")

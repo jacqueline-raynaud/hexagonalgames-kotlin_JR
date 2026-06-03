@@ -15,7 +15,7 @@ class DeletePostUseCase @Inject constructor(
     private val commentRepository: CommentRepository,
     private val storageRepository: StorageRepository
 ) {
-    suspend operator fun invoke(postId: String) : Unit = withContext(Dispatchers.IO) {
+    suspend operator fun invoke(postId: String): Unit = withContext(Dispatchers.IO) {
         try {
             // 1. Récupère le post pour obtenir l'URL de l'image
             val post = postRepository.getPostById(postId)

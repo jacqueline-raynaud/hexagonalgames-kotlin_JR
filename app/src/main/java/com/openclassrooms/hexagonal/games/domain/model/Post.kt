@@ -8,10 +8,10 @@ import java.io.Serializable
  * The class implements Serializable to allow for potential serialization needs.
  */
 data class Post(
-  val id: String,
-  val title: String,
-  val description: String?,
-  val photoUrl: String?,
-  val timestamp: Long,
-  val author: User?
+    val id: String,
+    val title: String,
+    val description: String?,
+    val photoUrl: String?,
+    val timestamp: Long,
+    val author: User?
 ) : Serializable
