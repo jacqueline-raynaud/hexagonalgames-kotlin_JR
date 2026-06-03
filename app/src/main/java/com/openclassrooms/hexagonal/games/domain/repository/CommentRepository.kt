@@ -8,13 +8,6 @@ import kotlinx.coroutines.flow.Flow
  * Interface defining the operations for managing Comments.
  */
 interface CommentRepository {
-        /**
-     * Adds a new comment.
-     */
     suspend fun addComment(comment: Comment)
-
-    /**
-     * Deletes all comments for a specific post.
-     */
     suspend fun deleteCommentsByPostId(postId: String)
 }

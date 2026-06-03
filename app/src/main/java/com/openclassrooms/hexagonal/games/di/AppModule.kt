@@ -4,12 +4,8 @@ import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.openclassrooms.hexagonal.games.data.repository.CommentRepositoryImpl
-import com.openclassrooms.hexagonal.games.data.repository.PostRepositoryImpl
 import com.openclassrooms.hexagonal.games.data.repository.StorageRepositoryImpl
-import com.openclassrooms.hexagonal.games.data.service.CommentApi
 import com.openclassrooms.hexagonal.games.data.service.CommentFirestoreApi
-import com.openclassrooms.hexagonal.games.data.service.PostApi
 import com.openclassrooms.hexagonal.games.data.service.PostFirestoreApi
 import com.openclassrooms.hexagonal.games.domain.repository.CommentRepository
 import com.openclassrooms.hexagonal.games.domain.repository.PostRepository
@@ -25,49 +21,31 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-  @Provides
-  @Singleton
-  fun provideFirestore() : FirebaseFirestore = FirebaseFirestore.getInstance()
+    @Provides
+    @Singleton
+    fun provideFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
 
-  @Provides
-  @Singleton
-  fun provideFirebaseAuth() : FirebaseAuth = FirebaseAuth.getInstance()
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
+    @Provides
+    @Singleton
+    fun providePostRepository(impl: PostFirestoreApi): PostRepository = impl
 
-  @Provides
-  @Singleton
-  fun providePostApi(firestore: FirebaseFirestore): PostApi {
-    return PostFirestoreApi(firestore)
-  }
+    @Provides
+    @Singleton
+    fun provideFirebaseStorage(): FirebaseStorage =
+        FirebaseStorage.getInstance()
 
-  @Provides
-  @Singleton
-  fun providePostRepository(postApi: PostApi): PostRepository {
-    return PostRepositoryImpl(postApi)
-  }
+    @Provides
+    @Singleton
+    fun provideStorageRepository(
+        storage: FirebaseStorage,
+        @ApplicationContext context: Context
+    ): StorageRepository = StorageRepositoryImpl(storage, context)
 
-  @Provides
-  @Singleton
-  fun provideFirebaseStorage(): FirebaseStorage =
-    FirebaseStorage.getInstance()
-
-  @Provides
-  @Singleton
-  fun provideStorageRepository(
-    storage: FirebaseStorage,
-    @ApplicationContext context: Context
-  ): StorageRepository = StorageRepositoryImpl(storage, context)
-
-  @Provides
-  @Singleton
-  fun provideCommentApi(firestore: FirebaseFirestore): CommentApi {
-    return CommentFirestoreApi(firestore)
-  }
-
-  @Provides
-  @Singleton
-  fun provideCommentRepository(commentApi: CommentApi): CommentRepository {
-    return CommentRepositoryImpl(commentApi)
-  }
-
+    @Provides
+    @Singleton
+    fun provideCommentRepository(impl : CommentFirestoreApi): CommentRepository = impl
 }

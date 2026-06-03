@@ -5,6 +5,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 import com.openclassrooms.hexagonal.games.data.model.PostDto
 import com.openclassrooms.hexagonal.games.domain.model.Post
+import com.openclassrooms.hexagonal.games.domain.repository.PostRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -14,13 +15,13 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
-class PostFirestoreApi @Inject constructor(
+class PostFirestoreApi @Inject constructor (
     private val firestore: FirebaseFirestore
-) : PostApi {
+) : PostRepository {
 
     private val collection = firestore.collection("publications")
 
-    override fun getPostsOrderByCreationDateDesc(): Flow<List<Post>> =
+    override val posts: Flow<List<Post>> =
         callbackFlow {
             val listener = collection
                 .orderBy("timestamp", Query.Direction.DESCENDING)

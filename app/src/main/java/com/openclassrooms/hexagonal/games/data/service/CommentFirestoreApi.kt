@@ -5,6 +5,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 import com.openclassrooms.hexagonal.games.data.model.CommentDto
 import com.openclassrooms.hexagonal.games.domain.model.Comment
+import com.openclassrooms.hexagonal.games.domain.repository.CommentRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 class CommentFirestoreApi @Inject constructor(
     private val firestore: FirebaseFirestore
-) : CommentApi {
+) : CommentRepository {
 
     private val collection = firestore.collection("comments")
 
