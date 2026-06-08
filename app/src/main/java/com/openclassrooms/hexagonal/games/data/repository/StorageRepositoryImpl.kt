@@ -25,7 +25,7 @@ class StorageRepositoryImpl @Inject constructor(
 
             // reading Uri content (requires Context)
             val inputStream = context.contentResolver.openInputStream(uri)
-                ?: throw IllegalStateException("Impossible de lire l'URI : $uri")
+                ?: throw IllegalStateException("unreadable Uri : $uri")
 
             val bytes = inputStream.use { it.readBytes() }
 
@@ -43,7 +43,7 @@ class StorageRepositoryImpl @Inject constructor(
         val endIndex = downloadUrl.indexOf("?", startIndex)
 
         if (startIndex < 3 || endIndex < 0) {
-            throw IllegalArgumentException("URL invalide : $downloadUrl")
+            throw IllegalArgumentException("InvalidDownloadUrl : $downloadUrl")
         }
 
         val encodedPath = downloadUrl.substring(startIndex, endIndex)

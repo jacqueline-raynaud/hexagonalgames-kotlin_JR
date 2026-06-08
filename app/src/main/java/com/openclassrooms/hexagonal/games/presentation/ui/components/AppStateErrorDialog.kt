@@ -35,13 +35,13 @@ fun AppStateErrorDialog(
             }
         },
         dismissButton = {
-            // 3. On affiche ce bouton UNIQUEMENT si l'utilisateur n'est pas connecté
+
             if (appStatus == AppState.NotAuthenticated) {
                 TextButton(onClick = {
-                    onDismiss() // On ferme d'abord la boîte de dialogue
-                    onNavigateToLogin() // Puis on navigue vers la page de connexion
+                    onDismiss()
+                    onNavigateToLogin()
                 }) {
-                    Text(stringResource(R.string.login_action)) // Ex: "Se connecter"
+                    Text(stringResource(R.string.login_action))
                 }
             }
         }

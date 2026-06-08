@@ -29,7 +29,7 @@ class AddViewModel @Inject constructor(
     val uiState: StateFlow<AddUiState> = _uiState.asStateFlow()
 
     /**
-     * actions utilisateur provenant de l'écran.
+     * list of actions that can be performed on the AddScreen
      */
     fun onAction(formEvent: FormEvent) {
         when (formEvent) {
@@ -80,7 +80,7 @@ class AddViewModel @Inject constructor(
     fun addPost() {
         val currentState = _uiState.value
 
-        // first control uathentication
+        // first control authentication
         if (appState.value !is AppState.Ready) {
             updateState { it.copy(showAuthError = true) }
             return

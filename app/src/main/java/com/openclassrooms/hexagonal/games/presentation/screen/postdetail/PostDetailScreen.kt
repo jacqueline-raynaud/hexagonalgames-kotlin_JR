@@ -124,7 +124,7 @@ private fun PostDetailScreen(
     if (uiState.deleteError != null) {
         AlertDialog(
             onDismissRequest = { onResetDeleteState() },
-            title = { Text("Erreur") },
+            title = { Text(stringResource(R.string.error_title)) },
             text = { Text(uiState.deleteError) },
             confirmButton = {
                 Button(onClick = { onResetDeleteState() }) {
@@ -137,8 +137,8 @@ private fun PostDetailScreen(
     if (uiState.showDeleteConfirmation && post != null) {
         AlertDialog(
             onDismissRequest = { onShowDeleteConfirmation(false) },
-            title = { Text("Supprimer le post") },
-            text = { Text("Êtes-vous sûr de vouloir supprimer ce post et tous ses commentaires ? Cette action est irréversible.") },
+            title = { Text(stringResource(R.string.delete_post_confirmation_title)) },
+            text = { Text(stringResource(R.string.delete_post_confirmation_text)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -152,7 +152,7 @@ private fun PostDetailScreen(
             },
             dismissButton = {
                 TextButton(onClick = { onShowDeleteConfirmation(false) }) {
-                    Text("Annuler")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -175,7 +175,7 @@ private fun PostDetailScreen(
                         IconButton(onClick = { onShowDeleteConfirmation(true) }) {
                             Icon(
                                 imageVector = Icons.Filled.Delete,
-                                contentDescription = "Supprimer le post",
+                                contentDescription = stringResource(R.string.contentDescription_delete),
                                 tint = MaterialTheme.colorScheme.error
                             )
                         }
@@ -225,7 +225,7 @@ fun PostDetailContent(
         // post and title comment
         Column(
             modifier = Modifier
-                //.weight(1f)
+                .weight(1f)
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
@@ -250,7 +250,7 @@ fun PostDetailContent(
                     .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Comments Placeholder")
+                Text(stringResource(R.string.no_comments))
             }
         } else {
             FirebaseUiCommentsList(

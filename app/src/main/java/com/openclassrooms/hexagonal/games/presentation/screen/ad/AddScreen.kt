@@ -154,7 +154,7 @@ private fun CreatePost(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                     )
                 }) {
-                Text(text = "Choisir une image")
+                Text(text = stringResource(id = R.string.action_select_image))
             }
         }
         Button(

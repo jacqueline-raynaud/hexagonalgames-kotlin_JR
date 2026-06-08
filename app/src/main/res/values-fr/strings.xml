@@ -33,5 +33,9 @@
     <string name="form_error_image">Description ou image obligatoire</string>
     <string name="form_error_invalid">Titre requis et texte ou image requis</string>
     <string name="not_connected">Not connected</string>
+    <string name="delete_post_confirmation_title">Supprimer votre post</string>
+    <string name="delete_post_confirmation_text">Êtes-vous sûr de vouloir supprimer ce post et tous ses commentaires ? Cette action est irréversible</string>
+    <string name="contentDescription_delete">Supprimer le post</string>
+    <string name="action_select_image">Choisissez une image</string>
 
 </resources>
