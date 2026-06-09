@@ -1,0 +1,325 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PostDetailViewModel</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.openclassrooms.hexagonal.games.presentation.screen.postdetail</a>
+</div>
+
+<h1>Coverage Summary for Class: PostDetailViewModel (com.openclassrooms.hexagonal.games.presentation.screen.postdetail)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PostDetailViewModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    62,5%
+  </span>
+  <span class="absValue">
+    (5/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85%
+  </span>
+  <span class="absValue">
+    (17/20)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PostDetailViewModel$addComment$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66,7%
+  </span>
+  <span class="absValue">
+    (2/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">PostDetailViewModel$deletePost$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">PostDetailViewModel$fetchPost$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">PostDetailViewModel$fetchPost$1$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (2/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (9/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (5/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88,6%
+  </span>
+  <span class="absValue">
+    (31/35)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.hexagonal.games.presentation.screen.postdetail
+&nbsp;
+&nbsp;import android.util.Log
+&nbsp;import androidx.lifecycle.ViewModel
+&nbsp;import androidx.lifecycle.viewModelScope
+&nbsp;import com.openclassrooms.hexagonal.games.domain.usecase.AddCommentUseCase
+&nbsp;import com.openclassrooms.hexagonal.games.domain.usecase.DeletePostUseCase
+&nbsp;import com.openclassrooms.hexagonal.games.domain.usecase.GetPostByIdUseCase
+&nbsp;import com.openclassrooms.hexagonal.games.domain.usecase.ManageUserUseCase
+&nbsp;import com.openclassrooms.hexagonal.games.domain.util.AppState
+&nbsp;import com.openclassrooms.hexagonal.games.presentation.screen.homefeed.PostUi
+&nbsp;import com.openclassrooms.hexagonal.games.presentation.screen.homefeed.toPostUi
+&nbsp;import dagger.hilt.android.lifecycle.HiltViewModel
+&nbsp;import kotlinx.coroutines.flow.MutableStateFlow
+&nbsp;import kotlinx.coroutines.flow.StateFlow
+&nbsp;import kotlinx.coroutines.flow.asStateFlow
+&nbsp;import kotlinx.coroutines.flow.update
+&nbsp;import kotlinx.coroutines.launch
+&nbsp;import javax.inject.Inject
+&nbsp;
+<b class="fc">&nbsp;@HiltViewModel</b>
+&nbsp;class PostDetailViewModel @Inject constructor(
+<b class="fc">&nbsp;    private val getPostByIdUseCase: GetPostByIdUseCase,</b>
+<b class="fc">&nbsp;    private val addCommentUseCase: AddCommentUseCase,</b>
+<b class="fc">&nbsp;    private val deletePostUseCase: DeletePostUseCase,</b>
+<b class="fc">&nbsp;    private val manageUserUseCase: ManageUserUseCase</b>
+&nbsp;) : ViewModel() {
+&nbsp;
+<b class="fc">&nbsp;    private val _post = MutableStateFlow&lt;PostUi?&gt;(null)</b>
+<b class="fc">&nbsp;    val post: StateFlow&lt;PostUi?&gt; = _post.asStateFlow()</b>
+&nbsp;
+<b class="fc">&nbsp;    private val _appState = MutableStateFlow&lt;AppState&gt;(AppState.Loading)</b>
+<b class="fc">&nbsp;    val appState: StateFlow&lt;AppState&gt; = _appState.asStateFlow()</b>
+&nbsp;
+<b class="fc">&nbsp;    private val _uiState = MutableStateFlow(PostDetailUiState())</b>
+<b class="fc">&nbsp;    val uiState: StateFlow&lt;PostDetailUiState&gt; = _uiState.asStateFlow()</b>
+&nbsp;
+&nbsp;    fun fetchPost(postId: String) {
+<b class="fc">&nbsp;        viewModelScope.launch {</b>
+<b class="pc">&nbsp;            _post.value = getPostByIdUseCase(postId)?.toPostUi()</b>
+<b class="fc">&nbsp;            manageUserUseCase.getUser().collect { user -&gt;</b>
+<b class="pc">&nbsp;                _appState.value = if (user != null) AppState.Ready else AppState.NotAuthenticated</b>
+<b class="pc">&nbsp;                _uiState.update { it.copy(currentUserId = user?.uid) }</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    fun onCommentTextChanged(text: String) {
+<b class="fc">&nbsp;        _uiState.update { it.copy(commentText = text) }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    fun addComment(postId: String) {
+<b class="fc">&nbsp;        val content = _uiState.value.commentText</b>
+<b class="pc">&nbsp;        if (content.isBlank()) return</b>
+&nbsp;        
+<b class="fc">&nbsp;        viewModelScope.launch {</b>
+&nbsp;            try {
+<b class="fc">&nbsp;                addCommentUseCase(postId, content)</b>
+<b class="fc">&nbsp;                _uiState.update { it.copy(commentText = &quot;&quot;) }</b>
+&nbsp;            } catch (e: Exception) {
+<b class="nc">&nbsp;                Log.e(&quot;PostDetailViewModel&quot;, &quot;Erreur addComment : ${e.message}&quot;, e)</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    fun deletePost(postId: String) {
+<b class="fc">&nbsp;        viewModelScope.launch {</b>
+&nbsp;            try {
+<b class="fc">&nbsp;                _uiState.update { it.copy(isDeleting = true, deleteError = null) }</b>
+<b class="fc">&nbsp;                deletePostUseCase(postId)</b>
+<b class="fc">&nbsp;                _uiState.update { it.copy(isDeleting = false, deleteSuccess = true) }</b>
+&nbsp;            } catch (e: Exception) {
+<b class="fc">&nbsp;                _uiState.update {</b>
+<b class="fc">&nbsp;                    it.copy(</b>
+<b class="fc">&nbsp;                        isDeleting = false,</b>
+<b class="pc">&nbsp;                        deleteError = e.message ?: &quot;Erreur lors de la suppression&quot;</b>
+<b class="fc">&nbsp;                    )</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    fun resetDeleteState() {
+<b class="nc">&nbsp;        _uiState.update { it.copy(deleteSuccess = false, deleteError = null) }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    fun setShowErrorDialog(show: Boolean) {
+<b class="nc">&nbsp;        _uiState.update { it.copy(showErrorDialog = show) }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    fun setShowDeleteConfirmation(show: Boolean) {
+<b class="nc">&nbsp;        _uiState.update { it.copy(showDeleteConfirmation = show) }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-06-08 11:10</div>
+</div>
+</body>
+</html>

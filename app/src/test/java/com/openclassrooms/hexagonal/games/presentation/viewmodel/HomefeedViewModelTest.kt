@@ -28,9 +28,11 @@ class HomefeedViewModelTest {
     private lateinit var networkMonitor: NetworkStateMonitor
     private lateinit var getPostsUseCase: GetPostsUseCase
     private lateinit var viewModel: HomefeedViewModel
+    private lateinit var auth: com.google.firebase.auth.FirebaseAuth
 
     @Before
     fun setUp() {
+        auth = mockk(relaxed = true)
         authStateMonitor = mockk(relaxed = true)
         networkMonitor = mockk(relaxed = true)
         getPostsUseCase = mockk()
@@ -64,8 +66,9 @@ class HomefeedViewModelTest {
         every { getPostsUseCase() } returns flowOf(domainPosts)
 
         // When
-        viewModel = HomefeedViewModel(authStateMonitor, networkMonitor, getPostsUseCase)
-        val emitted = viewModel.posts.first { it.isNotEmpty() }
+        viewModel = HomefeedViewModel(authStateMonitor, networkMonitor, getPostsUseCase, auth)
+        val emittedState = viewModel.uiState.first { it.posts.isNotEmpty() }
+        val emitted = emittedState.posts
 
         // Then
         val expected = listOf(

@@ -1,0 +1,195 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ManageUserUseCase</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.openclassrooms.hexagonal.games.domain.usecase</a>
+</div>
+
+<h1>Coverage Summary for Class: ManageUserUseCase (com.openclassrooms.hexagonal.games.domain.usecase)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ManageUserUseCase</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (3/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ManageUserUseCase$getUser$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (3/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.hexagonal.games.domain.usecase
+&nbsp;
+&nbsp;import com.google.firebase.auth.FirebaseAuth
+&nbsp;import com.google.firebase.auth.FirebaseUser
+&nbsp;import kotlinx.coroutines.channels.awaitClose
+&nbsp;import kotlinx.coroutines.flow.Flow
+&nbsp;import kotlinx.coroutines.flow.callbackFlow
+&nbsp;import javax.inject.Inject
+&nbsp;
+&nbsp;/**
+&nbsp; * Use case to manage user account actions like sign out and account deletion.
+&nbsp; */
+<b class="fc">&nbsp;class ManageUserUseCase @Inject constructor(</b>
+<b class="fc">&nbsp;    private val auth: FirebaseAuth</b>
+&nbsp;) {
+&nbsp;    /**
+&nbsp;     * Returns a Flow of the current FirebaseUser.
+&nbsp;     */
+<b class="fc">&nbsp;    fun getUser(): Flow&lt;FirebaseUser?&gt; = callbackFlow {</b>
+<b class="fc">&nbsp;        val listener = FirebaseAuth.AuthStateListener { auth -&gt;</b>
+<b class="fc">&nbsp;            trySend(auth.currentUser)</b>
+&nbsp;        }
+<b class="fc">&nbsp;        auth.addAuthStateListener(listener)</b>
+<b class="fc">&nbsp;        awaitClose { auth.removeAuthStateListener(listener) }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Signs out the current user.
+&nbsp;     */
+&nbsp;    fun signOut() {
+<b class="fc">&nbsp;        auth.signOut()</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Deletes the current user&#39;s account.
+&nbsp;     *
+&nbsp;     * @param onComplete Callback invoked when the deletion process is complete.
+&nbsp;     */
+&nbsp;    fun deleteAccount(onComplete: (Boolean, Exception?) -&gt; Unit) {
+<b class="fc">&nbsp;        val user = auth.currentUser</b>
+<b class="pc">&nbsp;        user?.delete()?.addOnCompleteListener { task -&gt;</b>
+<b class="fc">&nbsp;            onComplete(task.isSuccessful, task.exception)</b>
+<b class="fc">&nbsp;        } ?: onComplete(false, Exception(&quot;No user logged in&quot;))</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-06-08 11:10</div>
+</div>
+</body>
+</html>

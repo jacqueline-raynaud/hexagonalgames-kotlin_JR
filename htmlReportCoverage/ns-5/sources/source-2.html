@@ -1,0 +1,292 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PostFirestoreApi</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.openclassrooms.hexagonal.games.data.service</a>
+</div>
+
+<h1>Coverage Summary for Class: PostFirestoreApi (com.openclassrooms.hexagonal.games.data.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PostFirestoreApi</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PostFirestoreApi$addPost$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">PostFirestoreApi$deletePost$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">PostFirestoreApi$getPostById$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">PostFirestoreApi$posts$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/33)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.hexagonal.games.data.service
+&nbsp;
+&nbsp;import com.google.firebase.firestore.FirebaseFirestore
+&nbsp;import com.google.firebase.firestore.Query
+&nbsp;import com.google.firebase.firestore.toObject
+&nbsp;import com.openclassrooms.hexagonal.games.data.model.PostDto
+&nbsp;import com.openclassrooms.hexagonal.games.domain.model.Post
+&nbsp;import com.openclassrooms.hexagonal.games.domain.repository.PostRepository
+&nbsp;import kotlinx.coroutines.Dispatchers
+&nbsp;import kotlinx.coroutines.channels.awaitClose
+&nbsp;import kotlinx.coroutines.flow.Flow
+&nbsp;import kotlinx.coroutines.flow.callbackFlow
+&nbsp;import kotlinx.coroutines.tasks.await
+&nbsp;import kotlinx.coroutines.withContext
+&nbsp;import javax.inject.Inject
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;class PostFirestoreApi @Inject constructor(</b>
+<b class="nc">&nbsp;    private val firestore: FirebaseFirestore</b>
+&nbsp;) : PostRepository {
+&nbsp;
+<b class="nc">&nbsp;    private val collection = firestore.collection(&quot;publications&quot;)</b>
+&nbsp;
+<b class="nc">&nbsp;    override val posts: Flow&lt;List&lt;Post&gt;&gt; =</b>
+<b class="nc">&nbsp;        callbackFlow {</b>
+<b class="nc">&nbsp;            val listener = collection</b>
+<b class="nc">&nbsp;                .orderBy(&quot;timestamp&quot;, Query.Direction.DESCENDING)</b>
+<b class="nc">&nbsp;                .addSnapshotListener { snapshot, error -&gt;</b>
+<b class="nc">&nbsp;                    if (error != null) {</b>
+<b class="nc">&nbsp;                        close(error)</b>
+&nbsp;                        return@addSnapshotListener
+&nbsp;                    }
+<b class="nc">&nbsp;                    val posts = snapshot?.documents</b>
+<b class="nc">&nbsp;                        ?.mapNotNull { doc -&gt;</b>
+<b class="nc">&nbsp;                            doc.toObject&lt;PostDto&gt;()?.toDomain()?.copy(id = doc.id)</b>
+<b class="nc">&nbsp;                        } ?: emptyList()</b>
+<b class="nc">&nbsp;                    trySend(posts)</b>
+&nbsp;                }
+<b class="nc">&nbsp;            awaitClose { listener.remove() }</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;    override suspend fun addPost(post: Post): Unit = withContext(Dispatchers.IO) {</b>
+<b class="nc">&nbsp;        val data = mapOf(</b>
+<b class="nc">&nbsp;            &quot;title&quot; to post.title,</b>
+<b class="nc">&nbsp;            &quot;description&quot; to post.description,</b>
+<b class="nc">&nbsp;            &quot;photoUrl&quot; to post.photoUrl,</b>
+<b class="nc">&nbsp;            &quot;timestamp&quot; to post.timestamp,</b>
+<b class="nc">&nbsp;            &quot;author&quot; to mapOf(</b>
+<b class="nc">&nbsp;                &quot;id&quot; to post.author?.id,</b>
+<b class="nc">&nbsp;                &quot;nameUser&quot; to post.author?.nameUser</b>
+&nbsp;            )
+&nbsp;        )
+<b class="nc">&nbsp;        collection.add(data).await()</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    override suspend fun getPostById(postId: String): Post? = withContext(Dispatchers.IO) {</b>
+<b class="nc">&nbsp;        if (postId.isEmpty()) return@withContext null</b>
+&nbsp;        return@withContext try {
+<b class="nc">&nbsp;            val doc = collection.document(postId).get().await()</b>
+<b class="nc">&nbsp;            doc.toObject&lt;PostDto&gt;()?.toDomain()?.copy(id = doc.id)</b>
+&nbsp;        } catch (e: Exception) {
+<b class="nc">&nbsp;            null</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    override suspend fun deletePost(postId: String): Unit = withContext(Dispatchers.IO) {</b>
+<b class="nc">&nbsp;        collection.document(postId).delete().await()</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-06-08 11:10</div>
+</div>
+</body>
+</html>

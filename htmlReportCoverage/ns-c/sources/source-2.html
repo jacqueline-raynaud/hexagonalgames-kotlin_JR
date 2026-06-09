@@ -1,0 +1,153 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AccountManagementViewModel</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.openclassrooms.hexagonal.games.presentation.screen.accountmanagement</a>
+</div>
+
+<h1>Coverage Summary for Class: AccountManagementViewModel (com.openclassrooms.hexagonal.games.presentation.screen.accountmanagement)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AccountManagementViewModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83,3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90%
+  </span>
+  <span class="absValue">
+    (9/10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.hexagonal.games.presentation.screen.accountmanagement
+&nbsp;
+&nbsp;import androidx.lifecycle.ViewModel
+&nbsp;import com.openclassrooms.hexagonal.games.domain.usecase.ManageUserUseCase
+&nbsp;import dagger.hilt.android.lifecycle.HiltViewModel
+&nbsp;import javax.inject.Inject
+&nbsp;
+&nbsp;/**
+&nbsp; * ViewModel responsible for managing user account actions like sign out and account deletion.
+&nbsp; * It utilizes the ManageUserUseCase to handle the business logic.
+&nbsp; */
+<b class="fc">&nbsp;@HiltViewModel</b>
+&nbsp;class AccountManagementViewModel @Inject constructor(
+<b class="fc">&nbsp;    private val manageUserUseCase: ManageUserUseCase</b>
+&nbsp;) : ViewModel() {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Signs out the current user and executes a callback on success.
+&nbsp;     */
+<b class="nc">&nbsp;    fun signOut(onSuccess: () -&gt; Unit = {}) {</b>
+<b class="fc">&nbsp;        manageUserUseCase.signOut()</b>
+<b class="fc">&nbsp;        onSuccess()</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Deletes the current user&#39;s account and executes appropriate callbacks.
+&nbsp;     */
+<b class="fc">&nbsp;    fun deleteAccount(onSuccess: () -&gt; Unit = {}, onFailure: (Exception) -&gt; Unit = {}) {</b>
+<b class="fc">&nbsp;        manageUserUseCase.deleteAccount { success, exception -&gt;</b>
+<b class="fc">&nbsp;            if (success) {</b>
+<b class="fc">&nbsp;                onSuccess()</b>
+&nbsp;            } else {
+<b class="pc">&nbsp;                onFailure(exception ?: Exception(&quot;Unknown error during account deletion&quot;))</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-06-08 11:10</div>
+</div>
+</body>
+</html>

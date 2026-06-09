@@ -1,0 +1,567 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PostDetailScreenKt</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.openclassrooms.hexagonal.games.presentation.screen.postdetail</a>
+</div>
+
+<h1>Coverage Summary for Class: PostDetailScreenKt (com.openclassrooms.hexagonal.games.presentation.screen.postdetail)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PostDetailScreenKt</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/102)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/170)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PostDetailScreenKt$PostDetailScreen$1$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">PostDetailScreenKt$PostDetailScreen$2$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/25)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/104)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/173)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.hexagonal.games.presentation.screen.postdetail
+&nbsp;
+&nbsp;import androidx.compose.foundation.layout.Box
+&nbsp;import androidx.compose.foundation.layout.Column
+&nbsp;import androidx.compose.foundation.layout.Row
+&nbsp;import androidx.compose.foundation.layout.Spacer
+&nbsp;import androidx.compose.foundation.layout.aspectRatio
+&nbsp;import androidx.compose.foundation.layout.fillMaxSize
+&nbsp;import androidx.compose.foundation.layout.fillMaxWidth
+&nbsp;import androidx.compose.foundation.layout.height
+&nbsp;import androidx.compose.foundation.layout.heightIn
+&nbsp;import androidx.compose.foundation.layout.padding
+&nbsp;import androidx.compose.foundation.layout.width
+&nbsp;import androidx.compose.foundation.rememberScrollState
+&nbsp;import androidx.compose.foundation.verticalScroll
+&nbsp;import androidx.compose.material.icons.Icons
+&nbsp;import androidx.compose.material.icons.automirrored.filled.ArrowBack
+&nbsp;import androidx.compose.material.icons.automirrored.filled.Send
+&nbsp;import androidx.compose.material.icons.filled.Delete
+&nbsp;import androidx.compose.material3.AlertDialog
+&nbsp;import androidx.compose.material3.Button
+&nbsp;import androidx.compose.material3.CircularProgressIndicator
+&nbsp;import androidx.compose.material3.ExperimentalMaterial3Api
+&nbsp;import androidx.compose.material3.HorizontalDivider
+&nbsp;import androidx.compose.material3.Icon
+&nbsp;import androidx.compose.material3.IconButton
+&nbsp;import androidx.compose.material3.MaterialTheme
+&nbsp;import androidx.compose.material3.OutlinedTextField
+&nbsp;import androidx.compose.material3.Scaffold
+&nbsp;import androidx.compose.material3.Text
+&nbsp;import androidx.compose.material3.TextButton
+&nbsp;import androidx.compose.material3.TopAppBar
+&nbsp;import androidx.compose.runtime.Composable
+&nbsp;import androidx.compose.runtime.LaunchedEffect
+&nbsp;import androidx.compose.runtime.getValue
+&nbsp;import androidx.compose.ui.Alignment
+&nbsp;import androidx.compose.ui.Modifier
+&nbsp;import androidx.compose.ui.graphics.Color
+&nbsp;import androidx.compose.ui.graphics.painter.ColorPainter
+&nbsp;import androidx.compose.ui.layout.ContentScale
+&nbsp;import androidx.compose.ui.platform.LocalContext
+&nbsp;import androidx.compose.ui.platform.LocalInspectionMode
+&nbsp;import androidx.compose.ui.res.stringResource
+&nbsp;import androidx.compose.ui.text.font.FontWeight
+&nbsp;import androidx.compose.ui.tooling.preview.PreviewLightDark
+&nbsp;import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+&nbsp;import androidx.compose.ui.unit.dp
+&nbsp;import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+&nbsp;import androidx.lifecycle.compose.collectAsStateWithLifecycle
+&nbsp;import coil.compose.AsyncImage
+&nbsp;import coil.imageLoader
+&nbsp;import coil.util.DebugLogger
+&nbsp;import com.openclassrooms.hexagonal.games.R
+&nbsp;import com.openclassrooms.hexagonal.games.domain.util.AppState
+&nbsp;import com.openclassrooms.hexagonal.games.presentation.screen.homefeed.PostUi
+&nbsp;import com.openclassrooms.hexagonal.games.presentation.screen.postdetail.comments.FirebaseUiCommentsList
+&nbsp;import com.openclassrooms.hexagonal.games.presentation.ui.components.AppStateErrorDialog
+&nbsp;import com.openclassrooms.hexagonal.games.presentation.ui.theme.HexagonalGamesTheme
+&nbsp;
+&nbsp;@Composable
+&nbsp;fun PostDetailScreen(
+&nbsp;    postId: String,
+&nbsp;    onBackClick: () -&gt; Unit,
+&nbsp;    onNavigateToLogin: () -&gt; Unit
+<b class="nc">&nbsp;) {</b>
+<b class="nc">&nbsp;    val viewModel: PostDetailViewModel = hiltViewModel()</b>
+<b class="nc">&nbsp;    val post by viewModel.post.collectAsStateWithLifecycle()</b>
+<b class="nc">&nbsp;    val appState by viewModel.appState.collectAsStateWithLifecycle()</b>
+<b class="nc">&nbsp;    val uiState by viewModel.uiState.collectAsStateWithLifecycle()</b>
+&nbsp;
+<b class="nc">&nbsp;    LaunchedEffect(postId) {</b>
+<b class="nc">&nbsp;        viewModel.fetchPost(postId)</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    LaunchedEffect(uiState.deleteSuccess) {</b>
+<b class="nc">&nbsp;        if (uiState.deleteSuccess) {</b>
+<b class="nc">&nbsp;            onBackClick()</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    PostDetailScreen(</b>
+<b class="nc">&nbsp;        postId = postId,</b>
+<b class="nc">&nbsp;        post = post,</b>
+<b class="nc">&nbsp;        appState = appState,</b>
+<b class="nc">&nbsp;        uiState = uiState,</b>
+<b class="nc">&nbsp;        onBackClick = onBackClick,</b>
+<b class="nc">&nbsp;        onNavigateToLogin = onNavigateToLogin,</b>
+<b class="nc">&nbsp;        onDeletePost = { viewModel.deletePost(postId) },</b>
+<b class="nc">&nbsp;        onResetDeleteState = { viewModel.resetDeleteState() },</b>
+<b class="nc">&nbsp;        onAddComment = { viewModel.addComment(postId) },</b>
+<b class="nc">&nbsp;        onCommentTextChanged = { viewModel.onCommentTextChanged(it) },</b>
+<b class="nc">&nbsp;        onShowErrorDialog = { viewModel.setShowErrorDialog(it) },</b>
+<b class="nc">&nbsp;        onShowDeleteConfirmation = { viewModel.setShowDeleteConfirmation(it) }</b>
+&nbsp;    )
+<b class="nc">&nbsp;}</b>
+&nbsp;
+&nbsp;@OptIn(ExperimentalMaterial3Api::class)
+&nbsp;@Composable
+&nbsp;private fun PostDetailScreen(
+&nbsp;    postId: String,
+&nbsp;    post: PostUi?,
+&nbsp;    appState: AppState,
+&nbsp;    uiState: PostDetailUiState,
+&nbsp;    onBackClick: () -&gt; Unit,
+&nbsp;    onNavigateToLogin: () -&gt; Unit,
+&nbsp;    onDeletePost: () -&gt; Unit,
+&nbsp;    onResetDeleteState: () -&gt; Unit,
+&nbsp;    onAddComment: () -&gt; Unit,
+&nbsp;    onCommentTextChanged: (String) -&gt; Unit,
+&nbsp;    onShowErrorDialog: (Boolean) -&gt; Unit,
+&nbsp;    onShowDeleteConfirmation: (Boolean) -&gt; Unit,
+<b class="nc">&nbsp;) {</b>
+<b class="nc">&nbsp;    if (uiState.showErrorDialog) {</b>
+<b class="nc">&nbsp;        AppStateErrorDialog(</b>
+<b class="nc">&nbsp;            appStatus = appState,</b>
+<b class="nc">&nbsp;            onDismiss = { onShowErrorDialog(false) },</b>
+<b class="nc">&nbsp;            onNavigateToLogin = {</b>
+<b class="nc">&nbsp;                onShowErrorDialog(false)</b>
+<b class="nc">&nbsp;                onNavigateToLogin()</b>
+&nbsp;            }
+&nbsp;        )
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    if (uiState.deleteError != null) {</b>
+<b class="nc">&nbsp;        AlertDialog(</b>
+<b class="nc">&nbsp;            onDismissRequest = { onResetDeleteState() },</b>
+&nbsp;            title = { Text(stringResource(R.string.error_title)) },
+<b class="nc">&nbsp;            text = { Text(uiState.deleteError) },</b>
+<b class="nc">&nbsp;            confirmButton = {</b>
+<b class="nc">&nbsp;                Button(onClick = { onResetDeleteState() }) {</b>
+&nbsp;                    Text(&quot;OK&quot;)
+&nbsp;                }
+&nbsp;            }
+&nbsp;        )
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    if (uiState.showDeleteConfirmation &amp;&amp; post != null) {</b>
+<b class="nc">&nbsp;        AlertDialog(</b>
+<b class="nc">&nbsp;            onDismissRequest = { onShowDeleteConfirmation(false) },</b>
+&nbsp;            title = { Text(stringResource(R.string.delete_post_confirmation_title)) },
+&nbsp;            text = { Text(stringResource(R.string.delete_post_confirmation_text)) },
+<b class="nc">&nbsp;            confirmButton = {</b>
+<b class="nc">&nbsp;                Button(</b>
+<b class="nc">&nbsp;                    onClick = {</b>
+<b class="nc">&nbsp;                        onShowDeleteConfirmation(false)</b>
+<b class="nc">&nbsp;                        onDeletePost()</b>
+&nbsp;                    },
+<b class="nc">&nbsp;                    enabled = !uiState.isDeleting</b>
+&nbsp;                ) {
+&nbsp;                    Text(&quot;Supprimer&quot;)
+&nbsp;                }
+&nbsp;            },
+<b class="nc">&nbsp;            dismissButton = {</b>
+<b class="nc">&nbsp;                TextButton(onClick = { onShowDeleteConfirmation(false) }) {</b>
+&nbsp;                    Text(stringResource(R.string.cancel))
+&nbsp;                }
+&nbsp;            }
+&nbsp;        )
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    Scaffold(</b>
+<b class="nc">&nbsp;        topBar = {</b>
+<b class="nc">&nbsp;            TopAppBar(</b>
+&nbsp;                title = { Text(stringResource(R.string.post_detail_label)) },
+<b class="nc">&nbsp;                navigationIcon = {</b>
+<b class="nc">&nbsp;                    IconButton(onClick = onBackClick) {</b>
+&nbsp;                        Icon(
+&nbsp;                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+&nbsp;                            contentDescription = stringResource(R.string.contentDescription_go_back)
+&nbsp;                        )
+&nbsp;                    }
+&nbsp;                },
+<b class="nc">&nbsp;                actions = {</b>
+<b class="nc">&nbsp;                    if (post != null &amp;&amp; post.authorId == uiState.currentUserId) {</b>
+<b class="nc">&nbsp;                        IconButton(onClick = { onShowDeleteConfirmation(true) }) {</b>
+&nbsp;                            Icon(
+&nbsp;                                imageVector = Icons.Filled.Delete,
+&nbsp;                                contentDescription = stringResource(R.string.contentDescription_delete),
+&nbsp;                                tint = MaterialTheme.colorScheme.error
+&nbsp;                            )
+&nbsp;                        }
+<b class="nc">&nbsp;                    }</b>
+&nbsp;                }
+&nbsp;            )
+&nbsp;        }
+<b class="nc">&nbsp;    ) { contentPadding -&gt;</b>
+<b class="nc">&nbsp;        if (post == null) {</b>
+<b class="nc">&nbsp;            Column(</b>
+<b class="nc">&nbsp;                modifier = Modifier</b>
+<b class="nc">&nbsp;                    .fillMaxSize()</b>
+<b class="nc">&nbsp;                    .padding(contentPadding),</b>
+<b class="nc">&nbsp;                horizontalAlignment = Alignment.CenterHorizontally</b>
+&nbsp;            ) {
+<b class="nc">&nbsp;                CircularProgressIndicator(modifier = Modifier.padding(16.dp))</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        } else {</b>
+<b class="nc">&nbsp;            PostDetailContent(</b>
+<b class="nc">&nbsp;                modifier = Modifier.padding(contentPadding),</b>
+<b class="nc">&nbsp;                postId = postId,</b>
+<b class="nc">&nbsp;                post = post,</b>
+<b class="nc">&nbsp;                commentText = uiState.commentText,</b>
+<b class="nc">&nbsp;                onCommentTextChanged = onCommentTextChanged,</b>
+<b class="nc">&nbsp;                onAddComment = {</b>
+<b class="nc">&nbsp;                    if (appState == AppState.Ready) {</b>
+<b class="nc">&nbsp;                        onAddComment()</b>
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        onShowErrorDialog(true)</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            )
+&nbsp;        }
+&nbsp;    }
+<b class="nc">&nbsp;}</b>
+&nbsp;
+&nbsp;@Composable
+&nbsp;fun PostDetailContent(
+<b class="nc">&nbsp;    modifier: Modifier = Modifier,</b>
+&nbsp;    postId: String,
+&nbsp;    post: PostUi,
+&nbsp;    commentText: String,
+&nbsp;    onCommentTextChanged: (String) -&gt; Unit,
+&nbsp;    onAddComment: () -&gt; Unit
+<b class="nc">&nbsp;) {</b>
+<b class="nc">&nbsp;    Column(modifier = modifier.fillMaxSize()) {</b>
+&nbsp;        // post and title comment
+<b class="nc">&nbsp;        Column(</b>
+<b class="nc">&nbsp;            modifier = Modifier</b>
+<b class="nc">&nbsp;                .weight(1f)</b>
+<b class="nc">&nbsp;                .verticalScroll(rememberScrollState())</b>
+<b class="nc">&nbsp;                .padding(16.dp)</b>
+&nbsp;        ) {
+<b class="nc">&nbsp;            PostInfo(post = post)</b>
+<b class="nc">&nbsp;            Spacer(modifier = Modifier.height(16.dp))</b>
+<b class="nc">&nbsp;            HorizontalDivider()</b>
+<b class="nc">&nbsp;            Spacer(modifier = Modifier.height(16.dp))</b>
+<b class="nc">&nbsp;            Text(</b>
+<b class="nc">&nbsp;                text = stringResource(R.string.comments_header),</b>
+<b class="nc">&nbsp;                style = MaterialTheme.typography.titleMedium,</b>
+<b class="nc">&nbsp;                fontWeight = FontWeight.Bold</b>
+&nbsp;            )
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        HorizontalDivider()</b>
+&nbsp;
+&nbsp;        // comment list via FirebaseUI Firestore
+<b class="nc">&nbsp;        if (LocalInspectionMode.current) {</b>
+<b class="nc">&nbsp;            Box(</b>
+<b class="nc">&nbsp;                modifier = Modifier</b>
+<b class="nc">&nbsp;                    .weight(1f)</b>
+<b class="nc">&nbsp;                    .fillMaxSize(),</b>
+<b class="nc">&nbsp;                contentAlignment = Alignment.Center</b>
+&nbsp;            ) {
+<b class="nc">&nbsp;                Text(stringResource(R.string.no_comments))</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        } else {</b>
+<b class="nc">&nbsp;            FirebaseUiCommentsList(</b>
+<b class="nc">&nbsp;                postId = postId,</b>
+<b class="nc">&nbsp;                modifier = Modifier.weight(1f)</b>
+&nbsp;            )
+&nbsp;        }
+&nbsp;
+&nbsp;        // edit barre for comment
+<b class="nc">&nbsp;        CommentInput(</b>
+<b class="nc">&nbsp;            text = commentText,</b>
+<b class="nc">&nbsp;            onValueChange = onCommentTextChanged,</b>
+<b class="nc">&nbsp;            onSendClick = onAddComment</b>
+&nbsp;        )
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;}</b>
+&nbsp;
+&nbsp;
+&nbsp;@Composable
+<b class="nc">&nbsp;fun PostInfo(post: PostUi) {</b>
+<b class="nc">&nbsp;    Column {</b>
+<b class="nc">&nbsp;        Text(</b>
+<b class="nc">&nbsp;            text = post.title,</b>
+<b class="nc">&nbsp;            style = MaterialTheme.typography.headlineMedium,</b>
+<b class="nc">&nbsp;            fontWeight = FontWeight.Bold</b>
+&nbsp;        )
+<b class="nc">&nbsp;        Text(</b>
+<b class="nc">&nbsp;            text = stringResource(R.string.by, post.authorName),</b>
+<b class="nc">&nbsp;            style = MaterialTheme.typography.bodySmall,</b>
+<b class="nc">&nbsp;            color = Color.Gray</b>
+&nbsp;        )
+<b class="nc">&nbsp;        if (!post.photoUrl.isNullOrEmpty()) {</b>
+<b class="nc">&nbsp;            AsyncImage(</b>
+<b class="nc">&nbsp;                modifier = Modifier</b>
+<b class="nc">&nbsp;                    .padding(vertical = 8.dp)</b>
+<b class="nc">&nbsp;                    .fillMaxWidth()</b>
+<b class="nc">&nbsp;                    .heightIn(max = 300.dp)</b>
+<b class="nc">&nbsp;                    .aspectRatio(16 / 9f),</b>
+<b class="nc">&nbsp;                model = post.photoUrl,</b>
+<b class="nc">&nbsp;                imageLoader = LocalContext.current.imageLoader.newBuilder()</b>
+<b class="nc">&nbsp;                    .logger(DebugLogger())</b>
+<b class="nc">&nbsp;                    .build(),</b>
+<b class="nc">&nbsp;                placeholder = ColorPainter(Color.DarkGray),</b>
+<b class="nc">&nbsp;                contentDescription = null,</b>
+<b class="nc">&nbsp;                contentScale = ContentScale.Crop</b>
+&nbsp;            )
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        post.description?.let {</b>
+<b class="nc">&nbsp;            Text(</b>
+<b class="nc">&nbsp;                text = it,</b>
+<b class="nc">&nbsp;                style = MaterialTheme.typography.bodyLarge,</b>
+<b class="nc">&nbsp;                modifier = Modifier.padding(vertical = 8.dp)</b>
+&nbsp;            )
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;}</b>
+&nbsp;
+&nbsp;@Composable
+&nbsp;fun CommentInput(
+&nbsp;    text: String,
+&nbsp;    onValueChange: (String) -&gt; Unit,
+&nbsp;    onSendClick: () -&gt; Unit
+<b class="nc">&nbsp;) {</b>
+<b class="nc">&nbsp;    Row(</b>
+<b class="nc">&nbsp;        modifier = Modifier</b>
+<b class="nc">&nbsp;            .fillMaxWidth()</b>
+<b class="nc">&nbsp;            .padding(8.dp),</b>
+<b class="nc">&nbsp;        verticalAlignment = Alignment.CenterVertically</b>
+&nbsp;    ) {
+<b class="nc">&nbsp;        OutlinedTextField(</b>
+<b class="nc">&nbsp;            value = text,</b>
+<b class="nc">&nbsp;            onValueChange = onValueChange,</b>
+<b class="nc">&nbsp;            modifier = Modifier.weight(1f),</b>
+&nbsp;            placeholder = { Text(stringResource(R.string.hint_comment)) }
+&nbsp;        )
+<b class="nc">&nbsp;        Spacer(modifier = Modifier.width(8.dp))</b>
+<b class="nc">&nbsp;        IconButton(</b>
+<b class="nc">&nbsp;            onClick = onSendClick,</b>
+<b class="nc">&nbsp;            enabled = text.isNotBlank()</b>
+&nbsp;        ) {
+&nbsp;            Icon(
+&nbsp;                imageVector = Icons.AutoMirrored.Filled.Send,
+&nbsp;                contentDescription = stringResource(R.string.action_send)
+&nbsp;            )
+&nbsp;        }
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;}</b>
+&nbsp;
+&nbsp;@PreviewLightDark
+&nbsp;@PreviewScreenSizes
+&nbsp;@Composable
+<b class="nc">&nbsp;private fun PostDetailScreenPreview() {</b>
+<b class="nc">&nbsp;    HexagonalGamesTheme {</b>
+&nbsp;        PostDetailScreen(
+&nbsp;            postId = &quot;1&quot;,
+&nbsp;            post = PostUi(
+&nbsp;                id = &quot;1&quot;,
+&nbsp;                authorId = &quot;01&quot;,
+&nbsp;                authorName = &quot;firstname lastname&quot;,
+&nbsp;                title = &quot;title&quot;,
+&nbsp;                description = &quot;description&quot;,
+&nbsp;                photoUrl = null
+&nbsp;            ),
+&nbsp;            appState = AppState.Ready,
+&nbsp;            uiState = PostDetailUiState(currentUserId = &quot;01&quot;),
+&nbsp;            onBackClick = {},
+&nbsp;            onNavigateToLogin = {},
+&nbsp;            onDeletePost = {},
+&nbsp;            onResetDeleteState = {},
+&nbsp;            onAddComment = {},
+&nbsp;            onCommentTextChanged = {},
+&nbsp;            onShowErrorDialog = {},
+&nbsp;            onShowDeleteConfirmation = {}
+&nbsp;        )
+&nbsp;    }
+<b class="nc">&nbsp;}</b>
+&nbsp;
+&nbsp;@PreviewLightDark
+&nbsp;@Composable
+<b class="nc">&nbsp;private fun PostDetailScreenLoadingPreview() {</b>
+<b class="nc">&nbsp;    HexagonalGamesTheme {</b>
+&nbsp;        PostDetailScreen(
+&nbsp;            postId = &quot;1&quot;,
+&nbsp;            post = null,
+&nbsp;            appState = AppState.Ready,
+&nbsp;            uiState = PostDetailUiState(),
+&nbsp;            onBackClick = {},
+&nbsp;            onNavigateToLogin = {},
+&nbsp;            onDeletePost = {},
+&nbsp;            onResetDeleteState = {},
+&nbsp;            onAddComment = {},
+&nbsp;            onCommentTextChanged = {},
+&nbsp;            onShowErrorDialog = {},
+&nbsp;            onShowDeleteConfirmation = {}
+&nbsp;        )
+&nbsp;    }
+<b class="nc">&nbsp;}</b>
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-06-08 11:10</div>
+</div>
+</body>
+</html>

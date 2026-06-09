@@ -93,7 +93,8 @@ class PostDetailViewModelTest {
         val content = "Nice post"
 
         // When
-        viewModel.addComment(postId, content)
+        viewModel.onCommentTextChanged(content)
+        viewModel.addComment(postId)
 
         // Then
         coVerify { addCommentUseCase(postId, content) }

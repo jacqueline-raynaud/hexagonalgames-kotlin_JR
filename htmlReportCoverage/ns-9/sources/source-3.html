@@ -1,0 +1,217 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > NetworkStateMonitor</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.openclassrooms.hexagonal.games.domain.util</a>
+</div>
+
+<h1>Coverage Summary for Class: NetworkStateMonitor (com.openclassrooms.hexagonal.games.domain.util)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NetworkStateMonitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">NetworkStateMonitor$isOnline$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">NetworkStateMonitor$isOnline$1$callback$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/15)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.hexagonal.games.domain.util
+&nbsp;
+&nbsp;import android.content.Context
+&nbsp;import android.net.ConnectivityManager
+&nbsp;import android.net.Network
+&nbsp;import dagger.hilt.android.qualifiers.ApplicationContext
+&nbsp;import kotlinx.coroutines.CoroutineScope
+&nbsp;import kotlinx.coroutines.Dispatchers
+&nbsp;import kotlinx.coroutines.SupervisorJob
+&nbsp;import kotlinx.coroutines.channels.awaitClose
+&nbsp;import kotlinx.coroutines.flow.SharingStarted
+&nbsp;import kotlinx.coroutines.flow.StateFlow
+&nbsp;import kotlinx.coroutines.flow.callbackFlow
+&nbsp;import kotlinx.coroutines.flow.stateIn
+&nbsp;import javax.inject.Inject
+&nbsp;import javax.inject.Singleton
+&nbsp;
+&nbsp;/**
+&nbsp; * Monitors the network connectivity state of the application.
+&nbsp; *
+&nbsp; * This utility class is responsible for tracking changes in network availability
+&nbsp; * and providing information on whether the device is currently connected to the internet.
+&nbsp; */
+<b class="nc">&nbsp;@Singleton</b>
+&nbsp;class NetworkStateMonitor @Inject constructor(
+<b class="nc">&nbsp;    @ApplicationContext private val context: Context</b>
+&nbsp;) {
+<b class="nc">&nbsp;    val isOnline: StateFlow&lt;Boolean&gt; = callbackFlow {</b>
+<b class="nc">&nbsp;        val manager = context.getSystemService(ConnectivityManager::class.java)</b>
+<b class="nc">&nbsp;        val callback = object : ConnectivityManager.NetworkCallback() {</b>
+&nbsp;            override fun onAvailable(network: Network) {
+<b class="nc">&nbsp;                trySend(true)</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            override fun onLost(network: Network) {
+<b class="nc">&nbsp;                trySend(false)</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        manager.registerDefaultNetworkCallback(callback)</b>
+&nbsp;        // valeur initiale
+<b class="nc">&nbsp;        trySend(manager.activeNetwork != null)</b>
+<b class="nc">&nbsp;        awaitClose { manager.unregisterNetworkCallback(callback) }</b>
+<b class="nc">&nbsp;    }.stateIn(</b>
+<b class="nc">&nbsp;        scope = CoroutineScope(SupervisorJob() + Dispatchers.IO),</b>
+<b class="nc">&nbsp;        started = SharingStarted.WhileSubscribed(5_000),</b>
+<b class="nc">&nbsp;        initialValue = false</b>
+&nbsp;    )
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-06-08 11:10</div>
+</div>
+</body>
+</html>

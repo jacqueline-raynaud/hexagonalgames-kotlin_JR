@@ -1,0 +1,184 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > FirebaseUiActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.openclassrooms.hexagonal.games.presentation.ui</a>
+</div>
+
+<h1>Coverage Summary for Class: FirebaseUiActivity (com.openclassrooms.hexagonal.games.presentation.ui)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FirebaseUiActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/25)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.hexagonal.games.presentation.ui
+&nbsp;
+&nbsp;import android.content.Intent
+&nbsp;import android.os.Bundle
+&nbsp;import android.util.Log
+&nbsp;import androidx.appcompat.app.AppCompatActivity
+&nbsp;import com.firebase.ui.auth.AuthUI
+&nbsp;import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+&nbsp;import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+&nbsp;import com.google.firebase.auth.FirebaseAuth
+&nbsp;import com.openclassrooms.hexagonal.games.R
+&nbsp;
+&nbsp;/**
+&nbsp; * Activité gérant l&#39;authentification via Firebase UI.
+&nbsp; * Utilise un thème avec ActionBar pour éviter les chevauchements de titre sur les champs de saisie.
+&nbsp; */
+<b class="nc">&nbsp;class FirebaseUiActivity : AppCompatActivity() {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Lanceur d&#39;activité pour le résultat de l&#39;authentification Firebase UI.
+&nbsp;     */
+<b class="nc">&nbsp;    private val signInLauncher = registerForActivityResult(</b>
+<b class="nc">&nbsp;        FirebaseAuthUIActivityResultContract(),</b>
+<b class="nc">&nbsp;    ) { res -&gt;</b>
+<b class="nc">&nbsp;        this.onSignInResult(res)</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    override fun onCreate(savedInstanceState: Bundle?) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState)</b>
+&nbsp;        // screen connexion
+<b class="nc">&nbsp;        createSignInIntent()</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun createSignInIntent() {
+&nbsp;        // available providers
+<b class="nc">&nbsp;        val providers = arrayListOf(</b>
+<b class="nc">&nbsp;            AuthUI.IdpConfig.EmailBuilder().build(),</b>
+&nbsp;        )
+&nbsp;
+&nbsp;        // create intent with theme wiht actionbar fot avoid title overlap
+<b class="nc">&nbsp;        val signInIntent = AuthUI.getInstance()</b>
+<b class="nc">&nbsp;            .createSignInIntentBuilder()</b>
+<b class="nc">&nbsp;            .setAvailableProviders(providers)</b>
+<b class="nc">&nbsp;            .setTheme(R.style.Theme_FirebaseUI)</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        signInLauncher.launch(signInIntent)</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // receiving  result of  connection intent
+&nbsp;    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
+<b class="nc">&nbsp;        val response = result.idpResponse</b>
+<b class="nc">&nbsp;        if (result.resultCode == RESULT_OK) {</b>
+<b class="nc">&nbsp;            val user = FirebaseAuth.getInstance().currentUser</b>
+<b class="nc">&nbsp;            Log.d(&quot;FirebaseUI&quot;, &quot;Utilisateur authentifié : ${user?.email}&quot;)</b>
+&nbsp;
+<b class="nc">&nbsp;            startActivity(Intent(this, MainActivity::class.java))</b>
+<b class="nc">&nbsp;            finish()</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            if (response == null) {</b>
+<b class="nc">&nbsp;                finish()</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                val errorCode = response.error?.errorCode</b>
+<b class="nc">&nbsp;                Log.e(&quot;FirebaseUI&quot;, &quot;Sign-in error: $errorCode&quot;)</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-06-08 11:10</div>
+</div>
+</body>
+</html>
